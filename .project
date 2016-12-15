@@ -1,0 +1,30 @@
+# Gambas Project File 3.0
+# Compiled with Gambas 3.9.1
+Title=Traducción de programas.
+Startup=MInit
+Icon=logo.png
+Version=0.0.10
+Component=gb.image
+Component=gb.gui.qt
+Component=gb.form
+Component=gb.db
+Component=gb.desktop.x11
+Component=gb.desktop
+Component=gb.settings
+Component=gb.xml
+Description="Interfaz de translate-shell para traducir programas completos de gambas y otras utilidades."
+Authors="Martín Belmonte"
+TabSize=2
+Translate=1
+Language=es
+Maintainer=administrador
+Vendor=tincho
+VendorPrefix=btk
+Address=planeta4@openmailbox.org
+License=General Public License
+PackageName=tradukisto-0.0.7
+Packager=1
+Systems=ubuntu
+Menus=ubuntu:"Applications/Programming"
+Categories=ubuntu:"Development"
+Groups=ubuntu:"admin"

@@ -1,0 +1,238 @@
+' Gambas class file
+
+'
+' Traducción de programas.
+' Interfaz de translate-shell para traducir programas completos de gambas y otras utilidades.
+'
+' Copyright (C) Martín Belmonte
+'
+' This program is free software; you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation; either version 2 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program; if not, write to the Free Software
+' Foundation, Inc., 51 Franklin St, Fifth Floor,
+' Boston, MA  02110-1301  USA
+'
+
+Public strLangInput As String
+Public stxLangOutput As New String[]
+Public strLangOutput As String
+Public stxLog As New String[]
+Public stxMessage As New String[]
+
+Public stxLin As New String[]
+Public stxLout As New String[]
+
+Public intMessage As Integer
+
+' Listas de idiomas
+Public bolLangloaded As Boolean
+Public stxSysLangName As New String[]
+Public stxSysLangDesc As New String[]
+Public stxSysLangFamy As New String[]
+Public stxSysLangAlph As New String[]
+
+Public Sub Form_Open()
+
+  CheckLang()
+  LoadLang()
+
+End
+
+Public Sub tobOpenPot_Click()
+
+  TranlatePot()
+
+End
+
+Public Sub tobAbout_Click()
+
+  FAbout.Show()
+
+End
+
+Public Sub tobPreferences_Click()
+
+  FPref.Show()
+
+End
+
+Public Sub TranlatePot()
+
+  Dim strPotPath As String
+  Dim intLng As Integer
+  Dim strStateTrans As String
+
+  stxMessage.Clear
+  tmrChecker.Start
+
+  CheckLang()
+
+  strPotPath = MUtility.FileChooser(User.Home, "pot")
+
+  If Exist(strPotPath) = True Then
+    If Stat(strPotPath).Type = gb.File Then
+      If String.LCase(File.Ext(strPotPath)) = "pot" Then
+
+        If stxLangOutput.Count > 0 Then
+          For intLng = 0 To stxLangOutput.Max
+            strLangOutput = stxLangOutput[intLng]
+
+            If strLangOutput <> strLangInput Then
+
+              If MTranslate.Pomaker(strPotPath, strLangInput, strLangOutput) > 0 Then
+
+                strStateTrans = ("Para") & " " & strLangInput & ":" & strLangOutput & " " & ("la aplicacion fue traducida exitosamente")
+                Print strStateTrans
+              Endif
+            Else
+              Message.Info(("No tiene sentido traducir de") & " " & stxSysLangDesc[stxSysLangName.Find(strLangInput)] & " " &
+                "hacia" & " " & stxSysLangDesc[stxSysLangName.Find(strLangOutput)])
+            Endif
+
+          Next
+          tmrChecker.Stop
+          File.Save("/tmp/tradukisto.log", stxMessage.Join("\n"))
+          Wait 0.1
+
+          FillList()
+
+          Desktop.Open("/tmp/tradukisto.log")
+        Else
+          Message.Info(("Tienes que seleccionar al menos un idioma destino.") & gb.NewLine &
+            ("Para ello ve a las preferencias del programa"))
+        Endif
+      Endif
+    Endif
+  Endif
+
+End
+
+Public Sub CheckLang()
+
+  Dim strPlan As String
+  Dim intLx As Integer
+
+  strLangInput = Settings["Language", "es"]
+
+  stxLangOutput.Clear
+
+  For intLx = 0 To stxSysLangName.Max
+
+    If Settings["Output/" & String.UCase(stxSysLangName[intLx])] = -1 Then
+      stxLangOutput.Add(stxSysLangName[intLx])
+    Endif
+  Next
+
+  If stxLangOutput.Count > 0 Then
+    strPlan = " " & (("Vas a traducir desde") & " " &
+      String.UCase(strLangInput) & " " & ("hacia") & " " &
+      String.UCase(stxLangOutput.Join(":")))
+  Else
+    strPlan = " " & ("Vas a traducir desde") & " " &
+      String.UCase(strLangInput) & " " & ("pero no has seleccionado idiomas de destino, para ello ve a preferencias.")
+  Endif
+
+  lblInfo.Text = strPlan
+
+End
+
+Public Sub tmrChecker_Timer()
+
+  FillList()
+
+End
+
+Public Sub FillList()
+
+  '  Dim intMsg As Integer
+  Dim strInfoMsg As String
+
+  If stxLin.Count = stxLout.Count Then
+    If intMessage <> stxLin.Count Then
+      intMessage = stxLin.Count
+      If stxLout.Count > 0 Then
+        lsoInfo.Add(stxLin[0], 0)
+        lsoInfo.Add(stxLout[0], 0)
+      Endif
+    Endif
+  Endif
+
+  If stxLangOutput.Count > 0 Then
+    If strLangOutput <> "" Then
+      strInfoMsg = ("TRaduciendo desde") & " " & stxSysLangDesc[stxSysLangName.Find(strLangInput)] & " " &
+        "hacia" & " " & stxSysLangDesc[stxSysLangName.Find(strLangOutput)]
+      lblTrad.Text = strInfoMsg
+    Endif
+  Endif
+
+End
+
+Public Sub mnuFileOpen_Click()
+
+  TranlatePot()
+
+End
+
+Public Sub mnuPreferences_Click()
+
+  FPref.Show()
+
+End
+
+Public Sub mnuAbout_Click()
+
+  FAbout.Show()
+
+End
+
+Public Sub mnuHelp_Click()
+
+  Message.Info("La ayuda todavia no esta disponible")
+
+End
+
+Public Sub LoadLang() '' Carga la lista de idiomas
+
+  Dim stxLang As New String[]
+  Dim intL As Integer
+  Dim strDesc As String
+  Dim strFamy As String
+  Dim strLan As String
+  Dim strAlph As String
+
+  stxLang = Split(File.Load(User.Home &/ "." & Application.Name &/ "lang.csv"), "\n")
+
+  For intL = 0 To stxLang.Max
+    If stxLang[intL] <> "" Then
+
+      strLan = Split(stxLang[intL], ":")[0]
+      strDesc = Split(stxLang[intL], ":")[2] & "[" & Split(stxLang[intL], ":")[3] & "]"
+      strFamy = Split(stxLang[intL], ":")[4]
+      strAlph = Split(stxLang[intL], ":")[5]
+
+      stxSysLangName.Add(strLan)
+      stxSysLangDesc.Add(strDesc)
+      stxSysLangFamy.Add(strFamy)
+      stxSysLangAlph.Add(strAlph)
+    Endif
+  Next
+  bolLangloaded = True
+
+End
+
+Public Sub mnuQuit_Click()
+
+  tmrChecker.Stop
+
+  Me.Close
+
+End

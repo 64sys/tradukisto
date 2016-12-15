@@ -1,0 +1,63 @@
+' Gambas class file
+
+'
+' Traducción de programas.
+' Interfaz de translate-shell para traducir programas completos de gambas y otras utilidades.
+'
+' Copyright (C) Martín Belmonte
+'
+' This program is free software; you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation; either version 2 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program; if not, write to the Free Software
+' Foundation, Inc., 51 Franklin St, Fifth Floor,
+' Boston, MA  02110-1301  USA
+'
+
+Public Sub Form_Open()
+
+  Dim datCompilationTimeStamp As Date
+  Dim strCompilationTimeStamp As String
+
+  pioLogo.Picture = Picture.Load("logo.png")
+
+  Me.Move(FMain.X + 50, FMain.Y + 70)
+
+  Try datCompilationTimeStamp = Stat(Application.Path &/ Application.Name & ".gambas").LastModified
+  If Error Then
+    datCompilationTimeStamp = Stat(Application.Path).LastModified
+  Endif
+
+  strCompilationTimeStamp = Format(datCompilationTimeStamp, "yyyy-mm-dd.hh:nn:ss")
+
+  lblName.Text = MUtility.Capital(Application.Name)
+  lblDescription.Text = Application.Title & " " & ("Interfaz de translate-shell para traducir programas completos de gambas.")
+
+  lblVersion.Text = "v" & Application.Version & " [" & strCompilationTimeStamp & "]"
+  lblCopyright.Text = "Copyright (C) 2014-" & Year(Now)
+  lblAutor.Text = "Martín Belmnonte"
+  lblLicencia.Text = "GPL v3 "
+  lblGPL.Text = File.Load("gpl.txt")
+  Me.Caption = ("Acerca de") & " " & Application.Name
+
+End
+
+Public Sub btnClose_Click()
+
+  Me.Close
+
+End
+
+Public Sub About_MouseDown()
+
+  Me.Close
+
+End

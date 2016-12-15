@@ -1,0 +1,158 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tradukisto 0.0.10\n"
+"POT-Creation-Date: 2016-12-15 17:19+CET\n"
+"PO-Revision-Date: 2016-12-15 17:26+CET\n"
+"Last-Translator: Belmotek planeta4@openmailbox.org\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+#: .project:1
+msgid "Traducción de programas."
+msgstr "Traducció de programes."
+
+#: .project:2
+msgid "Interfaz de translate-shell para traducir programas completos de gambas y otras utilidades."
+msgstr "Interfície d'translate-shell per traduir programes complets de gambes i altres utilitats."
+
+#: FAbout.class:42
+msgid "Interfaz de translate-shell para traducir programas completos de gambas."
+msgstr "Interfície d'translate-shell per traduir programes complets de gambes."
+
+#: FAbout.class:49 FMain.form:59
+msgid "Acerca de"
+msgstr "Sobre"
+
+#: FLang.form:32
+msgid "OK"
+msgstr "Ok"
+
+#: FLang.form:38
+msgid "Cancel"
+msgstr "Cancel"
+
+#: FMain.form:25
+msgid "Traductor"
+msgstr "Traductor"
+
+#: FMain.form:31
+msgid "Archivo"
+msgstr "Arxiu"
+
+#: FMain.form:34
+msgid "Abrir archivo"
+msgstr "Obrir arxiu"
+
+#: FMain.form:40
+msgid "Salir"
+msgstr "Sortir"
+
+#: FMain.form:47
+msgid "Herramientas"
+msgstr "Eines"
+
+#: FMain.form:50
+msgid "Preferencias"
+msgstr "Preferències"
+
+#: FMain.form:56
+msgid "Ayuda"
+msgstr "Ajuda"
+
+#: FMain.form:75
+msgid "Traducir programas"
+msgstr "Traduir programes"
+
+#: FMain.class:93
+msgid "Para"
+msgstr "Per"
+
+#: FMain.class:93
+msgid "la aplicacion fue traducida exitosamente"
+msgstr "L'aplicació va ser traduïda amb èxit"
+
+#: FMain.class:98
+msgid "No tiene sentido traducir de"
+msgstr "No té sentit traduir de"
+
+#: FMain.class:111
+msgid "Tienes que seleccionar al menos un idioma destino."
+msgstr "Has de seleccionar almenys una llengua destí."
+
+#: FMain.class:111
+msgid "Para ello ve a las preferencias del programa"
+msgstr "Per això veu a les preferències del programa"
+
+#: FMain.class:138
+msgid "Vas a traducir desde"
+msgstr "Aneu a traduir de"
+
+#: FMain.class:138
+msgid "hacia"
+msgstr "Cap"
+
+#: FMain.class:141
+msgid "pero no has seleccionado idiomas de destino, para ello ve a preferencias."
+msgstr "Però no has seleccionat idiomes de destinació, per això veu a preferències."
+
+#: FMain.class:172
+msgid "TRaduciendo desde"
+msgstr "Traduint des"
+
+#: FPref.form:25
+msgid "Guardar y salir"
+msgstr "Desar i sortir"
+
+#: FPref.form:26
+msgid "Guardar"
+msgstr "Desar"
+
+#: FPref.form:32
+msgid "Descartar"
+msgstr "Descarta"
+
+#: FPref.form:66
+msgid "Deseleccionar todos los idiomas"
+msgstr "Desseleccionar tots els idiomes"
+
+#: FPref.class:48
+msgid "Idioma de entrada"
+msgstr "Idioma d'entrada"
+
+#: FPref.class:49
+msgid "Idiomas de salida"
+msgstr "Idiomes de sortida"
+
+#: MTranslate.module:165
+msgid "El archivo"
+msgstr "L'arxiu"
+
+#: MTranslate.module:165
+msgid "fue creado con exito"
+msgstr "Va ser creat amb èxit"
+
+#: MTranslate.module:240
+msgid "EL conversor msgfmt a dado la siguiente salida"
+msgstr "El convertidor msgfmt a donat la següent sortida"
+
+#: MTranslate.module:245
+msgid "Se han añadido las traducciones automáticas:"
+msgstr "S'han afegit les traduccions automàtiques:"
+
+#: MUtility.module:36
+msgid "Seleccionar directorio"
+msgstr "Seleccionar directori"
+
+#: MUtility.module:55
+msgid "Seleccionar archivo"
+msgstr "Seleccionar arxiu"
+
+#: MUtility.module:60
+msgid "Filtro por:"
+msgstr "Filtre per:"
+
+#: Msys.module:284
+msgid "Desconocido"
+msgstr "Desconegut"

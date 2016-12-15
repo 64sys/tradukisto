@@ -1,0 +1,87 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,101,67)
+  Text = ("Traductor")
+  Icon = Picture["logo.png"]
+  Arrangement = Arrange.Vertical
+  Padding = 4
+  { mnuFile Menu
+    Text = ("Archivo")
+    { mnuFileOpen Menu
+      Text = ("Abrir archivo")
+      Picture = Picture["icon:/32/open"]
+      Shortcut = "Ctrl+O"
+    }
+    { mnuQuit Menu
+      Text = ("Salir")
+      Picture = Picture["icon:/22/quit"]
+      Shortcut = "Alt+F4"
+    }
+  }
+  { mnuTools Menu
+    Text = ("Herramientas")
+    { mnuPreferences Menu
+      Text = ("Preferencias")
+      Picture = Picture["icon:/32/options"]
+    }
+  }
+  { mnuInfo Menu
+    Text = ("Ayuda")
+    { mnuAbout Menu
+      Text = ("Acerca de")
+      Picture = Picture["icon:/32/info"]
+    }
+    { mnuHelp Menu
+      Text = ("Ayuda")
+      Picture = Picture["icon:/32/help"]
+    }
+  }
+  { Panel8 Panel
+    MoveScaled(0,0,100,6)
+    Arrangement = Arrange.Horizontal
+    { tobOpenPot ToolButton
+      MoveScaled(1,1,5,5)
+      ToolTip = ("Traducir programas")
+      Picture = Picture["icon:/22/open"]
+    }
+    { tobPreferences ToolButton
+      MoveScaled(9,1,5,5)
+      ToolTip = ("Preferencias")
+      Picture = Picture["icon:/22/options"]
+    }
+    { tobAbout ToolButton
+      MoveScaled(23,1,5,5)
+      ToolTip = ("Acerca de")
+      Picture = Picture["icon:/22/question"]
+    }
+    { lblTrad Label
+      MoveScaled(34,1,37,4)
+      Expand = True
+    }
+  }
+  { pnlSelect Panel
+    MoveScaled(0,6,100,49)
+    Expand = True
+    Arrangement = Arrange.Vertical
+    { lsoInfo ListBox
+      MoveScaled(1,8,97,31)
+      Expand = True
+      Border = False
+    }
+  }
+  { Panel1 Panel
+    MoveScaled(0,57,100,5)
+    Arrangement = Arrange.Horizontal
+    Border = Border.Plain
+    { lblInfo Label
+      MoveScaled(8,0,39,5)
+      Expand = True
+    }
+  }
+  { tmrChecker #Timer
+    #MoveScaled(92,48)
+    Enabled = True
+    Delay = 500
+  }
+}

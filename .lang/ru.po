@@ -1,0 +1,158 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tradukisto 0.0.10\n"
+"POT-Creation-Date: 2016-12-15 17:19+CET\n"
+"PO-Revision-Date: 2016-12-15 17:30+CET\n"
+"Last-Translator: Belmotek planeta4@openmailbox.org\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+#: .project:1
+msgid "Traducción de programas."
+msgstr "Программы перевода."
+
+#: .project:2
+msgid "Interfaz de translate-shell para traducir programas completos de gambas y otras utilidades."
+msgstr "Перевести-оболочки интерфейс для перевода целых программ и креветки и другие утилиты."
+
+#: FAbout.class:42
+msgid "Interfaz de translate-shell para traducir programas completos de gambas."
+msgstr "Перевести-оболочки интерфейс для перевода целых программ креветки."
+
+#: FAbout.class:49 FMain.form:59
+msgid "Acerca de"
+msgstr "О"
+
+#: FLang.form:32
+msgid "OK"
+msgstr "Хорошо"
+
+#: FLang.form:38
+msgid "Cancel"
+msgstr "Отменить"
+
+#: FMain.form:25
+msgid "Traductor"
+msgstr "Переводчик"
+
+#: FMain.form:31
+msgid "Archivo"
+msgstr "Архив"
+
+#: FMain.form:34
+msgid "Abrir archivo"
+msgstr "Открыть файл"
+
+#: FMain.form:40
+msgid "Salir"
+msgstr "Выход"
+
+#: FMain.form:47
+msgid "Herramientas"
+msgstr "Инструменты"
+
+#: FMain.form:50
+msgid "Preferencias"
+msgstr "Предпочтения"
+
+#: FMain.form:56
+msgid "Ayuda"
+msgstr "Помощь"
+
+#: FMain.form:75
+msgid "Traducir programas"
+msgstr "Переводить программы"
+
+#: FMain.class:93
+msgid "Para"
+msgstr "К"
+
+#: FMain.class:93
+msgid "la aplicacion fue traducida exitosamente"
+msgstr "Заявка была успешно переведена"
+
+#: FMain.class:98
+msgid "No tiene sentido traducir de"
+msgstr "Это не имеет смысла переводить"
+
+#: FMain.class:111
+msgid "Tienes que seleccionar al menos un idioma destino."
+msgstr "Вы должны выбрать, по крайней мере, один целевой язык."
+
+#: FMain.class:111
+msgid "Para ello ve a las preferencias del programa"
+msgstr "Для этого перейдите к программе предпочтений"
+
+#: FMain.class:138
+msgid "Vas a traducir desde"
+msgstr "Вы будете переводить с"
+
+#: FMain.class:138
+msgid "hacia"
+msgstr "К"
+
+#: FMain.class:141
+msgid "pero no has seleccionado idiomas de destino, para ello ve a preferencias."
+msgstr "Но вы не выбрали целевые языки, ибо она видит предпочтения."
+
+#: FMain.class:172
+msgid "TRaduciendo desde"
+msgstr "Перевод с"
+
+#: FPref.form:25
+msgid "Guardar y salir"
+msgstr "Сохранение и выход из"
+
+#: FPref.form:26
+msgid "Guardar"
+msgstr "Экономить"
+
+#: FPref.form:32
+msgid "Descartar"
+msgstr "Отбрасывать"
+
+#: FPref.form:66
+msgid "Deseleccionar todos los idiomas"
+msgstr "Снимите флажки для всех языков"
+
+#: FPref.class:48
+msgid "Idioma de entrada"
+msgstr "Язык ввода"
+
+#: FPref.class:49
+msgid "Idiomas de salida"
+msgstr "Выход языки"
+
+#: MTranslate.module:165
+msgid "El archivo"
+msgstr "Файл"
+
+#: MTranslate.module:165
+msgid "fue creado con exito"
+msgstr "Она была создана успешно"
+
+#: MTranslate.module:240
+msgid "EL conversor msgfmt a dado la siguiente salida"
+msgstr "Msgfmt данный преобразователь к следующему выходу"
+
+#: MTranslate.module:245
+msgid "Se han añadido las traducciones automáticas:"
+msgstr "Они были добавлены автоматические переводы:"
+
+#: MUtility.module:36
+msgid "Seleccionar directorio"
+msgstr "Выберите каталог"
+
+#: MUtility.module:55
+msgid "Seleccionar archivo"
+msgstr "Выбрать файл"
+
+#: MUtility.module:60
+msgid "Filtro por:"
+msgstr "Фильтр по:"
+
+#: Msys.module:284
+msgid "Desconocido"
+msgstr "Неизвестный"

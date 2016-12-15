@@ -1,0 +1,57 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,92,98)
+  Arrangement = Arrange.Vertical
+  { Panel8 Panel
+    MoveScaled(-1,0,62,4)
+    Arrangement = Arrange.Horizontal
+    { tobSave ToolButton
+      MoveScaled(2,0,14,4)
+      ToolTip = ("Guardar y salir")
+      Text = ("Guardar")
+      Picture = Picture["icon:/22/save"]
+    }
+    { tobExit ToolButton
+      MoveScaled(39,0,14,4)
+      Text = ("Descartar")
+      Picture = Picture["icon:/22/quit"]
+    }
+  }
+  { Frame1 Frame
+    MoveScaled(1,5,59,6)
+    Background = Color.ButtonBackground
+    Arrangement = Arrange.Horizontal
+    { lblLanguage Label
+      MoveScaled(1,1,37,4)
+      Expand = True
+      Alignment = Align.Right
+    }
+    { cmoLanguage ComboBox
+      MoveScaled(40,1,10,4)
+    }
+  }
+  { Frame2 Frame
+    MoveScaled(1,12,59,6)
+    Background = Color.ButtonBackground
+    Arrangement = Arrange.Horizontal
+    { lblLangOut Label
+      MoveScaled(1,1,37,4)
+      Expand = True
+      Alignment = Align.Center
+    }
+    { tobClear ToolButton
+      MoveScaled(52,1,4,4)
+      ToolTip = ("Deseleccionar todos los idiomas")
+      Picture = Picture["icon:/22/clear"]
+    }
+  }
+  { TabPanel1 IconPanel
+    MoveScaled(0,18,89,78)
+    Expand = True
+    Arrangement = Arrange.Row
+    Index = 0
+    Text = ("")
+    Index = 0
+  }
+}

@@ -1,0 +1,158 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: tradukisto 0.0.10\n"
+"POT-Creation-Date: 2016-12-15 17:19+CET\n"
+"PO-Revision-Date: 2016-12-15 17:30+CET\n"
+"Last-Translator: Belmotek planeta4@openmailbox.org\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+#: .project:1
+msgid "Traducción de programas."
+msgstr "Latin progressio."
+
+#: .project:2
+msgid "Interfaz de translate-shell para traducir programas completos de gambas y otras utilidades."
+msgstr "Translate-crusta interface ad alterum transferre totum et squillae progressio utilitas."
+
+#: FAbout.class:42
+msgid "Interfaz de translate-shell para traducir programas completos de gambas."
+msgstr "Synonyms, squilla testa interface transferre totum progressio."
+
+#: FAbout.class:49 FMain.form:59
+msgid "Acerca de"
+msgstr "De"
+
+#: FLang.form:32
+msgid "OK"
+msgstr "Ok"
+
+#: FLang.form:38
+msgid "Cancel"
+msgstr "Cancel"
+
+#: FMain.form:25
+msgid "Traductor"
+msgstr "Latin"
+
+#: FMain.form:31
+msgid "Archivo"
+msgstr "Archive"
+
+#: FMain.form:34
+msgid "Abrir archivo"
+msgstr "Aperi file"
+
+#: FMain.form:40
+msgid "Salir"
+msgstr "Exitus"
+
+#: FMain.form:47
+msgid "Herramientas"
+msgstr "Tools"
+
+#: FMain.form:50
+msgid "Preferencias"
+msgstr "Praeferentiae"
+
+#: FMain.form:56
+msgid "Ayuda"
+msgstr "Auxilium"
+
+#: FMain.form:75
+msgid "Traducir programas"
+msgstr "Translation of progressio"
+
+#: FMain.class:93
+msgid "Para"
+msgstr "Ut"
+
+#: FMain.class:93
+msgid "la aplicacion fue traducida exitosamente"
+msgstr "The latin prospere application"
+
+#: FMain.class:98
+msgid "No tiene sentido traducir de"
+msgstr "Et non facit secundum translation"
+
+#: FMain.class:111
+msgid "Tienes que seleccionar al menos un idioma destino."
+msgstr "Habetis unius saltem linguam eligere."
+
+#: FMain.class:111
+msgid "Para ello ve a las preferencias del programa"
+msgstr "Ad hoc vade est progressio preferences"
+
+#: FMain.class:138
+msgid "Vas a traducir desde"
+msgstr "Tu translate"
+
+#: FMain.class:138
+msgid "hacia"
+msgstr "Ut"
+
+#: FMain.class:141
+msgid "pero no has seleccionado idiomas de destino, para ello ve a preferencias."
+msgstr "Sed non lectus target linguis risus enim videt."
+
+#: FMain.class:172
+msgid "TRaduciendo desde"
+msgstr "De transferendis,"
+
+#: FPref.form:25
+msgid "Guardar y salir"
+msgstr "Exitus save, et"
+
+#: FPref.form:26
+msgid "Guardar"
+msgstr "Nisi"
+
+#: FPref.form:32
+msgid "Descartar"
+msgstr "Xix,"
+
+#: FPref.form:66
+msgid "Deseleccionar todos los idiomas"
+msgstr "Notam omnibus linguis"
+
+#: FPref.class:48
+msgid "Idioma de entrada"
+msgstr "Input language"
+
+#: FPref.class:49
+msgid "Idiomas de salida"
+msgstr "Linguae output"
+
+#: MTranslate.module:165
+msgid "El archivo"
+msgstr "In file"
+
+#: MTranslate.module:165
+msgid "fue creado con exito"
+msgstr "Quod fuit bene"
+
+#: MTranslate.module:240
+msgid "EL conversor msgfmt a dado la siguiente salida"
+msgstr "In altera exitum msgfmt data est converter"
+
+#: MTranslate.module:245
+msgid "Se han añadido las traducciones automáticas:"
+msgstr "Et addidit automatic translations:"
+
+#: MUtility.module:36
+msgid "Seleccionar directorio"
+msgstr "Select directory"
+
+#: MUtility.module:55
+msgid "Seleccionar archivo"
+msgstr "Select file"
+
+#: MUtility.module:60
+msgid "Filtro por:"
+msgstr "Filter by:"
+
+#: Msys.module:284
+msgid "Desconocido"
+msgstr "Unknown"

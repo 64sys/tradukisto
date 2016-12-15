@@ -1,0 +1,250 @@
+' Gambas module file
+
+'
+' Traducción de programas.
+' Interfaz de translate-shell para traducir programas completos de gambas y otras utilidades.
+'
+' Copyright (C) Martín Belmonte
+'
+' This program is free software; you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation; either version 2 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program; if not, write to the Free Software
+' Foundation, Inc., 51 Franklin St, Fifth Floor,
+' Boston, MA  02110-1301  USA
+'
+
+Public Function Pomaker(strPotLotn As String, strLangIn As String, strLangOut As String) As Integer ''Genera un archivo .po de un idioma, como parametro de entrada requiere la ruta completa al archivo .pot del programa
+
+  Dim strPotFile As String
+  Dim strPotText As String
+  Dim stxPotText As New String[]
+  Dim setGbx As New Settings(User.Home &/ ".config/gambas3/gambas3.conf")
+  Dim stxText As New String[]
+  Dim strLine As String
+  Dim strOutput As String
+  Dim strKey As String
+  Dim strLout As String
+  Dim strOutDir As String
+  Dim strTemp As String
+  Dim intL As Integer
+  Dim strKeyTmp As String
+  Dim intC As Integer
+  Dim bolData As Boolean
+  Dim strPackage As String
+  Dim strAppName As String
+  Dim strDeveloper As Variant
+  Dim strDeveloperEmail As Variant
+  Dim strTimeStampPo As String
+  Dim strTimeStampPot As String
+  Dim intCounter As Integer
+
+  If strPotLotn = "" Then
+    strPotFile = MUtility.FileChooser(User.Home, "pot")
+  Else
+    strPotFile = strPotLotn
+  Endif
+
+  intCounter = 0
+
+  If strPotLotn <> "" Then
+
+    strTimeStampPot = Format(Stat(strPotFile).Time, "yyyy-mm-dd hh:nn+t")
+
+    If Exist(strPotFile) = True Then
+      If File.Ext(strPotFile) = "pot" Then ' Leer el .pot
+
+        strPotText = File.Load(strPotFile)
+        strOutDir = File.Dir(strPotFile)
+
+      Endif
+    Endif
+
+    stxPotText = Split(strPotText, "\n")
+
+    strTimeStampPo = Format(Now(), "yyyy-mm-dd hh:nn+t")
+    strAppName = Application.Name
+    strPackage = Application.Version
+
+    strDeveloper = setGbx["Identity/Name"]
+    strDeveloperEmail = setGbx["Identity/Mail"]
+
+    stxText.Clear
+    bolData = False
+
+    stxText.Add("#, fuzzy")
+    stxText.Add("msgid " & Chr(34) & Chr(34))
+    stxText.Add("msgstr " & Chr(34) & Chr(34))
+    stxText.Add(Chr(34) & "Project-Id-Version: " & strAppName & " " & strPackage & "\\n" & Chr(34))
+    stxText.Add(Chr(34) & "POT-Creation-Date: " & strTimeStampPot & "\\n" & Chr(34))
+    stxText.Add(Chr(34) & "PO-Revision-Date: " & strTimeStampPo & "\\n" & Chr(34))
+    stxText.Add(Chr(34) & "Last-Translator: " & strDeveloper & " " & strDeveloperEmail & "\\n" & Chr(34))
+    stxText.Add(Chr(34) & "Language: " & strLout & "\\n" & Chr(34))
+    stxText.Add(Chr(34) & "MIME-Version: 1.0\\n" & Chr(34))
+    stxText.Add(Chr(34) & "Content-Type: text/plain; charset=UTF-8\\n" & Chr(34))
+    stxText.Add(Chr(34) & "Content-Transfer-Encoding: 8bit\\n" & Chr(34))
+
+    ' Generar .po del lenguaje seleccionado
+    For intL = 0 To stxPotText.Max
+
+      Select stxPotText[intL]
+        Case "#: .project:1"  ' Comienzo de los datos del archivoç
+          bolData = True
+
+      End Select
+
+      If bolData = True Then
+
+        strLine = ""
+        strKeyTmp = ""
+
+        Select String.Mid(stxPotText[intL], 1, 2)
+          Case ""
+            stxText.Add("")
+          Case "#:"
+            stxText.Add(stxPotText[intL])
+          Case "ms"
+            strKey = Split(stxPotText[intL], " ")[0]
+            Select strKey
+              Case "msgid"
+                intC = 0
+
+                While
+                  strKeyTmp <> "msgstr"
+
+                  Select intC
+                    Case 0
+                      strTemp &= String.Mid(stxPotText[intL + intC], 7)
+                    Case Else
+                      strTemp &= stxPotText[intL + intC]
+                  End Select
+                  Inc intC
+
+                  strKeyTmp = Split(stxPotText[intl + intC], " ")[0]
+
+                Wend
+
+                strLine = Replace(strTemp, "\n", "")
+                strLine = Replace(strLine, "  ", " ")
+                strLine = Replace(strLine, "\"", "")
+
+                stxText.Add("msgid " & Chr(34) & strLine & Chr(34))
+
+                ' Bloque que traduce y manda los mensajes a la consola ------
+                'FMain.stxMessage.Add(String.UCase(strLangIn) & ": " & strLine, 0)
+                FMain.stxLin.Add(String.UCase(strLangIn) & ": " & strLine, 0)
+
+                strOutput = translator(strLine, strLangIn, strLangOut)
+
+                'FMain.stxMessage.Add(String.UCase(strLangOut) & ": " & strOutput, 0)
+
+                FMain.stxLout.Add(String.UCase(strLangOut) & ": " & strOutput, 0)
+
+                '------------------------------------------------------------
+                Wait 0.1
+                stxText.Add("msgstr " & Chr(34) & strOutput & Chr(34))
+
+                strLine = ""
+                strTemp = ""
+
+            End Select
+        End Select
+      Endif
+    Next
+
+    File.Save(strOutDir &/ strLangOut & ".po", stxText.Join(gb.newline))
+
+    FMain.stxLog.Add(("El archivo") & strOutDir &/ strLangOut & ".po " & ("fue creado con exito"))
+
+    'FMain.UpdateLog()
+
+    Inc intCounter
+
+    stxText.Clear
+
+    Wait 0.3
+
+    If Exist(strOutDir &/ strLangOut & ".po") = True Then
+      Pomo(strOutDir &/ strLangOut & ".po")
+    Endif
+
+  Endif
+
+  Return intCounter
+
+End
+
+Public Function Translator(strInput As String, strLin As String, strLout As String) As String
+
+  Dim strOutput As String
+  Dim strTemp As String
+  Dim stxTemp As New String[]
+  Dim stxOut As New String[]
+
+  strInput = Replace(strInput, Chr(34), "")
+
+  Shell "trans -b -no-auto " & strLin & ":" & strLout & " " & Chr(34) & strInput & Chr(34) & " 2>&1" To strTemp
+
+  stxTemp = Split(strTemp, "\n")
+
+  If stxTemp.Length > 0 Then
+
+    stxOut.Add(stxTemp[stxTemp.Max - 1])
+
+  Endif
+
+  strOutput = stxOut.Join(" ")
+
+  strOutput = Replace(strOutput, "  ", " ")
+  strOutput = MUtility.Capital(strOutput)
+
+  Print strOutput
+  FMain.stxMessage.Add(strOutput, 0)
+
+  FMain.stxLog.Add(strOutput)
+  'FMain.UpdateLog()
+
+  Return strOutput
+
+End
+
+Public Sub Pomo(strPoPath As String) ''Convierte el archo .po en .mo, modificacon del original en helptranslator de jsbsan del foro gambas-es.org
+
+  Dim strMoPath As String
+  Dim strCommand As String
+  Dim strErrors As String
+
+  strMoPath = File.Dir(strPoPath) &/ File.BaseName(strPoPath) & ".mo"
+
+  If Exist(strPoPath &/ ".mo") = True Then 'borro si si existe el archivo .mo
+    Kill strPoPath &/ ".mo" 'borrado de fichero compildo del antiguo .po
+  Endif
+
+  'generar el archivo .mo
+  'http://www.thempra.net/2011/09/compilar-de-po-a-mo-y-viceversa/
+
+  strCommand = "msgfmt " & strPoPath & " -o " & strMoPath
+
+  Shell strCommand To strErrors
+
+  If strErrors <> "" Then
+    'Message.Info(("EL conversor msgfmt a dado la siguiente salida") & ":" & gb.NewLine & strErrors)
+    FMain.stxLog.Add(("EL conversor msgfmt a dado la siguiente salida") & ":" & gb.NewLine & strErrors)
+    FMain.UpdateLog()
+
+  Else
+    'Message.Info(("Se han añadido las traducciones automáticas."))
+    FMain.stxLog.Add(("Se han añadido las traducciones automáticas:") & " " & File.BaseName(strPoPath) & ".mo")
+    'FMain.UpdateLog()
+
+  Endif
+
+End
