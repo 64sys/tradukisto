@@ -40,10 +40,15 @@ Public stxSysLangDesc As New String[]
 Public stxSysLangFamy As New String[]
 Public stxSysLangAlph As New String[]
 
+Public intWCtrl As Integer
+
 Public Sub Form_Open()
 
   CheckLang()
-  LoadLang()
+  If LoadLang() = True Then
+    CheckLang()
+    Phrases()
+  Endif
 
 End
 
@@ -62,6 +67,120 @@ End
 Public Sub tobPreferences_Click()
 
   FPref.Show()
+
+End
+
+Public Sub Phrases() '' Creates a panel with a label and a textbox
+
+  Dim pnl As Panel
+  Dim lbl As Label
+  Dim txo As TextBox
+  Dim intPhra As Integer
+  Dim strLang As String
+  Dim strLangDesc As String
+  Dim stxControls As New String[]
+  Dim strTag As String
+
+  stxControls.Clear
+  stxControls.Add(strLangInput)
+  stxControls.Insert(stxLangOutput)
+
+  ' Agragado de botones
+  pnl = New Panel(TabPanel1[1])
+  With pnl
+    pnl.Name = "pnl" & strLang
+    pnl.Height = 28 * 2
+    pnl.Width = intWCtrl
+    pnl.Arrangement = 2 ' Vertical
+    pnl.Expand = False
+  End With
+
+  lbl = New Label(pnl)
+  With lbl
+    lbl.Text = strLangDesc
+    lbl.Name = "lbl" & strLang
+    lbl.Height = 28
+    lbl.Width = intWCtrl
+    lbl.Expand = True
+  End With
+
+  TabPanel1[1].Children.Clear
+  For intPhra = 0 To stxControls.Max
+
+    strLang = String.LCase(stxControls[intPhra])
+    If stxSysLangName.Find(strLang) <> -1 Then
+      strLangDesc = stxSysLangDesc[stxSysLangName.Find(strLang)]
+    Else
+      strLangDesc = "Error"
+    Endif
+
+    If intPhra = 0 Then
+      strTag = strLang & ":Input"
+    Else
+      strTag = strLang & ":Output"
+    Endif
+
+    pnl = New Panel(TabPanel1[1])
+    With pnl
+      pnl.Name = "pnl" & strLang
+      pnl.Height = 28 * 2
+      pnl.Width = intWCtrl
+      pnl.Arrangement = 2 ' Vertical
+      pnl.Expand = False
+    End With
+
+    lbl = New Label(pnl)
+    With lbl
+      lbl.Text = strLangDesc
+      lbl.Name = "lbl" & strLang
+      lbl.Height = 28
+      lbl.Width = intWCtrl
+      lbl.Expand = True
+    End With
+
+    txo = New TextBox(pnl) As "GPhrases"
+    With txo
+      txo.Name = "txo" & strLang
+      txo.Height = 28
+      txo.Width = intWCtrl
+      txo.Expand = True
+      txo.Tag = strTag
+    End With
+
+  Next
+
+End
+
+Public Sub GPhrases_Change()
+
+  Dim txo As TextBox
+  Dim strLangInput As String
+  Dim strLangType As String
+  Dim intWidth As Integer
+
+  txo = Last
+
+  If InStr(txo.Tag, ":") > 0 Then
+    strLangInput = Split(txo.Tag, ":")[0]
+    strLangType = Split(txo.Tag, ":")[1]
+
+    intWidth = Len(txo.Text) * 7
+
+    Select intWidth > intWCtrl
+      Case False
+        txo.Parent.Width = intWCtrl + 7
+      Case Else
+        txo.Parent.Width = intWidth + 7
+    End Select
+
+    Select strLangType
+      Case "Input"
+        Print strLangInput & ": " & txo.Text
+
+      Case "Output"
+        Print strLangInput & ": " & txo.Text
+    End Select
+  Endif
 
 End
 
@@ -120,9 +239,10 @@ Public Sub CheckLang()
 
   Dim strPlan As String
   Dim intLx As Integer
+  Dim intCheck As Integer
 
+  intWCtrl = Settings["Controls/Width", 28 * 6]
   strLangInput = Settings["Language", "es"]
-
   stxLangOutput.Clear
 
   For intLx = 0 To stxSysLangName.Max
@@ -131,6 +251,11 @@ Public Sub CheckLang()
       stxLangOutput.Add(stxSysLangName[intLx])
     Endif
   Next
+
+  intCheck = stxLangOutput.Find(strLangInput)
+  If intCheck > -1 Then
+    stxLangOutput.Delete(intCheck, 1)
+  Endif
 
   If stxLangOutput.Count > 0 Then
     strPlan = " " & (("Vas a traducir desde") & " " &
@@ -153,7 +278,6 @@ End
 
 Public Sub FillList()
 
-  '  Dim intMsg As Integer
   Dim strInfoMsg As String
 
   If stxLin.Count = stxLout.Count Then
@@ -168,7 +292,7 @@ Public Sub FillList()
 
   If stxLangOutput.Count > 0 Then
     If strLangOutput <> "" Then
-      strInfoMsg = ("TRaduciendo desde") & " " & stxSysLangDesc[stxSysLangName.Find(strLangInput)] & " " &
+      strInfoMsg = ("Traduciendo desde") & " " & stxSysLangDesc[stxSysLangName.Find(strLangInput)] & " " &
         "hacia" & " " & stxSysLangDesc[stxSysLangName.Find(strLangOutput)]
       lblTrad.Text = strInfoMsg
     Endif
@@ -200,7 +324,7 @@ Public Sub mnuHelp_Click()
 
 End
 
-Public Sub LoadLang() '' Carga la lista de idiomas
+Public Function LoadLang() As Boolean '' Carga la lista de idiomas
 
   Dim stxLang As New String[]
   Dim intL As Integer
@@ -225,7 +349,10 @@ Public Sub LoadLang() '' Carga la lista de idiomas
       stxSysLangAlph.Add(strAlph)
     Endif
   Next
+
   bolLangloaded = True
+
+  Return True
 
 End
 
@@ -234,5 +361,67 @@ Public Sub mnuQuit_Click()
   tmrChecker.Stop
 
   Me.Close
+
+End
+
+Public Sub TabPanel1_Arrange()
+
+  CheckTab()
+
+End
+
+Public Sub CheckTab()
+
+  Dim intTab As Integer
+
+  Select TabPanel1.Current
+    Case TabPanel1[0]
+      tobTranslate.Enabled = False
+      tobOpenPot.Enabled = True
+
+    Case TabPanel1[1]
+      tobTranslate.Enabled = True
+      tobOpenPot.Enabled = False
+
+  End Select
+
+End
+
+Public Sub TabPanel1_MouseDown()
+
+  CheckTab()
+
+End
+
+Public Sub tobTranslate_Click()
+
+  Dim intTxt As Integer
+  Dim obj As Object
+  Dim strText As String
+  Dim strTrans As String
+
+  ' averiguar el texto de entrada
+  For Each obj In TabPanel1.Children
+    If Object.Type(obj) = "Panel" Then
+      If InStr(obj.name, "pnl" & strLangInput) > 0 Then
+        strText = obj.Children[1].Text
+      Endif
+    Endif
+  Next
+
+  For intTxt = 0 To stxLangOutput.Max
+    For Each obj In TabPanel1.Children
+      If Object.Type(obj) = "Panel" Then
+        If InStr(obj.name, "pnl" & stxLangOutput[intTxt]) > 0 Then
+
+          strTrans = MTranslate.Translator(strText, strLangInput, stxLangOutput[intTxt])
+
+          obj.Children[1].Text = strTrans
+          obj.Children[1].Refresh
+
+        Endif
+      Endif
+    Next
+  Next
 
 End

@@ -1,10 +1,10 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,92,98)
+  MoveScaled(0,0,66,98)
   Arrangement = Arrange.Vertical
   { Panel8 Panel
-    MoveScaled(-1,0,62,4)
+    MoveScaled(-1,0,65,4)
     Arrangement = Arrange.Horizontal
     { tobSave ToolButton
       MoveScaled(2,0,14,4)
@@ -18,21 +18,37 @@
       Picture = Picture["icon:/22/quit"]
     }
   }
-  { Frame1 Frame
-    MoveScaled(1,5,59,6)
-    Background = Color.ButtonBackground
-    Arrangement = Arrange.Horizontal
-    { lblLanguage Label
-      MoveScaled(1,1,37,4)
-      Expand = True
-      Alignment = Align.Right
+  { Panel1 Panel
+    MoveScaled(0,5,64,7)
+    { Frame3 Frame
+      MoveScaled(33,0,31,6)
+      Background = Color.ButtonBackground
+      Arrangement = Arrange.Horizontal
+      { lblWidthCtrl Label
+        MoveScaled(1,1,16,4)
+        Expand = True
+        Alignment = Align.Right
+      }
+      { sioWidthCtrl SpinBox
+        MoveScaled(20,1,10,4)
+      }
     }
-    { cmoLanguage ComboBox
-      MoveScaled(40,1,10,4)
+    { Frame1 Frame
+      MoveScaled(0,0,31,6)
+      Background = Color.ButtonBackground
+      Arrangement = Arrange.Horizontal
+      { lblLanguage Label
+        MoveScaled(1,1,16,4)
+        Expand = True
+        Alignment = Align.Right
+      }
+      { cmoLanguage ComboBox
+        MoveScaled(19,1,10,4)
+      }
     }
   }
   { Frame2 Frame
-    MoveScaled(1,12,59,6)
+    MoveScaled(1,14,63,6)
     Background = Color.ButtonBackground
     Arrangement = Arrange.Horizontal
     { lblLangOut Label
@@ -47,7 +63,7 @@
     }
   }
   { TabPanel1 IconPanel
-    MoveScaled(0,18,89,78)
+    MoveScaled(0,24,64,72)
     Expand = True
     Arrangement = Arrange.Row
     Index = 0

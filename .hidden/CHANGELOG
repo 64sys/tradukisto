@@ -1,3 +1,6 @@
+* Thu Dec 15 2016 belmotek <planeta4@openmailbox.org> 0.0.10
+- Agregado de lista de proceso y optimización.
+
 * Mon Oct 31 2016 administrador <planeta4@openmailbox.org> 0.0.7
 - Depuracion del error al tomar datos del archivo .project en la version compilada.
 

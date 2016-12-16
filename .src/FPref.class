@@ -48,6 +48,9 @@ Public Sub Form_Open()
   lblLanguage.Text = ("Idioma de entrada") & ":  "
   lblLangOut.Text = ("Idiomas de salida")
 
+  sioWidthCtrl.Value = Settings["Controls/Width", 28 * 7]
+  lblWidthCtrl.Text = ("Ancho de cajas de texto")
+
   intCounter = 0
 
   For intType = 0 To FMain.stxSysLangFamy.Max
@@ -101,8 +104,13 @@ Public Sub tobSave_Click()
     Next
   Next
 
+  Settings["Controls/Width"] = sioWidthCtrl.Value
   Settings["Language"] = cmoLanguage.Text
   FMain.CheckLang()
+
+  FMain.CheckLang()
+  FMain.Phrases()
+
   Me.Close
 
 End

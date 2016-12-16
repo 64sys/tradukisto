@@ -22,8 +22,23 @@ Geometry=[-1,28,224,280]
 [DebugWindow/Settings]
 Geometry=[-1,28,459,280]
 
+[DebugWindow/TabPanel1.Children]
+Geometry=[1081,264,224,280]
+
+[DebugWindow/TabPanel1.Current]
+Geometry=[0,25,224,963]
+
 [DebugWindow/cmoLanguage]
 Geometry=[-1,28,224,280]
+
+[DebugWindow/obj]
+Geometry=[0,25,224,280]
+
+[DebugWindow/obj.Children]
+Geometry=[0,25,224,280]
+
+[DebugWindow/stxControls]
+Geometry=[0,25,224,280]
 
 [DebugWindow/stxLang]
 Geometry=[1,32,703,888]
@@ -56,14 +71,14 @@ Geometry=[38,173,224,280]
 Path="tradukisto.gambas"
 
 [OpenFile]
-Active=1
-File[1]=".src/FMain.class:30.8"
+Active=6
+File[1]=".src/FMain.class:7.257"
 Count=9
 File[2]=".src/FMain.form"
-File[3]=".src/MTranslate.module:6.243"
-File[4]=".src/MUtility.module:29.35"
+File[3]=".src/MTranslate.module:0.193"
+File[4]=".src/MUtility.module:19.419"
 File[5]=".src/FPref.form"
-File[6]=".src/FPref.class:0.116"
+File[6]=".src/FPref.class:18.39"
 File[7]=".src/MInit.module:0.46"
 File[8]=".src/FAbout.form"
 File[9]=".src/FAbout.class:126.41"

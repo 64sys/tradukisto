@@ -182,7 +182,7 @@ Public Function Pomaker(strPotLotn As String, strLangIn As String, strLangOut As
 
 End
 
-Public Function Translator(strInput As String, strLin As String, strLout As String) As String
+Public Function Translator(strInput As String, strLin As String, strLout As String) As String '' Traduce una frace mediante el motor translate-shell\n - strInput esel texto que se desea traducir\n - strLin es el idioma de entrada\n - strLout es el idioma de salida
 
   Dim strOutput As String
   Dim strTemp As String
