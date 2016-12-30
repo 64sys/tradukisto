@@ -3,7 +3,7 @@
 Title=Traducción de programas.
 Startup=MInit
 Icon=logo.png
-Version=0.0.11
+Version=0.0.13
 Component=gb.image
 Component=gb.gui.qt
 Component=gb.form
@@ -23,7 +23,7 @@ VendorPrefix=btk
 Address=planeta4@openmailbox.org
 Url=www.endoftheinternet.com
 License=General Public License
-PackageName=tradukisto-0.0.10
+PackageName=tradukisto-0.0.13
 Packager=1
 Systems=ubuntu
 Menus=ubuntu:"Applications/Programming"

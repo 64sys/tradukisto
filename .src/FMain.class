@@ -154,15 +154,15 @@ End
 Public Sub GPhrases_Change()
 
   Dim txo As TextBox
-  Dim strLangInput As String
-  Dim strLangType As String
+  Dim strLngIn As String
+  Dim strLngType As String
   Dim intWidth As Integer
 
   txo = Last
 
   If InStr(txo.Tag, ":") > 0 Then
-    strLangInput = Split(txo.Tag, ":")[0]
-    strLangType = Split(txo.Tag, ":")[1]
+    strLngIn = Split(txo.Tag, ":")[0]
+    strLngType = Split(txo.Tag, ":")[1]
 
     intWidth = Len(txo.Text) * 7
 
@@ -173,12 +173,12 @@ Public Sub GPhrases_Change()
         txo.Parent.Width = intWidth + 7
     End Select
 
-    Select strLangType
+    Select strLngType
       Case "Input"
-        Print strLangInput & ": " & txo.Text
+        Print strLngIn & ": " & txo.Text
 
       Case "Output"
-        Print strLangInput & ": " & txo.Text
+        Print strLngIn & ": " & txo.Text
     End Select
   Endif
 
@@ -372,7 +372,7 @@ End
 
 Public Sub CheckTab()
 
-  Dim intTab As Integer
+  'Dim intTab As Integer
 
   Select TabPanel1.Current
     Case TabPanel1[0]

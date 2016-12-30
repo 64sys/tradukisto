@@ -2,13 +2,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tradukisto 0.0.10\n"
-"POT-Creation-Date: 2016-12-15 17:19+CET\n"
+"POT-Creation-Date: 2016-12-28 11:28 UTC\n"
 "PO-Revision-Date: 2016-12-15 17:29+CET\n"
 "Last-Translator: Belmotek planeta4@openmailbox.org\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
 #: .project:1
 msgid "Traducción de programas."
 msgstr "Programmi di traduzione."
@@ -21,7 +22,7 @@ msgstr "Tradurre-shell interfaccia di tradurre interi programmi gamberi e altre 
 msgid "Interfaz de translate-shell para traducir programas completos de gambas."
 msgstr "Tradurre-shell interfaccia di tradurre interi programmi di gamberetti."
 
-#: FAbout.class:49 FMain.form:59
+#: FAbout.class:49 FMain.form:61
 msgid "Acerca de"
 msgstr "Su"
 
@@ -33,89 +34,83 @@ msgstr "Bene"
 msgid "Cancel"
 msgstr "Annullare"
 
-#: FMain.form:25
-msgid "Traductor"
-msgstr "Traduttore"
-
-#: FMain.form:31
-msgid "Archivo"
-msgstr "Archivio"
-
-#: FMain.form:34
-msgid "Abrir archivo"
-msgstr "File aperto"
-
-#: FMain.form:40
-msgid "Salir"
-msgstr "Uscita"
-
-#: FMain.form:47
-msgid "Herramientas"
-msgstr "Strumenti"
-
-#: FMain.form:50
-msgid "Preferencias"
-msgstr "Preferenze"
-
-#: FMain.form:56
-msgid "Ayuda"
-msgstr "Aiutare"
-
-#: FMain.form:75
-msgid "Traducir programas"
-msgstr "Tradurre i programmi"
-
-#: FMain.class:93
+#: FMain.class:212
 msgid "Para"
 msgstr "A"
 
-#: FMain.class:93
+#: FMain.class:212
 msgid "la aplicacion fue traducida exitosamente"
 msgstr "L'applicazione è stato tradotto con successo"
 
-#: FMain.class:98
+#: FMain.class:217
 msgid "No tiene sentido traducir de"
 msgstr "Non ha senso tradurre"
 
-#: FMain.class:111
-msgid "Tienes que seleccionar al menos un idioma destino."
-msgstr "È necessario selezionare almeno una lingua di destinazione."
-
-#: FMain.class:111
+#: FMain.class:230
 msgid "Para ello ve a las preferencias del programa"
 msgstr "Per far questo vai alle preferenze del programma"
 
-#: FMain.class:138
+#: FMain.class:230
+msgid "Tienes que seleccionar al menos un idioma destino."
+msgstr "È necessario selezionare almeno una lingua di destinazione."
+
+#: FMain.class:263
 msgid "Vas a traducir desde"
 msgstr "Potrai tradurre da"
 
-#: FMain.class:138
+#: FMain.class:263
 msgid "hacia"
 msgstr "A"
 
-#: FMain.class:141
+#: FMain.class:266
 msgid "pero no has seleccionado idiomas de destino, para ello ve a preferencias."
 msgstr "Ma non è stato selezionato lingue di destinazione, perché vede le preferenze."
 
-#: FMain.class:172
-msgid "TRaduciendo desde"
+#: FMain.class:296
+#, fuzzy
+msgid "Traduciendo desde"
 msgstr "Traducendo da"
 
-#: FPref.form:25
-msgid "Guardar y salir"
-msgstr "Salvare e uscire"
+#: FMain.form:27
+msgid "Traductor"
+msgstr "Traduttore"
 
-#: FPref.form:26
-msgid "Guardar"
-msgstr "Salvare"
+#: FMain.form:33
+msgid "Archivo"
+msgstr "Archivio"
 
-#: FPref.form:32
-msgid "Descartar"
-msgstr "Scartare"
+#: FMain.form:36
+#, fuzzy
+msgid "Abrir archivo .pot"
+msgstr "File aperto"
 
-#: FPref.form:66
-msgid "Deseleccionar todos los idiomas"
-msgstr "Deselezionare tutte le lingue"
+#: FMain.form:42
+msgid "Salir"
+msgstr "Uscita"
+
+#: FMain.form:49
+msgid "Herramientas"
+msgstr "Strumenti"
+
+#: FMain.form:52
+msgid "Preferencias"
+msgstr "Preferenze"
+
+#: FMain.form:58
+msgid "Ayuda"
+msgstr "Aiutare"
+
+#: FMain.form:77
+msgid "Traducir programas"
+msgstr "Tradurre i programmi"
+
+#: FMain.form:112
+msgid "Programas"
+msgstr ""
+
+#: FMain.form:120
+msgid "Fraces"
+msgstr ""
 
 #: FPref.class:48
 msgid "Idioma de entrada"
@@ -124,6 +119,26 @@ msgstr "Lingua di input"
 #: FPref.class:49
 msgid "Idiomas de salida"
 msgstr "Lingue di uscita"
+
+#: FPref.class:52
+msgid "Ancho de cajas de texto"
+msgstr ""
+
+#: FPref.form:29
+msgid "Guardar y salir"
+msgstr "Salvare e uscire"
+
+#: FPref.form:30
+msgid "Guardar"
+msgstr "Salvare"
+
+#: FPref.form:36
+msgid "Descartar"
+msgstr "Scartare"
+
+#: FPref.form:90
+msgid "Deseleccionar todos los idiomas"
+msgstr "Deselezionare tutte le lingue"
 
 #: MTranslate.module:165
 msgid "El archivo"

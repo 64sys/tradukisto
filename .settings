@@ -71,17 +71,9 @@ Geometry=[38,173,224,280]
 Path="tradukisto.gambas"
 
 [OpenFile]
-Active=6
-File[1]=".src/FMain.class:7.257"
-Count=9
-File[2]=".src/FMain.form"
-File[3]=".src/MTranslate.module:0.193"
-File[4]=".src/MUtility.module:19.419"
-File[5]=".src/FPref.form"
-File[6]=".src/FPref.class:18.39"
-File[7]=".src/MInit.module:0.46"
-File[8]=".src/FAbout.form"
-File[9]=".src/FAbout.class:126.41"
+Active=1
+File[1]=".src/FAbout.form"
+Count=1
 
 [Watches]
 Count=0
