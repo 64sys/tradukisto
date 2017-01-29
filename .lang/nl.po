@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tradukisto 0.0.23\n"
 "POT-Creation-Date: 2017-01-29 20:59+CET\n"
-"PO-Revision-Date: 2017-01-29 21:03+CET\n"
+"PO-Revision-Date: 2017-01-29 21:04+CET\n"
 "Last-Translator: Martín, Powerded by Tradukisto software. planeta4@openmailbox.org\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 #: .project:1
 msgid "Traducctor de programas"
-msgstr ""
+msgstr "Programma traducctor"
 
 #: .project:2
 msgid "Interfaz para traducir programas de gambas con translate-shell."
@@ -19,59 +19,59 @@ msgstr ""
 
 #: FAbout.form:50
 msgid "Cerrar"
-msgstr "Fermer"
+msgstr "Dicht"
 
 #: FAbout.class:62
 msgid "Pagina web"
-msgstr "Page web"
+msgstr "Website"
 
 #: FAbout.class:77
 msgid "Correo de contacto"
-msgstr "Contact email"
+msgstr ""
 
 #: FAbout.class:85
 msgid "Componentes usados"
-msgstr "Composants utilisés"
+msgstr "Elementen"
 
 #: FAbout.class:92
 msgid "Este prgrama se entrega sin ninguna tipo de garantia"
-msgstr "Ce prgrama est livré sans aucune sorte de garantie"
+msgstr "Dit prgrama wordt geleverd zonder enige vorm van garantie"
 
 #: FAbout.class:99
 msgid "Licencia"
-msgstr "Licence"
+msgstr "Licentie"
 
 #: FAbout.class:99
 msgid "Clic para ver en"
-msgstr "Cliquez pour voir"
+msgstr "Klik om te zien"
 
 #: FAbout.class:105 FMain.form:82
 msgid "Acerca de"
-msgstr "À propos de"
+msgstr "Over"
 
 #: FAbout.class:125
 msgid "Hola desarrolladores de"
-msgstr "Développeurs hi"
+msgstr ""
 
 #: FCheck.form:48
 msgid "Ver las frases"
-msgstr ""
+msgstr "Zie zinnen"
 
 #: FCheck.form:54
 msgid "Continuar"
-msgstr "Continuer"
+msgstr "Voortzetten"
 
 #: FCheck.form:59 FData.form:40
 msgid "Cancelar"
-msgstr "Annuler"
+msgstr "Annuleren"
 
 #: FCheck.class:151
 msgid "Atención, a la izquierda se encuentran los posibles idiomas de entrada"
-msgstr ""
+msgstr "Aandacht voor de linkerzijde zijn de mogelijke inbreng talen"
 
 #: FCheck.class:151
 msgid "Veifique que el idioma seleccionado sea correcto y cambielo si no lo es"
-msgstr ""
+msgstr "Veifique de geselecteerde taal correct is en veranderen als het niet"
 
 #: FCheck.class:151
 msgid "Luego a la derecha, se encuentran los idiomas de salida, puede marcar todos los que desee"
@@ -79,19 +79,19 @@ msgstr ""
 
 #: FCheck.class:151
 msgid "Cuando todo este optimo presione"
-msgstr "Quand tout cela presse optimale"
+msgstr "Wanneer al deze optimale druk"
 
 #: FCheck.class:151
 msgid "para continuar con la traducción"
-msgstr ""
+msgstr "De vertaling blijven"
 
 #: FCheck.class:151
 msgid "o presione"
-msgstr ""
+msgstr "Of druk"
 
 #: FCheck.class:151
 msgid "para abortar"
-msgstr ""
+msgstr "Om af te breken"
 
 #: FCheck2.form:27 FLang.form:32
 msgid "OK"
@@ -99,27 +99,27 @@ msgstr ""
 
 #: FCheck2.form:33 FLang.form:38
 msgid "Cancel"
-msgstr "Annuler"
+msgstr "Annuleren"
 
 #: FConfig.form:22
 msgid "Guardar y salir"
-msgstr "Enregistrer et quitter"
+msgstr "Opslaan en afsluiten"
 
 #: FConfig.form:23
 msgid "Guardar"
-msgstr "Garder"
+msgstr "Besparen"
 
 #: FConfig.form:29
 msgid "Descartar"
-msgstr "Jeter"
+msgstr "Afleggen"
 
 #: FConfig.form:41
 msgid "Traducción"
-msgstr ""
+msgstr "Vertaling"
 
 #: FConfig.form:55
 msgid "Programa"
-msgstr "Programme"
+msgstr "Programma"
 
 #: FConfig.class:194
 msgid "Motor de la Base de datos"
@@ -139,87 +139,87 @@ msgstr ""
 
 #: FConfig.class:198
 msgid "Idioma de entrada"
-msgstr ""
+msgstr "Input taal"
 
 #: FConfig.class:199
 msgid "Tamaño de la ventana"
-msgstr "Taille de la fenêtre"
+msgstr "Window size"
 
 #: FConfig.class:200
 msgid "Anchura por defecto"
-msgstr "Largeur par défaut"
+msgstr "Standaardbreedte"
 
 #: FData.form:34
 msgid "Aceptar"
-msgstr "Accepter"
+msgstr "Aanvaarden"
 
 #: FMain.form:38
 msgid "Traductor"
-msgstr ""
+msgstr "Vertaler"
 
 #: FMain.form:44
 msgid "Archivo"
-msgstr "Archives"
+msgstr "Archief"
 
 #: FMain.form:47
 msgid "Traducir"
-msgstr ""
+msgstr "Vertalen"
 
 #: FMain.form:53
 msgid "Salir"
-msgstr "Sortir"
+msgstr "Afrit"
 
 #: FMain.form:60
 msgid "Configuración"
-msgstr "Configuration"
+msgstr "Configuratie"
 
 #: FMain.form:63
 msgid "Preferencias"
-msgstr "Préférences"
+msgstr "Voorkeuren"
 
 #: FMain.form:68
 msgid "Orden"
-msgstr "Ordre"
+msgstr "Order"
 
 #: FMain.form:73
 msgid "Filtro"
-msgstr "Filtre"
+msgstr "Filter"
 
 #: FMain.form:79
 msgid "Información"
-msgstr "Information"
+msgstr "Informatie"
 
 #: FMain.form:87
 msgid "Ayuda"
-msgstr "Aider"
+msgstr "Helpen"
 
 #: FMain.form:98
 msgid "Leer las frases a traducir y presentar un estado de la situacion"
-msgstr "Lisez les phrases à traduire et à présenter un état de la situation"
+msgstr "Lees de zinnen te vertalen en geven een overzicht van de situatie"
 
 #: FMain.form:179
 msgid "Agregar"
-msgstr "Ajouter"
+msgstr "Toevoegen"
 
 #: FMain.form:185
 msgid "Borrar"
-msgstr "Effacer"
+msgstr "Verwijderen"
 
 #: FMain.form:191
 msgid "Editar"
-msgstr "Éditer"
+msgstr "Uitgeven"
 
 #: FMain.class:298
 msgid "Para"
-msgstr ""
+msgstr "Naar"
 
 #: FMain.class:298
 msgid "la aplicacion fue traducida exitosamente"
-msgstr ""
+msgstr "De applicatie werd met succes vertaald"
 
 #: FMain.class:303
 msgid "No tiene sentido traducir de"
-msgstr "Il ne fait aucun sens traduire"
+msgstr "Het heeft geen zin te vertalen"
 
 #: FMain.class:316
 msgid "Tienes que seleccionar al menos un idioma destino."
@@ -279,15 +279,15 @@ msgstr ""
 
 #: MData.module:69
 msgid "No existe el archivo"
-msgstr "Aucun fichier"
+msgstr "Geen dergelijke dossier"
 
 #: MData.module:69
 msgid "La base de datos no sera creada"
-msgstr "La base de données ne sera pas créé"
+msgstr "De database zal niet worden aangemaakt"
 
 #: MData.module:315
 msgid "Existen"
-msgstr "Là"
+msgstr "Er"
 
 #: MData.module:315
 msgid "coincidencias, deberia ser una sola"
@@ -295,7 +295,7 @@ msgstr ""
 
 #: MData.module:315
 msgid "Se utilizara el primero de la lista"
-msgstr "Le premier dans la liste est utilisé"
+msgstr "De eerste in de lijst wordt gebruikt"
 
 #: MStarter.module:102
 msgid "Carga de parametros primera pasada"
@@ -315,7 +315,7 @@ msgstr ""
 
 #: MStarter.module:219
 msgid "No se pudo abrir la conexión a la base de datos"
-msgstr ""
+msgstr "Kon niet open verbinding met de database"
 
 #: MStarter.module:277
 msgid "Búlgaro"
@@ -431,11 +431,11 @@ msgstr ""
 
 #: MUtility.module:34
 msgid "Seleccionar directorio"
-msgstr "Sélectionner le répertoire"
+msgstr "Kies een directory"
 
 #: MUtility.module:53
 msgid "Seleccionar archivo"
-msgstr "Sélectionnez le fichier"
+msgstr "Selecteer bestand"
 
 #: MUtility.module:58
 msgid "Filtro por:"
@@ -443,7 +443,7 @@ msgstr ""
 
 #: MUtility.module:393
 msgid "Falta el paquete"
-msgstr "Package manquant"
+msgstr "Ontbrekende pakket"
 
 #: MUtility.module:978
 msgid "El archivo "
@@ -455,27 +455,27 @@ msgstr ""
 
 #: MUtility.module:1035
 msgid "Hola"
-msgstr "Salut"
+msgstr "Hallo"
 
 #: MValidator.module:219
 msgid "Espacios al inicio y al final"
-msgstr "Les espaces au début et à la fin"
+msgstr ""
 
 #: MValidator.module:221
 msgid "Espacio al inicio"
-msgstr "Espace au début"
+msgstr ""
 
 #: MValidator.module:225
 msgid "Espacio al final"
-msgstr "Espace à la fin"
+msgstr ""
 
 #: MValidator.module:230
 msgid "Repetidos"
-msgstr "Répété"
+msgstr ""
 
 #: MValidator.module:257
 msgid "Excluidos"
-msgstr "Exclu"
+msgstr ""
 
 #: MValidator.module:261
 msgid "Mas de una letra mayúscula"
@@ -483,15 +483,15 @@ msgstr ""
 
 #: Msys.module:357
 msgid "Desconocido"
-msgstr "Inconnu"
+msgstr "Onbekend"
 
 #: Msys.module:509
 msgid "Falta instalar el paquete"
-msgstr ""
+msgstr "Noodzaak om het pakket te installeren"
 
 #: Msys.module:512
 msgid "Faltan instalar los siguientes paquetes"
-msgstr "Manquant installer les paquets suivants"
+msgstr "Ontbrekende installeer de volgende pakketten"
 
 #: Msys.module:534
 msgid "Puede usar la siguente orden"
@@ -499,16 +499,16 @@ msgstr ""
 
 #: Msys.module:534
 msgid "¿Quiere abrir la terminal para poceder?"
-msgstr "Vous voulez ouvrir le terminal poceder?"
+msgstr "U wilt de terminal open te poceder?"
 
 #: Msys.module:534
 msgid "Sí"
-msgstr "Oui"
+msgstr "Ja"
 
 #: Msys.module:534
 msgid "No"
-msgstr "Pas"
+msgstr "Niet"
 
 #: Msys.module:584
 msgid "Puede usar el siguente commando"
-msgstr ""
+msgstr "U kunt de onderstaande commando te gebruiken"

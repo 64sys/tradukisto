@@ -1,0 +1,39 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,69,87)
+  Icon = Picture["logo.png"]
+  Resizable = False
+  { Panel1 Panel About
+    Name = "Panel1"
+    MoveScaled(1,1,67,85)
+    { pioLogo PictureBox About
+      Name = "pioLogo"
+      MoveScaled(21,1,21,21)
+      Picture = Picture["logo.png"]
+      Stretch = True
+    }
+    { pioGambas PictureBox About
+      Name = "pioGambas"
+      MoveScaled(11,74,10,10)
+      Picture = Picture["gambas-powered.png"]
+      Stretch = True
+      AutoResize = True
+    }
+    { pioGNULinux PictureBox About
+      Name = "pioGNULinux"
+      MoveScaled(1,74,10,10)
+      Picture = Picture["gnulinux-powered.png"]
+      Stretch = True
+      AutoResize = True
+    }
+    { pnlAbout Panel
+      MoveScaled(1,23,64,49)
+      Arrangement = Arrange.Vertical
+    }
+    { btnClose Button
+      MoveScaled(49,73,16,11)
+      Text = ("Cerrar")
+    }
+  }
+}

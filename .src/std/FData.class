@@ -1,0 +1,289 @@
+' Gambas class file
+
+Public conData As Connection
+Public strTab As String
+Public intKey As Integer
+Public strField As String
+
+' Public strTab As String
+' Public intKey As Integer
+' Public strField As String
+
+Public Sub RunEditor(con As Connection, strTable As String, Optional intKx As Integer) ' As Boolean
+
+  conData = con
+  strTab = strTable
+
+  If MakeControls(strTable, intKx) = 1 Then
+    Me.Tag = intKx
+    Me.Height = 28 * 6
+    Me.ShowModal()
+  Endif
+
+End
+
+Public Sub btnOK_Click()
+
+  Dim objp As Object
+  Dim objx As Object
+  Dim stxFields As New String[][]
+  Dim strRTab As String
+  Dim strRT2 As String
+  Dim strRX2 As String
+  Dim strRF2 As String
+  Dim strRV2 As String ' Frase a analizar para insertar
+  Dim strT As String
+  Dim strF As String
+  Dim stxLan As New String[]
+  Dim stxSpell As New String[]
+
+  intKey = Me.Tag
+  Print "La clave es: " & CStr(intKey)
+
+  'Primero- verificar si el texto del campo 2 esta en la tabla del idioma de salida.
+  stxFields.Clear
+  For Each objp In pnlData.Children
+    If Object.Type(objp) = "Panel" Then
+      For Each objx In objp.Children
+        Select Object.Type(objx)
+          Case "TextBox", "ComboBox"
+            Select String.Mid(objx.Tag, 5, 1)
+
+              Case "2"
+                strT = String.Mid(objx.Tag, 1, 4)
+                strF = objx.Tag
+
+                strRT2 = String.Mid(objx.Tag, 3, 2)
+                strRX2 = strRT2 & "i"
+                strRF2 = strRT2 & "1"
+                strRV2 = objx.Text
+
+            End Select
+            stxFields.Add([strRTab, objx.Tag, objx.Text])
+        End Select
+      Next
+    Endif
+  Next
+
+  'Verificar que todas las palabras cumplan con el diccionario del idioma.
+  stxLan = MStarter.LangInfo(strRT2)
+
+  stxSpell.Clear
+  stxSpell = MTranslate.Spell([strRV2], stxLan)
+
+  If stxSpell.Count > 0 Then
+    If strRV2 = stxSpell[0] Then
+      Print "El texto paso el analisis de consistencia"
+    Else
+      Print "Alguna de las palabras NO paso el analisis de consistencia"
+    Endif
+  Else
+    Print "El texto NO paso el analisis de consistencia"
+  Endif
+
+  Me.Close
+
+End
+
+Public Sub btnCancel_Click()
+
+  Me.Close
+
+End
+
+Public Function MakeControls(strTable As String, Optional intKx As Integer) As Integer
+
+  Dim intState As Integer
+  Dim pnl As Panel
+  Dim txo As TextBox
+  Dim lbl As Label
+  Dim resEdit As Result
+  Dim strSQLEdit As String
+  Dim tbl As Table
+  Dim fld As Field
+  Dim stxField As New String[]
+  Dim strSQLRef As String
+  Dim resRef As Result
+  Dim strF1 As String
+  Dim strF2 As String
+  Dim strX1 As String
+  Dim strT1 As String
+  Dim strT2 As String
+  Dim strX2 As String
+  Dim strRField As String
+  Dim strSField As String
+  Dim strBox As String
+  Dim intLx As Integer
+  Dim strTitle1 As String
+  Dim strTitle2 As String
+
+  intState = 0
+
+  pnlData.Children.Clear
+
+  If intKx <> "" Then
+
+    tbl = MStarter.conProgram.Tables[strTable]
+
+    For Each fld In tbl.Fields
+
+      stxField.Clear
+      stxField = MData.getFieldInfo(MStarter.conProgram, strTable, fld.Name)
+
+      If fld.Type = db.Serial Then
+
+        strSQLEdit = "select * from " & strTable
+        strSQLEdit &= " where " & fld.Name
+        strSQLEdit &= "='" & CStr(intKx) & "'"
+        resEdit = MStarter.conProgram.Exec(strSQLEdit)
+        Break
+      Endif
+    Next
+
+    For Each fld In tbl.Fields
+      strT1 = String.Mid(strTable, 1, 2)
+      strF1 = strT1 & "1"
+      strX1 = strT1 & "i"
+
+      strT2 = String.Mid(strTable, 3, 2)
+      strF2 = strT2 & "1"
+      strX2 = strT2 & "i"
+
+      For intLx = 0 To MStarter.stxLanguage.Max
+        If MStarter.stxLanguage[intLx][0] = strT1 Then
+          strTitle1 = MStarter.stxLanguage[intLx][2]
+          Break
+        Endif
+      Next
+
+      For intLx = 0 To MStarter.stxLanguage.Max
+        If MStarter.stxLanguage[intLx][0] = strT2 Then
+          strTitle2 = MStarter.stxLanguage[intLx][2]
+          Break
+        Endif
+      Next
+
+      Select fld.Type
+        Case db.Serial
+
+          Me.Tag = resEdit[fld.Name]
+
+        Case db.String
+          pnl = New Panel(pnlData)
+          pnl.Name = "pnl-" & fld.Name
+          pnl.Width = Me.Width
+          pnl.Height = 58
+          pnl.Arrangement = Arrange.Vertical
+          pnl.Border = Border.Solid
+
+          lbl = New Label(pnl)
+          lbl.Name = "lbl-" & fld.Name
+          lbl.Height = 28
+          lbl.Alignment = Align.Center
+
+          Select String.Mid(fld.Name, 5, 1)
+            Case "1"
+              lbl.Text = strTitle1
+            Case "2"
+              lbl.Text = strTitle2
+          End Select
+
+          txo = New TextBox(pnl)
+          txo.Name = "txo-" & fld.Name
+          txo.Tag = fld.Name
+          txo.Height = 28
+          txo.ReadOnly = False
+          txo.Border = False
+
+          If resEdit.Available Then
+            txo.Text = resEdit[fld.Name]
+          Endif
+
+        Case db.Integer
+          pnl = New Panel(pnlData)
+          pnl.Name = "pnl-" & fld.Name
+          pnl.Width = Me.Width
+          pnl.Height = 58
+          pnl.Arrangement = Arrange.Vertical
+          pnl.Border = Border.Solid
+
+          lbl = New Label(pnl)
+          lbl.Name = "lbl-" & fld.Name
+
+          lbl.Height = 28
+          lbl.Alignment = Align.Center
+
+          Select String.Mid(fld.Name, 5, 1)
+            Case "1"
+              lbl.Text = strTitle1
+            Case "2"
+              lbl.Text = strTitle2
+          End Select
+
+          txo = New TextBox(pnl)
+
+          If resEdit[fld.Name] <> Null Then
+            Select String.Mid(fld.Name, 5, 1)
+              Case "1"
+                strSQLRef = "select " & strX1 & ", " & strF1 & " from " & strT1 & " where " & strX1 & "=" & resEdit[fld.Name]
+                strRField = strF1
+                strSField = strX1
+                txo.ReadOnly = True
+
+              Case "2"
+
+                strSQLRef = "select " & strX2 & ", " & strF2 & " from " & strT2 & " where " & strX2 & "=" & resEdit[fld.Name]
+                strRField = strF2
+                strSField = strX2
+                txo.ReadOnly = False
+            End Select
+            resRef = MStarter.conProgram.Exec(strSQLRef)
+            strBox = resRef[strRField]
+          Else
+            strBox = ""
+          Endif
+
+          txo.Name = "txo-" & fld.Name
+          txo.Tag = fld.Name
+          txo.Height = 28
+          txo.Text = strBox
+          txo.Border = False
+
+      End Select
+
+    Next
+  Endif
+
+  intState = 1
+
+  Return intState
+
+End
+
+Public Function WriteRecord() As Integer
+
+  Dim objp As Object
+  Dim objx As Object
+  Dim stxFields As New String[]
+  Dim stxValues As New String[]
+  Dim intState As Integer
+
+  stxFields.Clear
+
+  For Each objp In pnlData.Children
+    If Object.Type(objp) = "Panel" Then
+      For Each objx In objp.Children
+        Select Object.Type(objx)
+          Case "TextBox", "ComboBox"
+            stxValues.Add(objx.Tag & ":" & objx.Text)
+        End Select
+
+      Next
+    Endif
+  Next
+
+  MData.RecordNew(conData, strTab, MStarter.stxFieldsTableCurrentrent, stxValues)
+
+  Return intState
+
+End

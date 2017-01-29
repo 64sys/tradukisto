@@ -1,0 +1,469 @@
+' Gambas module file
+
+'
+' Contacts managment
+' Agenda de contactos
+'
+' Copyright (C) Martín Belmonte
+'
+' This program is free software; you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation; either version 2 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program; if not, write to the Free Software
+' Foundation, Inc., 51 Franklin St, Fifth Floor,
+' Boston, MA  02110-1301  USA
+'
+' Este módulo hara una serie de comprobaciones antes de iniciar la aplicacion.
+'-Dependencias
+'-Directorios locales
+'-Settings
+'-Base de datos
+
+Public stxProgram As New String[] ''<ul><li>0 Database Engine</li><li>1 Database Host</li><li>2 Database Name</li><li>3 Database Path</li><li>4 Language input 2 leters</li><li>5 Language input 3 leters</li><li>6 Language input english</li><li>7 Language input dictionary </li><li>8 Language output 2 leters</li><li>9 Language output 3 leters</li><li>10 Language output english</li><li>11 Language output dictionary </li><li>12 Dimensiones de la ventana del programa </li><li>13 Reserva</li><li>14 Ancho de controles por defecto</li><li>15 Reserva</li><li>16 Show-Filter-Bar [yes,no]</li><li>17 Show-Order-Bar [yes,no]</li><li>18 Mensajes centralizados]</li></ul>
+
+Public stxDBEngines As New String[] ' Motores de bases de datos soportadas por gambas
+Public conProgram As New Connection ' Conexión a la base de datos
+
+Public stxTables As New String[] ' Lista de tablas
+Public stxTableFields As New String[][] 'Lista de campos de las tablas
+
+Public stxViews As New String[] ' Lista de vistas
+Public stxViewFields As New String[][] 'Lista de campos de las vistas
+
+Public stxTitles As New String[][] 'Lista de títulos de los campos de las vistas y de las tablas
+
+Public stxLanguage As New String[][] '' <ul><li>0 Acronimo de dos letras "es"</li><li>1 Acronimo de tres letras "spa"</li><li>2 Nombre en inglés "Spanish"</li><li>3 Nombre nativo "Español"</li><li>4 Grupo del idioma "Indo-European"</li><li>5 Alfabeto "Latn" (latino)</li><li>6 Traducir [True/False]</li></ul>
+
+'Public stxCustom As New String[] ' Lista de vistas creadas por SQL personalizado
+'Public stxCustomSQL As New String[] ' Lista de SQL para las vistas personalizadas
+' Las vistas custom son archivos estilo myview.sql en el directorio de la aplicación y son levantadas cuando inicia el programa.
+
+Public stxFieldsTableCurrentrent As New String[] ' lista de campos para crear los botones de filtros
+Public stxFieldsViewCurrentrent As New String[] ' lista de campos para crear los botones de filtros
+
+Public resProgram As Result
+
+Public strInputLanguage As String
+
+Public Sub Main()
+
+  Dim stxPackages As New String[]
+  Dim strAppPath As String
+  Dim strSQL As String
+  Dim resSQL As Result
+  Dim intTable As Integer
+  Dim strTableTmp As String
+  Dim strDBName As String
+  Dim stxTmp As New Variant[][]
+  Dim intTmp As Integer
+  Dim intP As Integer
+  Dim intLine As Integer
+  Dim strP0 As String
+  '  Dim strP1 As String
+  '  Dim strP2 As String
+  '  Dim strP3 As String
+  '  Dim strP4 As String
+  '  Dim strP5 As String
+  '  Dim strP6 As String
+
+  strInputLanguage = ""
+
+  strAppPath = User.Home &/ "." & Application.Name
+  stxDBEngines = MUtility.FileLoad("engines.txt") ' Motores de bases de datos soportados por gambas
+
+  ' Existencia de directorio de la aplicacion en el directorio home. Esto se ejecutara una unica vez.
+  ' Aqui se pueden agregar mas comprobaciones de este tipo para copia de archivos de configuracion y demas cosas similares
+  If Exist(strAppPath) = False Then
+    Mkdir strAppPath
+  Endif
+  Wait 0.05
+  If Exist(strAppPath &/ "dict") = False Then
+    Mkdir strAppPath &/ "dict"
+  Endif
+
+  ' Estado de las dependencias.//////////////////////////////////////////////////////////////////////
+  stxPackages = MUtility.FileLoad("depend.txt")
+  If stxPackages.Count > 0 Then
+    Msys.PkgDep(stxPackages)
+  Endif
+
+  ' Carga de los parametros del prgrama 1º pasada gb.settings./////////////////////////
+  strDBName = Replace(Application.Name & ".sqlite", "-", "")
+  stxProgram = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+
+  stxProgram[18] = ("Carga de parametros primera pasada")
+
+  stxProgram[0] = Settings["Program/Database-Engine", "sqlite3"]
+  stxProgram[1] = Settings["Program/Database-Host", strAppPath]
+  stxProgram[2] = Settings["Program/Database-Name", strDBName]
+  stxProgram[3] = Settings["Program/Database-Path", strAppPath &/ strDBName]
+  stxProgram[4] = Settings["Program/Language-Input", "es"]
+  stxProgram[5] = Settings["Program/Language-Input3", "spa"]
+  stxProgram[6] = Settings["Program/Language-InputEng", "spanish"]
+  stxProgram[7] = Settings["Program/Language-InputDict", "spanish"]
+
+  stxProgram[8] = Settings["Program/Language-Output", "en"]
+  stxProgram[9] = Settings["Program/Language-Output3", "eng"]
+  stxProgram[10] = Settings["Program/Language-OutputEng", "english"]
+  stxProgram[11] = Settings["Program/Language-OutputDict", "british"]
+
+  ' Existencia de la base de datos.////////////////////////////////////////////////////
+  stxProgram[18] = ("Conectando la base de datos")
+  conProgram = MData.DBSqlite(stxProgram, "enmpty") ' Si la base de datos no existe se crea una nueva
+  conProgram.Name = stxProgram[2]
+  conProgram.Open
+
+  ' Analisis de la base de datos.////////////////////////////////////////////////////
+
+  ' LoadTitles() ' Carga de los títulos de los campos
+  '
+  stxTables.Clear
+  stxTables.Insert(MData.getTables(conProgram, "table")) ' Lista de TABLAS
+
+  stxTableFields.Clear
+  For intTable = 0 To stxTables.Max
+    strTableTmp = stxTables[intTable]
+    strSQL = "select * from " & strTableTmp
+    resSQL = conProgram.Exec(strSQL)
+
+    stxTmp.Clear
+    stxTmp.Insert(MData.getFields(conProgram, strTableTmp, "table", stxTitles))
+
+    For intTmp = 0 To stxTmp.Max
+      stxTableFields.Add(stxTmp[intTmp])
+    Next
+  Next
+  Print "###Tablas ###"
+  For intP = 0 To stxTableFields.Max
+    Print stxTableFields[intP].Join(":")
+  Next
+  '
+  ' stxViews.Clear
+  ' stxViews.Insert(MData.getTables(conProgram, "view")) ' Lista de VISTAS
+  '
+  ' For intView = 0 To stxViews.Max
+  '   strViewTmp = stxViews[intView]
+  '   strSQL = "select * from " & strViewTmp
+  '   resSQL = conProgram.Exec(strSQL)
+  '   stxViewFields.Insert(MData.getFields(conProgram, strViewTmp, "view", stxTitles))
+  ' Next
+  ' Print "###Vistas ###"
+  ' For intP = 0 To stxViewFields.Max
+  '   Print stxViewFields[intP].Join(":")
+  ' Next
+
+  ' Carga de los parametros del prgrama 2º pasada SQL //////////////////////////////
+
+  'stxProgram[5] = 'MData.SqlMake(stxProgram[4], stxViewFields)
+  stxProgram[12] = Settings["Program/Window", "small"]
+  stxProgram[13] = Settings["Program/Dict-Path", strAppPath &/ "dict"]
+  stxProgram[14] = Settings["Program/Default-width", "120"]
+
+  ' Desde donde se esta ejecutando la aplicación
+  Select MUtility.WhereRun()
+
+    Case 0
+      stxProgram[9] = "gambas"
+    Case 1
+      stxProgram[9] = "ide"
+
+  End Select
+
+  '
+  stxProgram[18] = ("Cargando lista de idiomas")
+  ' Apertura del formulario principal
+  '///////////////// Bloque particular
+  stxLanguage.Clear
+  LoadLanguage()
+  'stxLanguage = ["", "", "", "", "", ""]
+  ' stxLangTmp.Clear
+  '
+  ' If Exist("lang.csv") Then
+  '   stxLangTmp = Split(File.Load("lang.csv"), "\n")
+  ' Endif
+  '
+  ' For intLine = 0 To stxLangTmp.Max
+  '   If stxLangTmp[intLine] <> "" Then
+  '     strP0 = Split(stxLangTmp[intLine], ":")[0]
+  '     strP1 = Split(stxLangTmp[intLine], ":")[1]
+  '     strP2 = Split(stxLangTmp[intLine], ":")[2]
+  '     strP3 = Split(stxLangTmp[intLine], ":")[3]
+  '     strP4 = Split(stxLangTmp[intLine], ":")[4]
+  '     strP5 = Split(stxLangTmp[intLine], ":")[5]
+  '     strP6 = Settings["Language/" & strP0, "False"]
+  '
+  '     stxLanguage.Add([strP0, strP1, strP2, strP3, strP4, strP5, strP6])
+  '
+  '   End If
+  ' Next
+  For intLine = 0 To stxLanguage.Max
+    strP0 = stxLanguage[intLine][0]
+    stxLanguage[intLine][9] = Settings["Language/" & strP0, "False"]
+  Next
+
+  '//////////////////////////////////
+
+  stxProgram[18] = ("Abriendo formulario principal")
+
+  If conProgram.Opened Then
+    FMain.Show()
+  Else
+    Message.Warning(("No se pudo abrir la conexión a la base de datos"))
+  Endif
+
+End
+
+Public Function LoadViews()
+
+  stxViews.Clear
+  stxViews.Insert(MData.getTables(conProgram, "view")) ' Lista de VISTAS
+
+End
+'
+' Private Function LoadViewsTitles()
+'
+'   For intView = 0 To stxViews.Max
+'     strViewTmp = stxViews[intView]
+'     strSQL = "select * from " & strViewTmp
+'     resSQL = conProgram.Exec(strSQL)
+'
+'     stxViewFields.Insert(MData.getFields(conProgram, strViewTmp, "view", stxTitles))
+'
+'   Next
+'   Print "###Vistas ###"
+'   For intP = 0 To stxViewFields.Max
+'     Print stxViewFields[intP].Join(":")
+'   Next
+'
+' End
+
+' Private Function LoadTitles() '' La carga de títulos de esta manera permite luego traducir la aplicacion mas facilmente. Si se usa un método con archivo de texto estos textos no pueden traducirse.
+'
+'   stxTitles.Add(["spa", "spaindx", ("Índice")])
+'   stxTitles.Add(["spa", "spaphrase", ("Frase")])
+'
+'   stxTitles.Add(["eng", "engindx", ("Índice")])
+'   stxTitles.Add(["eng", "engphrase", ("Frase")])
+'
+'   stxTitles.Add(["spaeng", "spaengi", ("Índice")])
+'   stxTitles.Add(["spaeng", "spaeng1", ("Frase en inglés")])
+'   stxTitles.Add(["spaeng", "spaeng2", ("Frase en castellano")])
+'
+'   stxTitles.Add(["engspa", "engspai", ("Índice")])
+'   stxTitles.Add(["engspa", "engspa1", ("Frase en inglés")])
+'   stxTitles.Add(["engspa", "engspa2", ("Frase en castellano")])
+'
+'   stxTitles.Add(["v_spaeng", "spaengi", ("Índice")])
+'   stxTitles.Add(["v_spaeng", "spaeng1", ("Frase en castellano")])
+'   stxTitles.Add(["v_spaeng", "spaeng2", ("Frase en inglés")])
+'
+' End
+
+Private Function LoadLanguage()
+
+  'stxLanguage.Add(["af","afr",("Africano"), "","afrikaans", "", "Afrikaans","Indo-European","Latn", ""])
+  'stxLanguage.Add(["am","amh",("Amárico"), "","amharic", "", "አማርኛ","Afro-Asiatic","Ethi", ""])
+  'stxLanguage.Add(["ar","ara",("Arábica"), "","arabic", "", "العربية","Afro-Asiatic","Arab", ""])
+  'stxLanguage.Add(["az","aze",("Azerbaiyano"), "","azerbaijani", "", "Azərbaycanca","Turkic","Latn", ""])
+  'stxLanguage.Add(["be","bel",("Bielorruso"), "","belarusian", "", "беларуская","Indo-European","Cyrl", ""])
+  stxLanguage.Add(["bg", "bul", ("Búlgaro"), "bulgarian", "bulgarian", "", "български", "Indo-European", "Cyrl", ""])
+  'stxLanguage.Add(["bn","ben",("Bengalí"), "","bengali", "", "বাংলা","Indo-European","Beng", ""])
+  'stxLanguage.Add(["bs","bos",("Bosnio"), "","bosnian", "", "Bosanski","Indo-European","Latn", ""])
+  stxLanguage.Add(["ca", "cat", ("Catalán"), "catalan", "catalan", "", "Català", "Indo-European", "Latn", ""])
+  'stxLanguage.Add(["ceb","ceb",("Cebuano"), "","cebuano", "", "Cebuano","Austronesian","Latn", ""])
+  'stxLanguage.Add(["co","cos",("Corso"), "","corsican", "", "Corsu","Indo-European","Latn", ""])
+  stxLanguage.Add(["cs", "ces", ("Checo"), "czech", "czech", "", "Čeština", "Indo-European", "Latn", ""])
+  'stxLanguage.Add(["cy","cym",("Galés"), "","welsh", "", "Cymraeg","Indo-European","Latn", ""])
+  stxLanguage.Add(["da", "dan", ("Danés"), "danish", "danish", "", "Dansk", "Indo-European", "Latn", ""])
+  stxLanguage.Add(["de", "deu", ("Alemán"), "ngerman", "german", "", "Deutsch", "Indo-European", "Latn", ""])
+  'stxLanguage.Add(["el","ell",("Griego"), "","greek", "", "Ελληνικά","Indo-European","Grek", ""])
+  stxLanguage.Add(["en", "eng", ("Inglés"), "british", "english", "", "English", "Indo-European", "Latn", ""])
+  stxLanguage.Add(["eo", "epo", ("Esperanto"), "esperanto", "esperanto", "", "Esperanto", "Artificial Language", "Latn", ""])
+  stxLanguage.Add(["es", "spa", ("Castellano"), "spanish", "spanish", "", "Castellano", "Indo-European", "Latn", ""])
+  stxLanguage.Add(["et", "est", ("Estonio"), "estonian", "estonian", "", "Eesti", "Uralic", "Latn", ""])
+  'stxLanguage.Add(["eu","eus",("Vasco"), "","basque", "", "Euskara","Language Isolate","Latn", ""])
+  'stxLanguage.Add(["fa","fas",("Persa"), "","persian", "", "فارسی","Indo-European","Arab", ""])
+  'stxLanguage.Add(["fi","fin",("Finlandés"), "","finnish", "", "Suomi","Uralic","Latn", ""])
+  stxLanguage.Add(["fr", "fra", ("Francés"), "french", "french", "", "Français", "Indo-European", "Latn", ""])
+  'stxLanguage.Add(["fy","fry",("Frisio"), "","frisian", "", "Frysk","Indo-European","Latn", ""])
+  stxLanguage.Add(["ga", "gle", ("Gaélico"), "irish", "irish", "", "Gaeilge", "Indo-European", "Latn", ""])
+  stxLanguage.Add(["gd", "gla", ("Gaélico escocés"), "gaelic", "scots gaelic", "", "Gàidhlig", "Indo-European", "Latn", ""])
+  stxLanguage.Add(["gl", "glg", ("Gallego"), "galician-minimos", "galician", "", "Galego", "Indo-European", "Latn", ""])
+  'stxLanguage.Add(["gu","guj",("Gujarati"), "","gujarati", "", "ગુજરાતી","Indo-European","Gujr", ""])
+  'stxLanguage.Add(["ha","hau",("Hausa"), "","hausa", "", "Hausa","Afro-Asiatic","Latn", ""])
+  'stxLanguage.Add(["haw","haw",("Hawaiano"), "","hawaiian", "", "ʻŌlelo Hawaiʻi","Austronesian","Latn", ""])
+  'stxLanguage.Add(["he","heb",("Hebreo"), "","hebrew", "", "עִבְרִית","Afro-Asiatic","Hebr", ""])
+  'stxLanguage.Add(["hi","hin",("Hindi"), "","hindi", "", "हिन्दी","Indo-European","Deva", ""])
+  'stxLanguage.Add(["hmn","hmn",("Hmong"), "","hmong", "", "Hmoob","Hmong-Mien","Latn", ""])
+  'stxLanguage.Add(["hr","hrv",("Croata"), "","croatian", "", "Hrvatski","Indo-European","Latn", ""])
+  'stxLanguage.Add(["ht","hat",("Creole haitiano"), "","haitian creole", "", "Kreyòl Ayisyen","Indo-European","Latn", ""])
+  stxLanguage.Add(["hu", "hun", ("Húngaro"), "hungarian", "hungarian", "", "Magyar", "Uralic", "Latn", ""])
+  'stxLanguage.Add(["hy","hye",("Armenio"), "","armenian", "", "Հայերեն","Indo-European","Armn", ""])
+  'stxLanguage.Add(["id","ind",("Indonesio"), "","indonesian", "", "Bahasa Indonesia","Austronesian","Latn", ""])
+  'stxLanguage.Add(["ig","ibo",("Igbo"), "","igbo", "", "Igbo","Atlantic-Congo","Latn", ""])
+  'stxLanguage.Add(["is","isl",("Islandés"), "","icelandic", "", "Íslenska","Indo-European","Latn", ""])
+  stxLanguage.Add(["it", "ita", ("Italiano"), "italian", "italian", "", "Italiano", "Indo-European", "Latn", ""])
+  'stxLanguage.Add(["ja","jpn",("Japonés"), "","japanese", "", "日本語","Japonic","Jpan", ""])
+  'stxLanguage.Add(["jv","jav",("Javanés"), "","javanese", "", "Basa Jawa","Austronesian","Latn", ""])
+  'stxLanguage.Add(["ka","kat",("Georgiano"), "","georgian", "", "ქართული","Kartvelian","Geor", ""])
+  'stxLanguage.Add(["kk","kaz",("Kazakh"), "","kazakh", "", "Қазақ тілі","Turkic","Cyrl", ""])
+  'stxLanguage.Add(["km","khm",("Jemer"), "","khmer", "", "ភាសាខ្មែរ","Austroasiatic","Khmr", ""])
+  'stxLanguage.Add(["kn","kan",("Kannada"), "","kannada", "", "ಕನ್ನಡ","Dravidian","Knda", ""])
+  'stxLanguage.Add(["ko","kor",("Coreano"), "","korean", "", "한국어","Koreanic","Kore", ""])
+  'stxLanguage.Add(["ku","kur",("Kurdo"), "","kurdish", "", "Kurdî","Indo-European","Latn", ""])
+  'stxLanguage.Add(["ky","kir",("Kirguís"), "","kyrgyz", "", "Кыргызча","Turkic","Cyrl", ""])
+  'stxLanguage.Add(["la","lat",("Latín"), "","latin", "", "Latina","Indo-European","Latn", ""])
+  'stxLanguage.Add(["lb","ltz",("Luxemburgués"), "","luxembourgish", "", "Lëtzebuergesch","Indo-European","Latn", ""])
+  'stxLanguage.Add(["lo","lao",("Lao"), "","lao", "", "ລາວ","Tai-Kadai","Laoo", ""])
+  'stxLanguage.Add(["lt","lit",("Lituano"), "","lithuanian", "", "Lietuvių","Indo-European","Latn", ""])
+  'stxLanguage.Add(["lv","lav",("Letón"), "","latvian", "", "Latviešu","Indo-European","Latn", ""])
+  'stxLanguage.Add(["mg","mlg",("Madagascarí"), "","malagasy", "", "Malagasy","Austronesian","Latn", ""])
+  'stxLanguage.Add(["mi","mri",("Maorí"), "","maori", "", "Māori","Austronesian","Latn", ""])
+  'stxLanguage.Add(["mk","mkd",("Macedónio"), "","macedonian", "", "Македонски","Indo-European","Cyrl", ""])
+  'stxLanguage.Add(["ml","mal",("Malayalam"), "","malayalam", "", "മലയാളം","Dravidian","Mlym", ""])
+  'stxLanguage.Add(["mn","mon",("Mongol"), "","mongolian", "", "Монгол","Mongolic","Cyrl", ""])
+  'stxLanguage.Add(["mr","mar",("Maratí"), "","marathi", "", "मराठी","Indo-European","Deva", ""])
+  'stxLanguage.Add(["ms","msa",("Malayo"), "","malay", "", "Bahasa Melayu","Austronesian","Latn", ""])
+  'stxLanguage.Add(["mt","mlt",("Maltés"), "","maltese", "", "Malti","Afro-Asiatic","Latn", ""])
+  'stxLanguage.Add(["mww","mww",("Hmong Daw"), "","hmong daw", "", "Hmoob Daw","Hmong-Mien","Latn", ""])
+  'stxLanguage.Add(["my","mya",("Myanmar"), "","myanmar", "", "မြန်မာစာ","Sino-Tibetan","Mymr", ""])
+  'stxLanguage.Add(["ne","nep",("Nepalí"), "","nepali", "", "नेपाली","Indo-European","Deva", ""])
+  stxLanguage.Add(["nl", "nld", ("Holandés"), "dutch", "dutch", "", "Nederlands", "Indo-European", "Latn", ""])
+  stxLanguage.Add(["no", "nor", ("Noruego"), "norwegian", "norwegian", "", "Norsk", "Indo-European", "Latn", ""])
+  'stxLanguage.Add(["ny","nya",("Chichewa"), "","chichewa", "", "Nyanja","Atlantic-Congo","Latn", ""])
+  'stxLanguage.Add(["otq","otq",("Querétaro Otomi"), "","querétaro otomi", "", "Hñąñho","Oto-Manguean","Latn", ""])
+  'stxLanguage.Add(["pa","pan",("Punjabi"), "","punjabi", "", "ਪੰਜਾਬੀ","Indo-European","Guru", ""])
+  stxLanguage.Add(["pl", "pol", ("Polaco"), "polish", "polish", "", "Polski", "Indo-European", "Latn", ""])
+  'stxLanguage.Add(["ps","pus",("Pashto"), "","pashto", "", "پښتو","Indo-European","Arab", ""])
+  stxLanguage.Add(["pt", "por", ("Portugués"), "portuguese", "portuguese", "", "Português", "Indo-European", "Latn", ""])
+  'stxLanguage.Add(["ro","ron",("Rumano"), "","romanian", "", "Română","Indo-European","Latn", ""])
+  stxLanguage.Add(["ru", "rus", ("Ruso"), "russian", "russian", "", "Русский", "Indo-European", "Cyrl", ""])
+  'stxLanguage.Add(["sd","snd",("Sindhi"), "","sindhi", "", "سنڌي","Indo-European","Arab", ""])
+  'stxLanguage.Add(["si","sin",("Sinhala"), "","sinhala", "", "සිංහල","Indo-European","Sinh", ""])
+  'stxLanguage.Add(["sk","slk",("Eslovaco"), "","slovak", "", "Slovenčina","Indo-European","Latn", ""])
+  'stxLanguage.Add(["sl","slv",("Esloveno"), "","slovenian", "", "Slovenščina","Indo-European","Latn", ""])
+  'stxLanguage.Add(["sm","smo",("Samoano"), "","samoan", "", "Gagana Sāmoa","Austronesian","Latn", ""])
+  'stxLanguage.Add(["sn","sna",("Shona"), "","shona", "", "chiShona","Atlantic-Congo","Latn", ""])
+  'stxLanguage.Add(["so","som",("Somalí"), "","somali", "", "Soomaali","Afro-Asiatic","Latn", ""])
+  'stxLanguage.Add(["sq","sqi",("Albanés"), "","albanian", "", "Shqip","Indo-European","Latn", ""])
+  'stxLanguage.Add(["sr-Cyrl","srp",("Serbio, cirílico"), "","serbian, cyrillic", "", "српски","Indo-European","Cyrl", ""])
+  'stxLanguage.Add(["sr-Latn","srp",("Serbio, latín"), "","serbian, latin", "", "srpski","Indo-European","Latn", ""])
+  'stxLanguage.Add(["st","sot",("Sesotho"), "","sesotho", "", "Sesotho","Atlantic-Congo","Latn", ""])
+  'stxLanguage.Add(["su","sun",("Sundanese"), "","sundanese", "", "Basa Sunda","Austronesian","Latn", ""])
+  stxLanguage.Add(["sv", "swe", ("Sueco"), "swedish", "swedish", "", "Svenska", "Indo-European", "Latn", ""])
+  'stxLanguage.Add(["sw","swa",("Swahili"), "","swahili", "", "Kiswahili","Atlantic-Congo","Latn", ""])
+  'stxLanguage.Add(["ta","tam",("Tamil"), "","tamil", "", "தமிழ்","Dravidian","Taml", ""])
+  'stxLanguage.Add(["te","tel",("Telugu"), "","telugu", "", "తెలుగు","Dravidian","Telu", ""])
+  'stxLanguage.Add(["tg","tgk",("Tajik"), "","tajik", "", "Тоҷикӣ","Indo-European","Cyrl", ""])
+  'stxLanguage.Add(["th","tha",("Tailandés"), "","thai", "", "ไทย","Tai-Kadai","Thai", ""])
+  'stxLanguage.Add(["tl","tgl",("Filipino"), "","filipino", "", "Tagalog","Austronesian","Latn", ""])
+  'stxLanguage.Add(["tlh","tlh",("Klingon"), "","klingon", "", "tlhIngan Hol","Artificial Language","Latn", ""])
+  'stxLanguage.Add(["tlh-Qaak","tlh",("Klingon, pIqaD"), "","klingon, piqad", "", " ","Artificial Language","Piqd", ""])
+  'stxLanguage.Add(["tr","tur",("Turco"), "","turkish", "", "Türkçe","Turkic","Latn", ""])
+  'stxLanguage.Add(["tt","tat",("Tártaro"), "","tatar", "", "татарча","Turkic","Cyrl", ""])
+  'stxLanguage.Add(["udm","udm",("Udmurt"), "","udmurt", "", "удмурт","Uralic","Cyrl", ""])
+  stxLanguage.Add(["uk", "ukr", ("Ucranio"), "ukrainian", "ukrainian", "", "Українська", "Indo-European", "Cyrl", ""])
+  'stxLanguage.Add(["ur","urd",("Urdu"), "","urdu", "", "اُردُو","Indo-European","Arab", ""])
+  'stxLanguage.Add(["uz","uzb",("Uzbeko"), "","uzbek", "", "Oʻzbek tili","Turkic","Latn", ""])
+  'stxLanguage.Add(["vi","vie",("Vietnamita"), "","vietnamese", "", "Tiếng Việt","Austroasiatic","Latn", ""])
+  'stxLanguage.Add(["xh","xho",("Xhosa"), "","xhosa", "", "isiXhosa","Atlantic-Congo","Latn", ""])
+  'stxLanguage.Add(["yi","yid",("Yídish"), "","yiddish", "", "ייִדיש","Indo-European","Hebr", ""])
+  'stxLanguage.Add(["yo","yor",("Yoruba"), "","yoruba", "", "Yorùbá","Atlantic-Congo","Latn", ""])
+  'stxLanguage.Add(["yua","yua",("Maya yucateco"), "","yucatec maya", "", "Màaya T'àan","Mayan","Latn", ""])
+  'stxLanguage.Add(["zh-CN","zho",("Chino simplificado"), "","chinese simplified", "", "简体中文","Sino-Tibetan","Hans", ""])
+  'stxLanguage.Add(["zh-TW","zho",("Chino tradicional"), "","chinese traditional", "", "正體中文","Sino-Tibetan","Hant", ""])
+  'stxLanguage.Add(["zu","zul",("Zulú"), "","zulu", "", "isiZulu","Atlantic-Congo","Latn", ""])
+
+End
+
+Public Function Terminator() As Integer ''Funcion que guarda las configuraciones que se modificaron en el programa antes de cerrarlo.
+
+  Dim int As Integer
+  Dim strLang As String
+  Dim strValue As String
+
+  Settings["Dictionaries/Path"] = stxProgram[7]
+  Settings["Language/Input"] = stxProgram[4]
+
+  Settings["Program/Database-Engine"] = stxProgram[0]
+  Settings["Program/Database-Host"] = stxProgram[1]
+  Settings["Program/Database-Name"] = stxProgram[2]
+  Settings["Program/Database-Path"] = stxProgram[3]
+  Settings["Program/Language-Input"] = stxProgram[4]
+  Settings["Program/Language-Input3"] = stxProgram[5]
+  Settings["Program/Language-InputEng"] = stxProgram[6]
+  Settings["Program/Language-InputDict"] = stxProgram[7]
+
+  Settings["Program/Language-Output"] = stxProgram[8]
+  Settings["Program/Language-Output3"] = stxProgram[9]
+  Settings["Program/Language-OutputEng"] = stxProgram[10]
+  Settings["Program/Language-OutputDict"] = stxProgram[11]
+
+  Settings["Program/Window"] = stxProgram[12]
+  'Settings["Program/Dict-Path"] = stxProgram[13]
+  Settings["Program/Default-width"] = stxProgram[14]
+
+  'Settings["Program/Window"] = stxProgram[4]
+
+  For int = 0 To stxLanguage.Max
+    strLang = stxLanguage[int][0]
+
+    strValue = stxLanguage[int][9]
+    Select strValue
+      Case "False"
+        Settings["Language/" & strLang] = ""
+      Case "True"
+        Settings["Language/" & strLang] = "True"
+    End Select
+
+  Next
+
+  Settings.Save
+
+  Return 1
+
+End
+
+Public Function LangInfo(strLang2Ltr As String) As String[]  '' <p>El parametro de entrada es el lenguaje en dos letras, por ejemplo "es". Devuelve una matriz con:</p><ul><li>0 Nombre de dos letras</li><li>1 Nombre de tres letras</li><li>2 Nombre en inglés</li><li>3 Diccionario ispell</li><li>4 Nombre en idioma local</li><ul>
+
+  Dim int As Integer
+  Dim stxILang As New String[]
+
+  For int = 0 To stxLanguage.Max
+    If stxLanguage[int][0] = strLang2Ltr Then
+      stxILang.Add(strLang2Ltr)
+      stxILang.Add(stxLanguage[int][1]) ' Nombre de tres letras
+      stxILang.Add(stxLanguage[int][4]) ' Nombre en inglés
+      stxILang.Add(stxLanguage[int][3]) ' Diccionario ispell
+      stxILang.Add(stxLanguage[int][2]) ' Nombre en idioma local
+    Endif
+  Next
+
+  Return stxILang
+
+End
+
+Public Function LangOut(strLang2Ltr As String) As String[]  '' <p>El parametro de entrada es el lenguaje en dos letras, por ejemplo "es". Devuelve una matriz listando todos los lenguajes de salida.
+
+  Dim int As Integer
+  Dim stxLangOut As New String[]
+
+  For int = 0 To stxLanguage.Max
+    If stxLanguage[int][0] <> strLang2Ltr Then
+      If stxLanguage[int][9] = "True" Then
+        stxLangOut.Add(stxLanguage[int][0])
+      Endif
+    Endif
+  Next
+
+  Return stxLangOut
+
+End

@@ -1,0 +1,330 @@
+' Gambas class file
+
+' Traducción de programas.
+' Interfaz de translate-shell para traducir programas completos de gambas y otras utilidades.
+'
+' Copyright (C) Martín Belmonte
+'
+' This program is free software; you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation; either version 2 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program; if not, write to the Free Software
+' Foundation, Inc., 51 Franklin St, Fifth Floor,
+' Boston, MA  02110-1301  USA
+'
+
+Public Sub Form_Open()
+
+  Dim stxLang As New String[]
+  Dim intLang As Integer
+  Dim chk As CheckBox
+  Dim scw As ScrollView
+  Dim strText As String
+  Dim intType As Integer
+  Dim stxType As New String[]
+  Dim inxTypeKey As New Integer[]
+  Dim intTab As Integer
+  Dim intCounter As Integer
+
+  stxType.Clear
+  inxTypeKey.Clear
+  stxLang.Clear
+  intCounter = 0
+
+  For intType = 0 To MStarter.stxLanguage.Max
+    If stxType.Find(MStarter.stxLanguage[intType][7]) = -1 Then
+      stxType.Add(MStarter.stxLanguage[intType][7])
+    Endif
+  Next
+
+  If stxType.Count > 0 Then
+    TabPanel1.Count = stxType.Count
+    If stxType.Count > 0 Then
+
+      Me.Height = FMain.Height
+      Me.Width = FMain.Width
+      Me.X = FMain.X
+      Me.Y = FMain.Y
+    Endif
+    ' Agregando los tipos de idiomas en la lista
+    For intTab = 0 To stxType.Max
+      TabPanel1[intTab].Text = stxType[intTab]
+      scw = New ScrollView(TabPanel1[intTab]) As "GrpView"
+      With scw
+        .Name = "scw" & CStr(intTab)
+        .Arrangement = Arrange.Row
+        .Expand = True
+        .Width = TabPanel1.Width
+        .Border = True
+
+        For intLang = 0 To MStarter.stxLanguage.Max
+          If MStarter.stxLanguage[intLang][7] = stxType[intTab] Then
+            chk = New CheckBox(scw) As "GrpCheck"
+            With chk
+              .Name = "chk" & CStr(intLang)
+              .Tooltip = MStarter.stxLanguage[intLang][6]
+              strText = MStarter.stxLanguage[intLang][2]
+              .Text = strText
+              .Tag = MStarter.stxLanguage[intLang][0]
+              .Width = TabPanel1.Width / 2
+              .Height = 28
+              Select MStarter.stxLanguage[intLang][9]
+                Case "False"
+                  .Value = 0
+                Case "True"
+                  .Value = -1
+              End Select
+            End With
+          Endif
+        Next
+      End With
+    Next
+    TabPanel1.Index = 0
+  Endif
+  '-------------------------------------
+  MakeConfigControls()
+
+End
+
+Public Sub tobSave_Click()
+
+  cmdSaveConf()
+
+End
+
+Public Sub cmdSaveConf()
+
+  Dim int As Integer
+  Dim obj As Object
+  Dim objScroll As Object
+  Dim objCheck As Object
+  Dim intLx As Integer
+
+  ' Guardar los lenguajes marcados para traducir
+  For int = 0 To TabPanel1.Count - 1
+    If Object.Type(TabPanel1[int].Children[0]) = "ScrollView" Then
+      objScroll = TabPanel1[int].Children[0]
+      For Each objCheck In objScroll.Children
+        If Object.Type(objCheck) = "CheckBox" Then
+          For intLx = 0 To MStarter.stxLanguage.Max
+            If objCheck.Tag = MStarter.stxLanguage[intLx][0] Then
+              Select objCheck.Value
+                Case 0
+                  MStarter.stxLanguage[intLx][9] = "False"
+                Case -1
+                  MStarter.stxLanguage[intLx][9] = "True"
+              End Select
+            Endif
+          Next
+        Endif
+      Next
+    Endif
+  Next
+
+  ' Guardar los otros parametros
+  For Each obj In pnlConfig.Children
+    If Object.Type(obj) = "Panel" Then
+      Select Object.Type(obj.Children[1]) ' El primero "0" es el label, el segundo "1" es el combo o text
+        Case "TextBox", "ComboBox", "ValueBox"
+          For int = 0 To MStarter.stxProgram.Max
+            MStarter.stxProgram[obj.Children[1].Tag] = obj.Children[1].Text
+          Next
+        Case "ValueBox"
+          For int = 0 To MStarter.stxProgram.Max
+            MStarter.stxProgram[obj.Children[1].Tag] = CStr(obj.Children[1].Value)
+          Next
+      End Select
+    Endif
+  Next
+
+  Me.Close
+
+End
+
+Public Sub tobExit_Click()
+
+  Me.Close
+
+End
+
+Public Sub tobClear_Click()
+
+  Dim intTab As Integer
+  Dim obj As Object
+
+  For intTab = 0 To TabPanel1.Count - 1
+    For Each obj In TabPanel1[intTab].Children
+      If Object.Type(obj) = "CheckBox" Then
+        obj.Value = 0
+      Endif
+    Next
+  Next
+
+End
+
+'----------------------------------------------------------------------------------
+
+Public Function MakeConfigControls() As Integer '' Esta funcion crea los controles para editar la configuración del programa
+
+  Dim intState As Integer
+  Dim pnl As Panel
+  Dim txo As TextBox
+  Dim lbl As Label
+  Dim cmo As ComboBox
+  Dim sio As SpinBox
+  Dim vao As ValueBox
+  Dim intCfg As Integer
+  Dim intWidt As Integer
+  Dim stxParam As New String[][]
+  Dim stxTmp As New String[]
+  Dim intM As Integer
+
+  intState = 0
+
+  pnlConfig.Children.Clear
+
+  stxParam.Add(["0", ("Motor de la Base de datos"), "cmo", "postgresql:mysql:sqlite3:odbc", MStarter.stxProgram[0]])
+  stxParam.Add(["1", ("Ubicación de la Base de datos"), "txo", "", MStarter.stxProgram[1]])
+  stxParam.Add(["2", ("Nombre de la Base de datos"), "txo", "", MStarter.stxProgram[2]])
+  stxParam.Add(["3", ("Ruta de la Base de datos"), "txo", "", MStarter.stxProgram[3]])
+  stxParam.Add(["4", ("Idioma de entrada"), "cmo", "es:en:fr:it:de:pt", MStarter.stxProgram[4]])
+  stxParam.Add(["6", ("Tamaño de la ventana"), "cmo", "small:medium:full", MStarter.stxProgram[6]])
+  stxParam.Add(["8", ("Anchura por defecto"), "vao", "", MStarter.stxProgram[14]])
+
+  For intCfg = 0 To stxParam.Max
+
+    intWidt = 6 * String.Len(stxParam[intCfg][1]) + 14
+
+    pnl = New Panel(pnlConfig)
+    pnl.Name = "pnl-" & CStr(intCfg)
+    pnl.Width = intWidt
+    pnl.Height = 49
+    pnl.Arrangement = Arrange.Vertical
+    pnl.Border = Border.Plain
+
+    lbl = New Label(pnl)
+    lbl.Name = "lbl-" & CStr(intCfg)
+    lbl.Text = " " & stxParam[intCfg][1]
+    lbl.Width = intWidt
+    lbl.Height = 21
+    lbl.Expand = True
+
+    Select stxParam[intCfg][2]
+      Case "txo"
+        txo = New TextBox(pnl) As "Box"
+        txo.Name = "txo-" & CStr(intCfg)
+        txo.Tag = intCfg
+        txo.Text = stxParam[intCfg][4]
+        txo.Width = intWidt
+        txo.Height = 28
+        txo.Expand = True
+
+      Case "cmo"
+        cmo = New ComboBox(pnl) As "Box"
+        cmo.Name = "cmo-" & CStr(intCfg)
+        cmo.Text = stxParam[intCfg][4]
+        cmo.Tag = intCfg
+        cmo.Width = intWidt + 14
+        cmo.Height = 28
+        cmo.ReadOnly = True
+        cmo.Expand = True
+
+        stxTmp = Split(stxParam[intCfg][3], ":")
+        For intM = 0 To stxTmp.Max
+
+          cmo.Add(stxTmp[intM])
+        Next
+
+        If stxTmp.Find(stxParam[intCfg][4]) > -1 Then
+          cmo.Text = stxParam[intCfg][4]
+
+        Endif
+      Case "sio"
+        sio = New SpinBox(pnl) As "Box"
+        sio.Name = "sio-" & CStr(intCfg)
+        sio.Tag = intCfg
+        sio.Value = CInt(stxParam[intCfg][4])
+        sio.MaxValue = 300
+        sio.MinValue = 60
+        sio.Width = intWidt
+        sio.Height = 28
+        sio.Expand = True
+
+      Case "vao"
+        vao = New ValueBox(pnl) As "Box"
+        vao.Name = "vao-" & CStr(intCfg)
+        vao.Tag = intCfg
+        vao.Value = CInt(stxParam[intCfg][4])
+
+        vao.Width = intWidt
+        vao.Height = 28
+        vao.Expand = True
+    End Select
+
+  Next
+
+  intState = 1
+
+  Return intState
+
+End
+
+Public Sub Box_Change()
+
+  Dim obj As Object
+  Dim intW As Integer
+
+  obj = Last
+
+  intW = String.Len(obj.Text) * 6 + 7
+
+  If obj.parent.Width < intW Then
+    obj.parent.Width = String.Len(obj.Text) * 6 + 7
+  Endif
+
+End
+
+Public Function WriteConfig() As Integer
+
+  Dim objp As Object
+  Dim objx As Object
+  Dim stxFields As New String[]
+  Dim stxValues As New String[]
+  Dim intState As Integer
+
+  stxFields.Clear
+
+  For Each objp In pnlConfig.Children
+    If Object.Type(objp) = "Panel" Then
+      For Each objx In objp.Children
+        Select Object.Type(objx)
+          Case "TextBox", "ComboBox"
+            stxValues.Add(objx.Tag & ":" & objx.Text)
+        End Select
+
+      Next
+    Endif
+  Next
+
+  Return intState
+
+End
+
+Public Sub Form_KeyPress()
+
+  Select Key.Code
+    Case Key.Esc
+      Me.Close
+    Case Key.Return
+      cmdSaveConf()
+  End Select
+
+End

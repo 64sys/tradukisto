@@ -44,11 +44,14 @@ Public intWCtrl As Integer
 
 Public Sub Form_Open()
 
+  'CheckLang()
+  'If LoadLang() = True Then
   CheckLang()
-  If LoadLang() = True Then
-    CheckLang()
-    Phrases()
-  Endif
+  '   Phrases()
+  'Endif
+  Me.Width = 1024
+  Me.Height = 768
+  HSplit1.Layout = [1, 4]
 
 End
 
@@ -66,90 +69,94 @@ End
 
 Public Sub tobPreferences_Click()
 
-  FPref.Show()
+  FConfig.Show()
 
 End
 
-Public Sub Phrases() '' Creates a panel with a label and a textbox
-
-  Dim pnl As Panel
-  Dim lbl As Label
-  Dim txo As TextBox
-  Dim intPhra As Integer
-  Dim strLang As String
-  Dim strLangDesc As String
-  Dim stxControls As New String[]
-  Dim strTag As String
-
-  stxControls.Clear
-  stxControls.Add(strLangInput)
-  stxControls.Insert(stxLangOutput)
-
-  ' Agragado de botones
-  pnl = New Panel(TabPanel1[1])
-  With pnl
-    pnl.Name = "pnl" & strLang
-    pnl.Height = 28 * 2
-    pnl.Width = intWCtrl
-    pnl.Arrangement = 2 ' Vertical
-    pnl.Expand = False
-  End With
-
-  lbl = New Label(pnl)
-  With lbl
-    lbl.Text = strLangDesc
-    lbl.Name = "lbl" & strLang
-    lbl.Height = 28
-    lbl.Width = intWCtrl
-    lbl.Expand = True
-  End With
-
-  TabPanel1[1].Children.Clear
-  For intPhra = 0 To stxControls.Max
-
-    strLang = String.LCase(stxControls[intPhra])
-    If stxSysLangName.Find(strLang) <> -1 Then
-      strLangDesc = stxSysLangDesc[stxSysLangName.Find(strLang)]
-    Else
-      strLangDesc = "Error"
-    Endif
-
-    If intPhra = 0 Then
-      strTag = strLang & ":Input"
-    Else
-      strTag = strLang & ":Output"
-    Endif
-
-    pnl = New Panel(TabPanel1[1])
-    With pnl
-      pnl.Name = "pnl" & strLang
-      pnl.Height = 28 * 2
-      pnl.Width = intWCtrl
-      pnl.Arrangement = 2 ' Vertical
-      pnl.Expand = False
-    End With
-
-    lbl = New Label(pnl)
-    With lbl
-      lbl.Text = strLangDesc
-      lbl.Name = "lbl" & strLang
-      lbl.Height = 28
-      lbl.Width = intWCtrl
-      lbl.Expand = True
-    End With
-
-    txo = New TextBox(pnl) As "GPhrases"
-    With txo
-      txo.Name = "txo" & strLang
-      txo.Height = 28
-      txo.Width = intWCtrl
-      txo.Expand = True
-      txo.Tag = strTag
-    End With
-
-  Next
-
-End
+' Public Sub Phrases() '' Creates a panel with a label and a textbox
+'
+'   Dim pnl As Panel
+'   Dim lbl As Label
+'   Dim txo As TextBox
+'   Dim intPhra As Integer
+'   Dim strLang As String
+'   Dim strLangDesc As String
+'   Dim stxControls As New String[]
+'   Dim strTag As String
+'   Dim intLang As Integer
+'
+'   stxControls.Clear
+'   stxControls.Add(strLangInput)
+'   stxControls.Insert(stxLangOutput)
+'
+'   TabPanel1[1].Children.Clear
+'
+'   ' Agragado de botones
+'   pnl = New Panel(TabPanel1[1])
+'   With pnl
+'     pnl.Name = "pnl" & strLang
+'     pnl.Height = 28 * 2
+'     pnl.Width = intWCtrl
+'     pnl.Arrangement = 2 ' Vertical
+'     pnl.Expand = False
+'   End With
+'
+'   lbl = New Label(pnl)
+'   With lbl
+'     lbl.Text = strLangDesc
+'     lbl.Name = "lbl" & strLang
+'     lbl.Height = 28
+'     lbl.Width = intWCtrl
+'     lbl.Expand = True
+'   End With
+'
+'   TabPanel1[1].Children.Clear
+'   For intPhra = 0 To stxControls.Max
+'
+'     strLang = String.LCase(stxControls[intPhra])
+'
+'     For intLang = 0 To MStarter.stxLanguage.Max
+'       If MStarter.stxLanguage[intLang][0] = strLang Then
+'         strLangDesc = MStarter.stxLanguage[intLang][2]
+'       Endif
+'     Next
+'
+'     If intPhra = 0 Then
+'       strTag = strLang & ":Input"
+'     Else
+'       strTag = strLang & ":Output"
+'     Endif
+'
+'     pnl = New Panel(TabPanel1[1])
+'     With pnl
+'       pnl.Name = "pnl" & strLang
+'       pnl.Height = 28 * 2
+'       pnl.Width = intWCtrl
+'       pnl.Arrangement = 2 ' Vertical
+'       pnl.Expand = False
+'     End With
+'
+'     lbl = New Label(pnl)
+'     With lbl
+'       lbl.Text = strLangDesc
+'       lbl.Name = "lbl" & strLang
+'       lbl.Height = 28
+'       lbl.Width = intWCtrl
+'       lbl.Expand = True
+'     End With
+'
+'     txo = New TextBox(pnl) As "GPhrases"
+'     With txo
+'       txo.Name = "txo" & strLang
+'       txo.Height = 28
+'       txo.Width = intWCtrl
+'       txo.Expand = True
+'       txo.Tag = strTag
+'     End With
+'
+'   Next
+'
+' End
 
 Public Sub GPhrases_Change()
 
@@ -180,6 +187,85 @@ Public Sub GPhrases_Change()
       Case "Output"
         Print strLngIn & ": " & txo.Text
     End Select
+  Endif
+
+End
+
+Public Sub CheckSrc() '' Check the source files like .module and .class and propose changes
+
+  Dim strSrcPath As String
+  Dim stxSrcFiles As New String[]
+  Dim intSrc As Integer
+
+  Dim intLine As Integer
+  Dim strFile As String
+  'Dim intChr As Integer
+  Dim int2 As Integer
+  Dim int1 As Integer
+  Dim strLine As String
+  Dim stxCodeIn As New String[]
+  Dim stxCodeOut As New String[]
+  Dim bolChange As Boolean
+
+  'strSrcPath = MUtility.DirChooser(User.Home)
+  strSrcPath = "/home/administrador/github/DomotiGa/DomotiGa3/.src"
+
+  stxSrcFiles = MUtility.ScanFolder(strSrcPath, "module:class")
+  stxLog.Clear
+
+  For intSrc = 0 To stxSrcFiles.Max
+    strFile = Replace(stxSrcFiles[intSrc], strSrcPath & "/", "")
+
+    stxCodeIn.Clear
+    stxCodeOut.Clear
+    bolChange = False
+
+    stxCodeIn = Split(File.Load(stxSrcFiles[intSrc]), "\n")
+
+    If stxCodeIn.Count > 0 Then
+      For intLine = 0 To stxCodeIn.Max
+        strLine = stxCodeIn[intLine]
+
+        If String.InStr(stxCodeIn[intLine], Chr(40) & Chr(34)) > 0 Then
+          If String.InStr(stxCodeIn[intLine], "\\n") > 0 Then
+            int1 = String.InStr(stxCodeIn[intLine], Chr(40) & Chr(34), 1)
+            int2 = String.RInStr(stxCodeIn[intLine], Chr(34) & Chr(41))
+            If int2 > int1 Then
+              If String.InStr(stxCodeIn[intLine], "\\n\\n") > 0 Then
+                strLine = Replace(stxCodeIn[intLine], "\\n\\n", Chr(34) & Chr(41) & " & gb.NewLine & " & Chr(40) & Chr(34))
+                bolChange = True
+              Else
+                If String.InStr(stxCodeIn[intLine], "\\n") > 0 Then
+                  strLine = Replace(stxCodeIn[intLine], "\\n", Chr(34) & Chr(41) & " & gb.NewLine & " & Chr(40) & Chr(34))
+                  bolChange = True
+                Endif
+              Endif
+              stxLog.Add("[" & strFile & " - " & CStr(intLine + 1) & "]" & String.Mid(stxCodeIn[intLine], int1, int2))
+            Endif
+
+          Endif
+        Endif
+
+        stxCodeOut.Add(strLine)
+
+      Next
+      If bolChange = True Then
+        File.Save(stxSrcFiles[intSrc], stxCodeOut.Join("\n"))
+      Endif
+
+    Endif
+  Next
+
+  If stxLog.Count > 0 Then
+    If Exist(User.Home &/ "tradukisto-src-check-log.txt") = True Then
+      Try Kill User.Home &/ "tradukisto-src-check-log.txt"
+      Wait 0.01
+    Endif
+    File.Save(User.Home &/ "tradukisto-src-check-log.txt", stxLog.Join("\n"))
+  Endif
+  Wait 0.01
+  If Exist(User.Home &/ "tradukisto-src-check-log.txt") = True Then
+    Desktop.Open(User.Home &/ "tradukisto-src-check-log.txt")
   Endif
 
 End
@@ -239,34 +325,114 @@ Public Sub CheckLang()
 
   Dim strPlan As String
   Dim intLx As Integer
-  Dim intCheck As Integer
+  Dim stxLangNames As New String[]
+  Dim strLangInputName As String
+  Dim intZ As Integer
+
+  ' Treeview
+
+  '  Dim intTree As Integer
+  Dim strText As String
+  '  Dim strKey As String
+  Dim intVx As Integer
+  Dim strViewTmp As String
+  Dim strParent As String
+  Dim strParentText As String
+  '  Dim picTab As Picture
+
+  '   TabPanel1[1].Children.Clear
 
   intWCtrl = Settings["Controls/Width", 28 * 6]
-  strLangInput = Settings["Language", "es"]
-  stxLangOutput.Clear
+  strLangInput = MStarter.stxProgram[4]
 
-  For intLx = 0 To stxSysLangName.Max
+  For intZ = 0 To MStarter.stxLanguage.Max
 
-    If Settings["Output/" & String.UCase(stxSysLangName[intLx])] = -1 Then
-      stxLangOutput.Add(stxSysLangName[intLx])
+    If MStarter.stxLanguage[intZ][0] = strLangInput Then
+      strLangInputName = MStarter.stxLanguage[intZ][2]
+      Break
     Endif
   Next
 
-  intCheck = stxLangOutput.Find(strLangInput)
-  If intCheck > -1 Then
-    stxLangOutput.Delete(intCheck, 1)
-  Endif
+  stxLangOutput.Clear
+  stxLangNames.Clear
+
+  For intLx = 0 To MStarter.stxLanguage.Max
+
+    If MStarter.stxLanguage[intLx][9] = "True" Then
+      If MStarter.stxLanguage[intLx][0] <> strLangInput Then
+        stxLangNames.Add(MStarter.stxLanguage[intLx][2])
+        stxLangOutput.Add(MStarter.stxLanguage[intLx][0])
+      Endif
+    Endif
+  Next
+
+  ' intCheck = stxLangOutput.Find(strLangInput)
+  ' If intCheck > -1 Then
+  '   stxLangOutput.Delete(intCheck, 1)
+  ' Endif
 
   If stxLangOutput.Count > 0 Then
-    strPlan = " " & (("Vas a traducir desde") & " " &
-      String.UCase(strLangInput) & " " & ("hacia") & " " &
-      String.UCase(stxLangOutput.Join(":")))
+    strPlan = "<p>" & (("Tradución desde") & " " &
+      "<b>" & strLangInputName & "</b> " & ("hacia") & " " & "<b>" &
+      stxLangNames.Join(", ")) & "</b></p>"
   Else
-    strPlan = " " & ("Vas a traducir desde") & " " &
-      String.UCase(strLangInput) & " " & ("pero no has seleccionado idiomas de destino, para ello ve a preferencias.")
+    strPlan = "<p>" & ("traducción desde") &
+      " <b>" & strLangInputName & " </b>" &
+      ("No hay idiomas de salida seleccionados") & ". " &
+      ("Vaya a preferencias para seleccionar alguno") & ".</p>"
+
   Endif
 
   lblInfo.Text = strPlan
+
+  ' Verificacion de las tablas y vistas de traducciones disponibles
+  ' Primero verifico de que vistas se dispone en la conexion
+
+  MStarter.LoadViews()
+  Wait 0.01
+  If trvEntities.Exist("tradukisto") = False Then
+    trvEntities.Add("tradukisto", ("Lenguajes"), Picture["icon:/16/internet"])
+  Endif
+
+  For intVx = 0 To MStarter.stxViews.Max
+    strViewTmp = MStarter.stxViews[intVx]
+
+    If strParent <> String.Mid(strViewTmp, 2, 2) Then
+      strParent = String.Mid(strViewTmp, 2, 2)
+      For intLx = 0 To MStarter.stxLanguage.Max
+        If MStarter.stxLanguage[intLx][0] = strParent Then
+          strParentText = MStarter.stxLanguage[intLx][2]
+          Break
+        Else
+          strParentText = strParent
+        Endif
+      Next
+
+      If trvEntities.Exist(strParent) = False Then
+        trvEntities.Add(strParent, strParentText, Picture["icon:/16/language"], "tradukisto")
+      Endif
+
+    Endif
+
+    For intLx = 0 To MStarter.stxLanguage.Max
+      If MStarter.stxLanguage[intLx][0] = String.Mid(strViewTmp, 4, 2) Then
+        strText = MStarter.stxLanguage[intLx][2]
+        Break
+      Else
+        strText = strViewTmp
+      Endif
+
+    Next
+    If trvEntities.Exist(strViewTmp) = False Then
+      trvEntities.Add(strViewTmp, strText, Picture["icon:/16/ok"], strParent)
+    Endif
+
+  Next
+  'For Each item In TreeView
+  trvEntities.Refresh
+
+  'Next
+  'Endif
 
 End
 
@@ -284,8 +450,8 @@ Public Sub FillList()
     If intMessage <> stxLin.Count Then
       intMessage = stxLin.Count
       If stxLout.Count > 0 Then
-        lsoInfo.Add(stxLin[0], 0)
-        lsoInfo.Add(stxLout[0], 0)
+        ' lsoInfo.Add(stxLin[0], 0)
+        ' lsoInfo.Add(stxLout[0], 0)
       Endif
     Endif
   Endif
@@ -308,7 +474,7 @@ End
 
 Public Sub mnuPreferences_Click()
 
-  FPref.Show()
+  FConfig.Show()
 
 End
 
@@ -320,41 +486,47 @@ End
 
 Public Sub mnuHelp_Click()
 
+  cmdHelp()
+
+End
+
+Public Sub cmdHelp()
+
   Message.Info("La ayuda todavia no esta disponible")
 
 End
 
-Public Function LoadLang() As Boolean '' Carga la lista de idiomas
-
-  Dim stxLang As New String[]
-  Dim intL As Integer
-  Dim strDesc As String
-  Dim strFamy As String
-  Dim strLan As String
-  Dim strAlph As String
-
-  stxLang = Split(File.Load(User.Home &/ "." & Application.Name &/ "lang.csv"), "\n")
-
-  For intL = 0 To stxLang.Max
-    If stxLang[intL] <> "" Then
-
-      strLan = Split(stxLang[intL], ":")[0]
-      strDesc = Split(stxLang[intL], ":")[2] & "[" & Split(stxLang[intL], ":")[3] & "]"
-      strFamy = Split(stxLang[intL], ":")[4]
-      strAlph = Split(stxLang[intL], ":")[5]
-
-      stxSysLangName.Add(strLan)
-      stxSysLangDesc.Add(strDesc)
-      stxSysLangFamy.Add(strFamy)
-      stxSysLangAlph.Add(strAlph)
-    Endif
-  Next
-
-  bolLangloaded = True
-
-  Return True
-
-End
+' Public Function LoadLang() As Boolean '' Carga la lista de idiomas
+'
+'   Dim stxLang As New String[]
+'   Dim intL As Integer
+'   Dim strDesc As String
+'   Dim strFamy As String
+'   Dim strLan As String
+'   Dim strAlph As String
+'
+'   'stxLang = Split(File.Load(User.Home &/ "." & Application.Name &/ "lang.csv"), "\n")
+'
+'   For intL = 0 To stxLang.Max
+'     If stxLang[intL] <> "" Then
+'
+'       strLan = Split(stxLang[intL], ":")[0]
+'       strDesc = Split(stxLang[intL], ":")[2] & "[" & Split(stxLang[intL], ":")[3] & "]"
+'       strFamy = Split(stxLang[intL], ":")[4]
+'       strAlph = Split(stxLang[intL], ":")[5]
+'
+'       stxSysLangName.Add(strLan)
+'       stxSysLangDesc.Add(strDesc)
+'       stxSysLangFamy.Add(strFamy)
+'       stxSysLangAlph.Add(strAlph)
+'     Endif
+'   Next
+'
+'   bolLangloaded = True
+'
+'   Return True
+'
+' End
 
 Public Sub mnuQuit_Click()
 
@@ -363,65 +535,564 @@ Public Sub mnuQuit_Click()
   Me.Close
 
 End
+'
+' Public Sub TabPanel1_Arrange()
+'
+' '   CheckTab()
+'   '   Phrases()
+'
+' End
 
-Public Sub TabPanel1_Arrange()
-
-  CheckTab()
-
-End
-
-Public Sub CheckTab()
-
-  'Dim intTab As Integer
-
-  Select TabPanel1.Current
-    Case TabPanel1[0]
-      tobTranslate.Enabled = False
-      tobOpenPot.Enabled = True
-
-    Case TabPanel1[1]
-      tobTranslate.Enabled = True
-      tobOpenPot.Enabled = False
-
-  End Select
-
-End
+' Public Sub CheckTab()
+'
+'   'Dim intTab As Integer
+'
+'   Select TabPanel1.Current
+'     Case TabPanel1[0]
+'       tobTranslate.Enabled = False
+'       tobOpenPot.Enabled = True
+'
+'     Case TabPanel1[1]
+'       tobTranslate.Enabled = True
+'       tobOpenPot.Enabled = False
+'
+'   End Select
+'
+' End
 
 Public Sub TabPanel1_MouseDown()
 
-  CheckTab()
+  '   CheckTab()
 
 End
 
-Public Sub tobTranslate_Click()
+' Public Sub tobTranslate_Click()
+'
+'   Dim intTxt As Integer
+'   Dim obj As Object
+'   Dim strText As String
+'   Dim strTrans As String
+'
+'   ' averiguar el texto de entrada
+'   For Each obj In TabPanel1.Children
+'     If Object.Type(obj) = "Panel" Then
+'       If InStr(obj.name, "pnl" & strLangInput) > 0 Then
+'         strText = obj.Children[1].Text
+'       Endif
+'     Endif
+'   Next
+'
+'   For intTxt = 0 To stxLangOutput.Max
+'     For Each obj In TabPanel1.Children
+'       If Object.Type(obj) = "Panel" Then
+'         If InStr(obj.name, "pnl" & stxLangOutput[intTxt]) > 0 Then
+'
+'           strTrans = MTranslate.Translator(strText, strLangInput, stxLangOutput[intTxt])
+'
+'           obj.Children[1].Text = strTrans
+'           obj.Children[1].Refresh
+'
+'         Endif
+'       Endif
+'     Next
+'   Next
+'
+' End
 
-  Dim intTxt As Integer
-  Dim obj As Object
-  Dim strText As String
+' Public Sub CheckWords(stxSentences As String[], strLanguage As String)
+'
+'   Dim stxDict As New String[]
+'   Dim intSentences As Integer
+'   Dim intWords As Integer
+'   Dim stxWords As New String[]
+'   Dim strFile As String ' Archivo de texto del diccionario
+'   Dim strWord As String
+'   Dim strSpell As String
+'   Dim strDict As String
+'
+'   stxDict.Clear
+'
+'   If Exist(MStarter.stxProgram[7]) Then ' Directorio de los diccionarios
+'     strFile = MStarter.stxProgram[7] &/ strLanguage & "_words.txt"
+'     strSpell = MStarter.stxProgram[7] &/ strLanguage & "_spell.txt"
+'
+'     If Exist(strFile) Then
+'       stxDict.Clear
+'       strDict = File.Load(strFile)
+'       If strDict <> "" Then
+'         stxDict = Split(strDict, "\n")
+'       Endif
+'     Else
+'       stxDict.Clear
+'     Endif
+'   Else
+'     Message.Warning(("El directorio de los diccionarios no existe") & gb.NewLine & ("Compruebe la configuración"))
+'   Endif
+'
+'   If stxSentences.Count > 0 Then
+'     For intSentences = 0 To stxSentences.Max
+'       stxWords = Split(stxSentences[intSentences], " ")
+'       If stxWords.Count > 0 Then
+'         For intWords = 0 To stxWords.Max
+'           strWord = stxWords[intWords]
+'           Select strWord
+'             Case "", ".", "?", "¿", "¡", "!"
+'             Case Else
+'
+'               strWord = MValidator.OnlyLeters(strWord)
+'
+'               If String.Len(strWord) > 1 Then
+'                 If stxDict.Find(strWord) = -1 Then
+'                   stxDict.Add(strWord)
+'                 Endif
+'               Endif
+'           End Select
+'         Next
+'       Endif
+'     Next
+'
+'     stxDict.Sort
+'
+'     File.Save(strFile, stxDict.Join("\n"))
+'     Wait 0.05
+'     'If Exist(strFile) Then
+'     Select strLanguage
+'       Case "spanish"
+'         Shell "spell -D spanish '" & strFile & "' > '" & strSpell & "'"
+'
+'     End Select
+'
+'     'Endif
+'
+'     'Desktop.Open(strFile)
+'
+'   Endif
+'
+' End
+
+Public Sub tobFeed_Click()
+
+  Dim strPotPath As String
+  Dim stxSentences As New String[]
+  Dim stxLangInNames As New String[] 'Nombres del idioma de entrada de dos letras, tres diccionario en inglés y local
+  Dim strLangIn As String ' Idioma de entrada de dos letras
+  Dim stxLangOut As New String[] ' Lista de los lenguages de salida
+  Dim strLangOut As String ' Idioma de salida de dos letras
+  Dim stxLangOutNames As New String[] 'Nombres dl idioma de salida dos letras, tres diccionario en inglés y local. Si hay mas de uno ira cambiando
+  Dim stxNice As New String[] ' Frases ok, aptas para traducir
+  Dim strNice As String
+  Dim strExist As String
+  Dim resExist As Result
+  Dim stxExist As New String[] ' Fraces que existen en la tabla
+  Dim strName As String ' Nobre de la tabla "rosetta" actual y de parte de los nombres de los campos.
+  'Dim strRosetta As String ' Consulta SQL de la vista del la "rosetta" actual
+  'Dim resRosetta As Result
+  'Dim stxRosetta1 As New String[]
+  'Dim stxRosetta2 As New String[]
+  Dim stxRosetta As New String[][]
   Dim strTrans As String
+  Dim resTrans As Result
+  Dim stxTrans As New String[][] ' Par de frase local , frase traducida en bruto.
+  Dim stxOutRaw As New String[]
+  Dim stxOut As New String[]
+  Dim strOut As String
 
-  ' averiguar el texto de entrada
-  For Each obj In TabPanel1.Children
-    If Object.Type(obj) = "Panel" Then
-      If InStr(obj.name, "pnl" & strLangInput) > 0 Then
-        strText = obj.Children[1].Text
+  Dim resEdit As Result
+  Dim resOut As Result
+
+  Dim intTrans As Integer
+  Dim intTChk As Integer
+  Dim intOut As Integer
+  '  Dim stxLx As New String[]
+  '  Dim strLang As String
+  Dim intLnx As Integer
+  Dim strLangInLocal As String
+  Dim strLangOutLocal As String
+  Dim inxStats As Integer[]
+
+  strPotPath = MUtility.FileChooser(, "pot")
+
+  If strPotPath <> "" Then
+    If Exist(strPotPath) Then
+
+      Inc Application.Busy
+
+      stxSentences = MTranslate.PoReader(strPotPath)
+
+      MStarter.stxProgram[4] = stxSentences[0]
+
+      ' Este formulario presenta el idioma de entrada del .pot y los idiomas de salida configurados en el programa
+      ' Permite ademas, la edición de esta configuración La modificaciones que se hagan en este se propagaran a los sigientes pasos.
+      If FCheck.Run(stxSentences) = True Then
+        Print "Continuar con el prosesamiento"
+        If MStarter.strInputLanguage <> "" Then
+          If MStarter.strInputLanguage <> stxSentences[0] Then
+            stxSentences[0] = MStarter.stxProgram[4]
+          Endif
+        Endif
+
+        CheckLang()
+
+        If stxSentences.Count > 1 Then
+          If String.Len(stxSentences[0]) >= 2 Then
+            stxLangInNames = MStarter.LangInfo(String.Mid(stxSentences[0], 1, 2))
+            strLangIn = stxLangInNames[0]
+          Endif
+          stxNice = MTranslate.Spell(stxSentences, stxLangInNames)
+        Else
+          Message.Info(("No existen frases para traducir"))
+        Endif
+
+        If stxNice.Count > 1 Then
+
+          'Comprobación de la existencia de la tabla idioma de entrada. //////////////////
+          If MStarter.conProgram.Tables.Exist(stxLangInNames[0]) = False Then
+            If MData.TableMake1(MStarter.conProgram, [stxLangInNames[0], "i", "1"]) = 1 Then
+              Print "Tabla: " & stxLangInNames[0] & " creada con exito"
+            Else
+              Print "Tabla: " & stxLangInNames[0] & " no fue creada"
+            Endif
+          Else
+            Print "Tabla: " & stxLangInNames[0] & " ya existe"
+          Endif
+          ' Comprobación de existencia de cada frase en la tabla del idioma
+          stxExist.Clear
+          strExist = "select " & stxLangInNames[0] & "1" &
+            " from " & stxLangInNames[0]
+          resExist = MStarter.conProgram.Exec(strExist)
+          While resExist.Available
+            stxExist.Add(resExist[stxLangInNames[0] & "1"])
+            resExist.MoveNext
+          Wend
+          ' Insersión de las frases en la tabla de idioma de entrada . //////////////////
+          For Each strNice In stxNice
+            If stxExist.Find(strNice) = -1 Then
+              MData.RecordNewTest(MStarter.conProgram, stxLangInNames[0], [[stxLangInNames[0] & "1", strNice]])
+
+            Endif
+          Next
+          '/////////////////////////////////////////////////////////////////////////////
+
+          ' Obtencion de la lista de idiomas de salida. /////////// COMIENZO DEL BUCLE DE IDIOMAS DE SALIDA
+          stxLangOut = MStarter.LangOut(stxLangInNames[0])
+
+          For Each strLangOut In stxLangOut
+            stxRosetta.Clear
+            stxLangOutNames = MStarter.LangInfo(strLangOut)
+            'Comprobación de la existencia de la tabla idioma de salida. //////////////////
+            If MStarter.conProgram.Tables.Exist(stxLangOutNames[0]) = False Then
+              If MData.TableMake1(MStarter.conProgram, [stxLangOutNames[0], "i", "1"]) = 1 Then
+                Print "Tabla: " & stxLangOutNames[0] & " creada con exito"
+              Else
+                Print "Tabla: " & stxLangOutNames[0] & " no fue creada"
+              Endif
+            Else
+              Print "Tabla: " & stxLangOutNames[0] & " ya existe"
+            Endif
+
+            ' Comprobación de existencia en la tabla rosetta actual
+            strName = stxLangInNames[0] & strLangOut
+
+            If MStarter.conProgram.Tables.Exist(strName) = False Then
+
+              If MData.TableMake2(MStarter.conProgram, [stxLangInNames[0], stxLangInNames[0] & "i", stxLangInNames[0] & "1", strLangOut, strLangOut & "i", strLangOut & "1"]) = 1 Then
+                Print "Tabla: " & strName & " creada con exito"
+              Else
+                Print "Tabla: " & strName & " no fue creada"
+              Endif
+            Else
+              Print "Tabla: " & strName & " ya existe"
+            Endif
+            ' Comprobación de existencia en la vista rosetta actual
+            If MData.getTables(MStarter.conProgram, "view").Find("v" & strName) = -1 Then
+              If MData.ViewMake1(MStarter.conProgram, [strName]) = 1 Then
+                Message(("Se ha creado la vista"))
+              Endif
+            Endif
+
+            ' Insersión de las frases en la tabla Rosetta actual . //////////////////
+            For Each strNice In stxNice
+              MData.RecordNewRefTest(MStarter.conProgram, [strName, stxLangInNames[0], stxLangInNames[0] & "1"], [[strName & "1", strNice]])
+            Next
+            '/////////////////////////////////////////////////////////////////////////////
+
+            ' Creacion de la lista de frases de rosetta actual que no estan traducidas
+            stxTrans.Clear
+            strTrans = "select *" &
+              " from " & "v" & strName &
+              " where " & strName & "2 is null"
+            resTrans = MStarter.conProgram.Exec(strTrans)
+            While resTrans.Available
+
+              stxTrans.Add([resTrans[strName & "i"], resTrans[strName & "1"], resTrans[stxLangInNames[0] & "i"], resTrans[strName & "2"], resTrans[strLangOut & "i"]])
+
+              resTrans.MoveNext
+            Wend
+            If stxTrans.Count > 0 Then
+              For intTrans = 0 To stxTrans.Max
+                stxTrans[intTrans][3] = MTranslate.Translator(stxTrans[intTrans][1], stxLangInNames[0], strLangOut)
+              Next
+            Endif
+
+            ' Comprobacion de todas las fraces traducidas
+            stxOutRaw.Clear
+            For intTChk = 0 To stxTrans.Max
+              If stxTrans[intTChk][3] <> "" Then
+                stxOutRaw.Add(stxTrans[intTChk][3])
+              Endif
+            Next
+
+            If stxOutRaw.Count > 0 Then
+              stxOut = MTranslate.Spell(stxOutRaw, stxLangOutNames)
+            Endif
+
+            ' Comprobación de existencia de cada frase en la tabla del idioma de salida actual
+            stxExist.Clear
+            strExist = "select " & strLangOut & "1" &
+              " from " & strLangOut
+            resExist = MStarter.conProgram.Exec(strExist)
+            While resExist.Available
+              stxExist.Add(resExist[strLangOut & "1"])
+              resExist.MoveNext
+            Wend
+            If stxOut.Count > 0 Then
+              For Each strOut In stxOut
+                If stxExist.Find(strOut) = -1 Then
+                  MData.RecordNewTest(MStarter.conProgram, strLangOut, [[strLangOut & "1", strOut]])
+                Endif
+              Next
+            Endif
+
+            ' Si la traduccion es coherente se agrega a la tabla rosetta actual.
+            For intOut = 0 To stxTrans.Max
+              If stxOut.Find(stxTrans[intOut][3]) > -1 Then
+                resEdit = MStarter.conProgram.Edit(strName, strName & "i=&1", stxTrans[intOut][0])
+
+                resOut = MStarter.conProgram.Find(strLangOut, strLangOut & "1=&1", stxTrans[intOut][3])
+
+                If resOut.Available Then
+                  resEdit[strName & "2"] = resOut[strLangOut & "i"]
+                  resEdit.Update
+                Endif
+
+              Endif
+            Next
+
+            ' Acá se puede generar el archivo .mo de cada lenguage.
+
+            inxStats = MTranslate.PomakerTest(strPotPath, strLangIn, strLangOut)
+            If inxStats.Count = 3 Then
+              For intLnx = 0 To MStarter.stxLanguage.Max
+                Select MStarter.stxLanguage[intLnx][0]
+                  Case strLangIn
+                    strLangInLocal = MStarter.stxLanguage[intLnx][3]
+                  Case strLangOut
+                    strLangOutLocal = MStarter.stxLanguage[intLnx][3]
+                End Select
+              Next
+
+              lblTrad.Text = ("La traduccion") & " " & strLangInLocal & "/" & strLangOutLocal & " " & ("ha finalizado") & ". " & ("Totales") & "=" & CStr(inxStats[0]) & "#" & CStr(inxStats[1]) & "#" & CStr(inxStats[2])
+            Endif
+
+          Next '////////////////////////////////////////////////// FINAL DEL BUCLE DE IDIOMAS DE SALIDA
+
+        Else
+          Message.Info(("No existen frases para traducir"))
+        Endif
+
+      Else
+        Print "Se cancela el prosesamiento"
+
+      Endif
+
+      Dec Application.Busy
+    Endif
+  Endif
+
+End
+
+Public Sub Form_Close()
+
+  If MStarter.Terminator() = 1 Then
+    Me.Close
+  Else
+    Message.Error("No se han podido guardar los parametros del programa")
+  Endif
+
+End
+
+Public Sub tobImportant_Click()
+
+End
+
+Public Sub tobHelp_Click()
+
+  cmdHelp()
+
+End
+
+Public Sub trvEntities_Select()
+
+  Dim int As Integer
+  Dim strView As String
+  Dim strLe As String 'Entidad de traducción
+  Dim strLi As String 'Lenguaje de entrada de dos letras
+  Dim strLiTit As String 'Nombre local del Lenguaje de entrada
+  Dim strLo As String 'Lenguaje de salida de dos letras
+  Dim strLoTit As String 'Nombre local del Lenguaje de salida
+
+  Dim strLx As String 'Campo del Indice
+  Dim strL1 As String 'Campo del Lenguaje de entrada
+  Dim strL2 As String 'Campo del Lenguage de salida
+  Dim strSQLView As String
+  Dim strL1i As String
+  Dim strL2i As String
+
+  grwData.Header = 1 ' Muestra solo el encabezado
+  grwData.ScrollBar = 3 ' Muestra los scrol vertical y horizontal
+  grwData.Mode = Select.Multiple
+
+  strView = trvEntities.Current.Key ' El nombre de la vista de traducción
+  MStarter.stxProgram[13] = strView
+
+  If MStarter.stxViews.Find(strView) > -1 Then
+    strLe = string.Mid(strView, 2, 4)
+    strLx = strLe & "i"
+    strL1 = strLe & "1"
+    strL2 = strLe & "2"
+    strLi = String.Mid(strLe, 1, 2)
+    strLo = String.Mid(strLe, 3, 2)
+    strL1i = strLi & "i"
+    strL2i = strLo & "i"
+
+    For int = 0 To MStarter.stxLanguage.Max
+
+      Select MStarter.stxLanguage[int][0]
+        Case strLi
+          strLiTit = MStarter.stxLanguage[int][2]
+        Case strLo
+          strLoTit = MStarter.stxLanguage[int][2]
+      End Select
+    Next
+
+    strSQLView = "select * " &
+      " from " & strView
+
+    MStarter.resProgram = MStarter.conProgram.Exec(strSQLView)
+
+    If MStarter.resProgram.Available Then
+
+      grwData.Rows.Count = 0
+      grwData.Rows.Count = MStarter.resProgram.Count
+      grwData.Columns.Count = MStarter.resProgram.Fields.Count
+
+      grwData.Columns[0].Title = strLx
+      grwData.Columns[1].Title = strLiTit
+      grwData.Columns[2].Title = strLi
+      grwData.Columns[3].Title = strLoTit
+      grwData.Columns[4].Title = strLo
+
+    Endif
+
+  Endif
+
+End
+
+Public Sub grwData_Data(Row As Integer, Column As Integer)
+
+  If MStarter.resProgram.Available Then
+    MStarter.resProgram.MoveTo(Row)
+    grwData.Data.Text = MStarter.resProgram[MStarter.resProgram.Fields[Column].Name]
+  Else
+    grwData.Data.Text = ""
+  Endif
+
+End
+
+Public Sub tobEditRecord_Click()
+
+  cmdRecordEdit()
+
+End
+
+Public Sub grwData_DblClick()
+
+  cmdRecordEdit()
+
+End
+
+Public Sub tobNewRecord_Click()
+
+  cmdRecordNew()
+
+End
+
+Public Sub tobDeleteRecord_Click()
+
+  cmdRecordDelete()
+
+End
+
+Public Sub cmdRecordNew()
+
+  Dim strTable As String
+
+  strTable = String.Mid(MStarter.stxProgram[13], 2, 4)
+
+  FData.RunEditor(MStarter.conProgram, strTable)
+
+End
+
+Public Sub cmdRecordDelete()
+
+  Dim intKey As Integer
+  Dim intCount As Integer
+  Dim intOk As Integer
+  Dim intR As Integer
+  Dim strTable As String
+
+  strTable = String.Mid(MStarter.stxProgram[13], 2, 4)
+
+  For intR = 0 To grwData.Rows.Max
+    If grwData.Rows[intR].Selected = True Then
+      Inc intCount
+      intKey = CInt(grwData[intR, 0].Text)
+      If MData.RecordDelete(MStarter.conProgram, strTable, MStarter.stxTableFields, intKey) = -1 Then
+        Inc intOk
       Endif
     Endif
   Next
 
-  For intTxt = 0 To stxLangOutput.Max
-    For Each obj In TabPanel1.Children
-      If Object.Type(obj) = "Panel" Then
-        If InStr(obj.name, "pnl" & stxLangOutput[intTxt]) > 0 Then
+  If intCount > 0 Then
+    If intOk = intCount Then
+      CheckLang()
+    Else
+      Select intOk
+        Case 0
+          Message.Info("No se pudo borrar ningun registro")
+        Case Else
+          Message.Info("Hay registros que no se pudieron borrar")
+      End Select
+    Endif
+    CheckLang()
+  Else
+    Message.Info("Debe seleccionar registros de la lista")
+  Endif
 
-          strTrans = MTranslate.Translator(strText, strLangInput, stxLangOutput[intTxt])
+End
 
-          obj.Children[1].Text = strTrans
-          obj.Children[1].Refresh
+Public Sub cmdRecordEdit()
 
-        Endif
-      Endif
-    Next
-  Next
+  Dim intKey As Integer
+  Dim strTable As String
+
+  strTable = String.Mid(MStarter.stxProgram[13], 2, 4)
+
+  If grwData.Current Then
+    intKey = CInt(grwData[grwData.Row, 0].Text)
+    FData.RunEditor(MStarter.conProgram, strTable, intKey)
+  Else
+    Message.Info("Debe seleccionar un registro de la lista")
+  Endif
 
 End

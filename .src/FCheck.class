@@ -1,0 +1,161 @@
+' Gambas class file
+
+Public stxOut As New String[]
+Private strNameLang As String
+'Private stxTagLang As New String[]
+
+Public Sub Run(stx As String[]) As Boolean
+
+  stxOut = stx
+
+  Return Not Me.ShowModal()
+
+End
+
+Public Sub btnOK_Click()
+
+  cmdSaveConf()
+  Wait 0.01
+  MStarter.stxProgram[4] = strNameLang
+  Wait 0.01
+
+  Me.Close(False)
+
+End
+
+Public Sub btnCancel_Click()
+
+  Me.Close(True)
+
+End
+
+Public Function MakeChecks() As Integer '' Esta funcion crea los checks para ver que idiomas de salida estan seleccionados.
+
+  Dim intA As Integer
+  Dim intB As Integer
+  Dim rdb As RadioButton
+  Dim chk As CheckBox
+  Dim scw As ScrollView
+
+  pnlControls.Children.Clear
+  pnlControls.Arrangement = Arrange.Horizontal
+
+  For intA = 0 To 1
+    scw = New ScrollView(pnlControls) As "GrpView"
+    With scw
+      .Name = "scw" & CStr(intA)
+      .Arrangement = Arrange.Row
+      .Expand = True
+      .Border = False
+      Select intA
+        Case 0
+          For intB = 0 To MStarter.stxLanguage.Max
+            rdb = New RadioButton(scw) As "GrpRad"
+            With rdb
+              .Name = "rdb" & CStr(intB)
+              .Tooltip = MStarter.stxLanguage[intB][6]
+              .Text = MStarter.stxLanguage[intB][2]
+              .Tag = MStarter.stxLanguage[intB][0]
+              .Width = pnlControls.Width / 4
+              .Height = 28
+              If stxOut[0] = MStarter.stxLanguage[intB][0] Then
+                .Value = -1
+              Else
+                .Value = 0
+              Endif
+            End With
+          Next
+        Case 1
+          For intB = 0 To MStarter.stxLanguage.Max
+            chk = New CheckBox(scw) As "GrpCheck"
+            With chk
+              .Name = "chk" & CStr(intB)
+              .Tooltip = MStarter.stxLanguage[intB][6]
+              .Text = MStarter.stxLanguage[intB][2]
+              .Tag = MStarter.stxLanguage[intB][0]
+              .Width = pnlControls.Width / 4
+              .Height = 28
+              Select MStarter.stxLanguage[intB][9]
+                Case "False", ""
+                  .Value = 0
+                Case "True"
+                  .Value = -1
+              End Select
+            End With
+          Next
+      End Select
+
+    End With
+  Next
+
+End
+
+Public Sub cmdSaveConf()
+
+  Dim int As Integer
+  '  Dim obj As Object
+  Dim objScroll As Object
+  Dim objCheck As Object
+  Dim intLx As Integer
+
+  ' Guardar los lenguajes marcados para traducir
+  For int = 0 To pnlControls.Children.Count - 1
+    If Object.Type(pnlControls.Children[int]) = "ScrollView" Then
+      objScroll = pnlControls.Children[int]
+      For Each objCheck In objScroll.Children
+        If Object.Type(objCheck) = "CheckBox" Then
+          For intLx = 0 To MStarter.stxLanguage.Max
+            If objCheck.Tag = MStarter.stxLanguage[intLx][0] Then
+              Select objCheck.Value
+                Case 0
+                  MStarter.stxLanguage[intLx][9] = "False"
+                Case -1
+                  MStarter.stxLanguage[intLx][9] = "True"
+              End Select
+            Endif
+          Next
+        Endif
+      Next
+    Endif
+  Next
+
+  ' Pasar el parametro del lenguaje de entrada
+  For int = 0 To pnlControls.Children.Count - 1
+    If Object.Type(pnlControls.Children[int]) = "ScrollView" Then
+      objScroll = pnlControls.Children[int]
+      For Each objCheck In objScroll.Children
+        If Object.Type(objCheck) = "RadioButton" Then
+          Select objCheck.Value
+            Case True
+              strNameLang = objCheck.Tag
+          End Select
+        Endif
+      Next
+    Endif
+  Next
+
+End
+
+Public Sub Form_Open()
+
+  Me.x = FMain.X
+  Me.Y = FMain.Y
+  Me.Width = FMain.Width
+  Me.Height = FMain.Height
+
+  MakeChecks()
+
+  lblWarning.Text = ("Atención, a la izquierda se encuentran los posibles idiomas de entrada") & ". " & 'gb.NewLine &
+    ("Veifique que el idioma seleccionado sea correcto y cambielo si no lo es") & ". " & ' gb.NewLine &
+    ("Luego a la derecha, se encuentran los idiomas de salida, puede marcar todos los que desee") & ". " & ' gb.NewLine &
+    ("Cuando todo este optimo presione") & " " & Chr(34) & btnOK.Text & Chr(34) & " " & ("para continuar con la traducción") & " " & ("o presione") & " " & Chr(34) & btnCancel.Text & Chr(34) & " " & ("para abortar") & "."
+
+End
+
+Public Sub btnShowSample_Click()
+
+  File.Save("/tmp/show.txt", stxOut.Join("\n"))
+  Wait 0.01
+  Desktop.Open("/tmp/show.txt")
+
+End

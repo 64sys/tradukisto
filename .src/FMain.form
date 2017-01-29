@@ -1,16 +1,16 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,81,68)
+  MoveScaled(0,0,78,67)
   Text = ("Traductor")
   Icon = Picture["logo.png"]
   Arrangement = Arrange.Vertical
   Padding = 4
   { mnuFile Menu
     Text = ("Archivo")
-    { mnuFileOpen Menu
-      Text = ("Abrir archivo .pot")
-      Picture = Picture["icon:/32/open"]
+    { nmuImport Menu
+      Text = ("Traducir")
+      Picture = Picture["icon:/22/play"]
       Shortcut = "Ctrl+O"
     }
     { mnuQuit Menu
@@ -19,15 +19,23 @@
       Shortcut = "Alt+F4"
     }
   }
-  { mnuTools Menu
-    Text = ("Herramientas")
+  { mnuConfiguration Menu
+    Text = ("Configuración")
     { mnuPreferences Menu
       Text = ("Preferencias")
       Picture = Picture["icon:/32/options"]
     }
+    { nmuShowOrders Menu
+      Text = ("Orden")
+      Picture = Picture["icon:/22/sort-ascent"]
+    }
+    { nmuShowFilters Menu
+      Text = ("Filtro")
+      Picture = Picture["icon:/22/filter"]
+    }
   }
   { mnuInfo Menu
-    Text = ("Ayuda")
+    Text = ("Información")
     { mnuAbout Menu
       Text = ("Acerca de")
       Picture = Picture["icon:/32/info"]
@@ -38,65 +46,110 @@
     }
   }
   { Panel8 Panel
-    MoveScaled(0,0,73,5)
+    MoveScaled(0,0,76,5)
     Arrangement = Arrange.Horizontal
-    { tobOpenPot ToolButton
-      MoveScaled(1,1,5,5)
-      ToolTip = ("Traducir programas")
-      Picture = Picture["icon:/22/open"]
+    { tobFeed ToolButton
+      MoveScaled(0,0,5,5)
+      ToolTip = ("Leer las frases a traducir y presentar un estado de la situacion")
+      Picture = Picture["icon:/22/play"]
     }
     { tobPreferences ToolButton
-      MoveScaled(9,1,5,5)
+      MoveScaled(20,0,5,5)
       ToolTip = ("Preferencias")
       Picture = Picture["icon:/22/options"]
     }
     { tobAbout ToolButton
-      MoveScaled(23,1,5,5)
+      MoveScaled(25,0,5,5)
+      ToolTip = ("Acerca de")
+      Picture = Picture["icon:/22/info"]
+    }
+    { tobHelp ToolButton
+      MoveScaled(30,0,5,5)
       ToolTip = ("Acerca de")
       Picture = Picture["icon:/22/question"]
     }
-    { tobTranslate ToolButton
-      MoveScaled(30,0,5,5)
-      Picture = Picture["icon:/22/language"]
-    }
-    { lblTrad Label
-      MoveScaled(40,1,31,4)
+    { lblTrad TextLabel
+      MoveScaled(41,0,31,4)
       Expand = True
-      AutoResize = True
     }
   }
-  { TabPanel1 TabPanel
-    MoveScaled(2,19,37,24)
+  { HSplit1 HSplit
+    MoveScaled(1,6,75,53)
     Expand = True
-    Arrangement = Arrange.Row
-    Spacing = True
-    Count = 2
-    Index = 0
-    Text = ("Programas")
-    { lsoInfo ListBox
-      MoveScaled(5,7,18,6)
-      Expand = True
+    Border = False
+    { trvEntities TreeView
+      MoveScaled(7,8,16,16)
       Border = False
     }
-    Index = 1
-    Text = ("Fraces")
-    { txoInputLang TextBox
-      MoveScaled(5,2,24,4)
+    { Panel4 Panel
+      MoveScaled(25,1,47,46)
+      Expand = True
+      Arrangement = Arrange.Vertical
+      { pnlDataOrder ScrollView
+        MoveScaled(0,2,41,4)
+        Background = Color.TextBackground
+        Arrangement = Arrange.Horizontal
+        Padding = 1
+        Border = False
+        ScrollBar = Scroll.None
+      }
+      { pnlDataFilter ScrollView
+        MoveScaled(0,7,41,4)
+        Background = Color.TextBackground
+        Arrangement = Arrange.Horizontal
+        Padding = 1
+        Border = False
+        ScrollBar = Scroll.None
+      }
+      { Panel3 Panel
+        MoveScaled(0,12,41,14)
+        Expand = True
+        Arrangement = Arrange.Fill
+        { grwData GridView
+          MoveScaled(1,1,38,12)
+          Expand = True
+          Border = False
+          Mode = Select.Multiple
+        }
+      }
+      { pnlDataControls Panel
+        MoveScaled(0,27,41,4)
+        Background = Color.TextBackground
+        Arrangement = Arrange.Horizontal
+        { tobNewRecord ToolButton
+          MoveScaled(0,0,4,4)
+          ToolTip = ("Agregar")
+          Picture = Picture["icon:/16/new"]
+        }
+        { tobDeleteRecord ToolButton
+          MoveScaled(9,0,4,4)
+          ToolTip = ("Borrar")
+          Picture = Picture["icon:/16/delete"]
+        }
+        { tobEditRecord ToolButton
+          MoveScaled(15,0,4,4)
+          ToolTip = ("Editar")
+          Picture = Picture["icon:/16/edit"]
+        }
+      }
     }
-    Index = 0
   }
   { Panel1 Panel
-    MoveScaled(0,59,73,4)
+    MoveScaled(1,60,75,3)
     Arrangement = Arrange.Horizontal
-    Border = Border.Plain
-    { lblInfo Label
-      MoveScaled(1,0,39,4)
+    { Panel2 Panel
+      MoveScaled(1,0,0.5714,3)
+    }
+    { lblInfo TextLabel
+      MoveScaled(4,0,59,3)
       Expand = True
       AutoResize = True
+      Alignment = Align.BottomLeft
+      Wrap = False
     }
   }
   { tmrChecker #Timer
-    #MoveScaled(3,8)
+    #MoveScaled(66,49)
     Enabled = True
     Delay = 500
   }

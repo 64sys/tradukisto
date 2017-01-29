@@ -1,8 +1,8 @@
-MInit
-Traducción de programas.
+MStarter
+Traducctor de programas
 0
 0
-0.0.13
+0.0.23
 
 gb.image
 gb.gui.qt
@@ -11,5 +11,6 @@ gb.db
 gb.desktop.x11
 gb.desktop
 gb.settings
+gb.pcre
 gb.xml
 

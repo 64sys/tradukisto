@@ -1,158 +1,514 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: tradukisto 0.0.10\n"
-"POT-Creation-Date: 2016-12-15 17:19+CET\n"
-"PO-Revision-Date: 2016-12-15 17:30+CET\n"
-"Last-Translator: Belmotek planeta4@openmailbox.org\n"
+"Project-Id-Version: tradukisto 0.0.23\n"
+"POT-Creation-Date: 2017-01-29 20:59+CET\n"
+"PO-Revision-Date: 2017-01-29 21:05+CET\n"
+"Last-Translator: Martín, Powerded by Tradukisto software. planeta4@openmailbox.org\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 #: .project:1
-msgid "Traducción de programas."
-msgstr "Программы перевода."
+msgid "Traducctor de programas"
+msgstr ""
 
 #: .project:2
-msgid "Interfaz de translate-shell para traducir programas completos de gambas y otras utilidades."
-msgstr "Перевести-оболочки интерфейс для перевода целых программ и креветки и другие утилиты."
+msgid "Interfaz para traducir programas de gambas con translate-shell."
+msgstr ""
 
-#: FAbout.class:42
-msgid "Interfaz de translate-shell para traducir programas completos de gambas."
-msgstr "Перевести-оболочки интерфейс для перевода целых программ креветки."
+#: FAbout.form:50
+msgid "Cerrar"
+msgstr "Близко"
 
-#: FAbout.class:49 FMain.form:59
+#: FAbout.class:62
+msgid "Pagina web"
+msgstr ""
+
+#: FAbout.class:77
+msgid "Correo de contacto"
+msgstr "Контактный адрес электронной почты"
+
+#: FAbout.class:85
+msgid "Componentes usados"
+msgstr "Компоненты, используемые"
+
+#: FAbout.class:92
+msgid "Este prgrama se entrega sin ninguna tipo de garantia"
+msgstr ""
+
+#: FAbout.class:99
+msgid "Licencia"
+msgstr "Лицензия"
+
+#: FAbout.class:99
+msgid "Clic para ver en"
+msgstr "Нажмите, чтобы увидеть"
+
+#: FAbout.class:105 FMain.form:82
 msgid "Acerca de"
-msgstr "О"
+msgstr ""
 
-#: FLang.form:32
+#: FAbout.class:125
+msgid "Hola desarrolladores de"
+msgstr "Привет разработчики"
+
+#: FCheck.form:48
+msgid "Ver las frases"
+msgstr ""
+
+#: FCheck.form:54
+msgid "Continuar"
+msgstr "Продолжать"
+
+#: FCheck.form:59 FData.form:40
+msgid "Cancelar"
+msgstr "Отменить"
+
+#: FCheck.class:151
+msgid "Atención, a la izquierda se encuentran los posibles idiomas de entrada"
+msgstr "Внимание налево возможные языки ввода"
+
+#: FCheck.class:151
+msgid "Veifique que el idioma seleccionado sea correcto y cambielo si no lo es"
+msgstr ""
+
+#: FCheck.class:151
+msgid "Luego a la derecha, se encuentran los idiomas de salida, puede marcar todos los que desee"
+msgstr ""
+
+#: FCheck.class:151
+msgid "Cuando todo este optimo presione"
+msgstr "Когда все это оптимальная пресса"
+
+#: FCheck.class:151
+msgid "para continuar con la traducción"
+msgstr ""
+
+#: FCheck.class:151
+msgid "o presione"
+msgstr ""
+
+#: FCheck.class:151
+msgid "para abortar"
+msgstr ""
+
+#: FCheck2.form:27 FLang.form:32
 msgid "OK"
-msgstr "Хорошо"
+msgstr ""
 
-#: FLang.form:38
+#: FCheck2.form:33 FLang.form:38
 msgid "Cancel"
 msgstr "Отменить"
 
-#: FMain.form:25
-msgid "Traductor"
-msgstr "Переводчик"
-
-#: FMain.form:31
-msgid "Archivo"
-msgstr "Архив"
-
-#: FMain.form:34
-msgid "Abrir archivo"
-msgstr "Открыть файл"
-
-#: FMain.form:40
-msgid "Salir"
-msgstr "Выход"
-
-#: FMain.form:47
-msgid "Herramientas"
-msgstr "Инструменты"
-
-#: FMain.form:50
-msgid "Preferencias"
-msgstr "Предпочтения"
-
-#: FMain.form:56
-msgid "Ayuda"
-msgstr "Помощь"
-
-#: FMain.form:75
-msgid "Traducir programas"
-msgstr "Переводить программы"
-
-#: FMain.class:93
-msgid "Para"
-msgstr "К"
-
-#: FMain.class:93
-msgid "la aplicacion fue traducida exitosamente"
-msgstr "Заявка была успешно переведена"
-
-#: FMain.class:98
-msgid "No tiene sentido traducir de"
-msgstr "Это не имеет смысла переводить"
-
-#: FMain.class:111
-msgid "Tienes que seleccionar al menos un idioma destino."
-msgstr "Вы должны выбрать, по крайней мере, один целевой язык."
-
-#: FMain.class:111
-msgid "Para ello ve a las preferencias del programa"
-msgstr "Для этого перейдите к программе предпочтений"
-
-#: FMain.class:138
-msgid "Vas a traducir desde"
-msgstr "Вы будете переводить с"
-
-#: FMain.class:138
-msgid "hacia"
-msgstr "К"
-
-#: FMain.class:141
-msgid "pero no has seleccionado idiomas de destino, para ello ve a preferencias."
-msgstr "Но вы не выбрали целевые языки, ибо она видит предпочтения."
-
-#: FMain.class:172
-msgid "TRaduciendo desde"
-msgstr "Перевод с"
-
-#: FPref.form:25
+#: FConfig.form:22
 msgid "Guardar y salir"
 msgstr "Сохранение и выход из"
 
-#: FPref.form:26
+#: FConfig.form:23
 msgid "Guardar"
 msgstr "Экономить"
 
-#: FPref.form:32
+#: FConfig.form:29
 msgid "Descartar"
 msgstr "Отбрасывать"
 
-#: FPref.form:66
-msgid "Deseleccionar todos los idiomas"
-msgstr "Снимите флажки для всех языков"
+#: FConfig.form:41
+msgid "Traducción"
+msgstr ""
 
-#: FPref.class:48
+#: FConfig.form:55
+msgid "Programa"
+msgstr ""
+
+#: FConfig.class:194
+msgid "Motor de la Base de datos"
+msgstr ""
+
+#: FConfig.class:195
+msgid "Ubicación de la Base de datos"
+msgstr ""
+
+#: FConfig.class:196
+msgid "Nombre de la Base de datos"
+msgstr ""
+
+#: FConfig.class:197
+msgid "Ruta de la Base de datos"
+msgstr ""
+
+#: FConfig.class:198
 msgid "Idioma de entrada"
 msgstr "Язык ввода"
 
-#: FPref.class:49
-msgid "Idiomas de salida"
-msgstr "Выход языки"
+#: FConfig.class:199
+msgid "Tamaño de la ventana"
+msgstr ""
 
-#: MTranslate.module:165
+#: FConfig.class:200
+msgid "Anchura por defecto"
+msgstr "По умолчанию ширина"
+
+#: FData.form:34
+msgid "Aceptar"
+msgstr "Принимать"
+
+#: FMain.form:38
+msgid "Traductor"
+msgstr ""
+
+#: FMain.form:44
+msgid "Archivo"
+msgstr "Архив"
+
+#: FMain.form:47
+msgid "Traducir"
+msgstr ""
+
+#: FMain.form:53
+msgid "Salir"
+msgstr ""
+
+#: FMain.form:60
+msgid "Configuración"
+msgstr "Конфигурация"
+
+#: FMain.form:63
+msgid "Preferencias"
+msgstr ""
+
+#: FMain.form:68
+msgid "Orden"
+msgstr ""
+
+#: FMain.form:73
+msgid "Filtro"
+msgstr "Фильтр"
+
+#: FMain.form:79
+msgid "Información"
+msgstr "Информация"
+
+#: FMain.form:87
+msgid "Ayuda"
+msgstr "Помощь"
+
+#: FMain.form:98
+msgid "Leer las frases a traducir y presentar un estado de la situacion"
+msgstr "Прочитайте предложения перевести и представить заявление о ситуации"
+
+#: FMain.form:179
+msgid "Agregar"
+msgstr "Добавлять"
+
+#: FMain.form:185
+msgid "Borrar"
+msgstr "Удалять"
+
+#: FMain.form:191
+msgid "Editar"
+msgstr "Редактировать"
+
+#: FMain.class:298
+msgid "Para"
+msgstr ""
+
+#: FMain.class:298
+msgid "la aplicacion fue traducida exitosamente"
+msgstr ""
+
+#: FMain.class:303
+msgid "No tiene sentido traducir de"
+msgstr "Это не имеет смысла переводить"
+
+#: FMain.class:316
+msgid "Tienes que seleccionar al menos un idioma destino."
+msgstr ""
+
+#: FMain.class:316
+msgid "Para ello ve a las preferencias del programa"
+msgstr ""
+
+#: FMain.class:377
+msgid "Tradución desde"
+msgstr ""
+
+#: FMain.class:377
+msgid "hacia"
+msgstr ""
+
+#: FMain.class:382
+msgid "traducción desde"
+msgstr ""
+
+#: FMain.class:382
+msgid "No hay idiomas de salida seleccionados"
+msgstr ""
+
+#: FMain.class:382
+msgid "Vaya a preferencias para seleccionar alguno"
+msgstr ""
+
+#: FMain.class:394
+msgid "Lenguajes"
+msgstr ""
+
+#: FMain.class:462
+msgid "Traduciendo desde"
+msgstr ""
+
+#: FMain.class:743
+msgid "No existen frases para traducir"
+msgstr ""
+
+#: FMain.class:809
+msgid "Se ha creado la vista"
+msgstr ""
+
+#: FMain.class:894
+msgid "La traduccion"
+msgstr ""
+
+#: FMain.class:894
+msgid "ha finalizado"
+msgstr ""
+
+#: FMain.class:894
+msgid "Totales"
+msgstr ""
+
+#: MData.module:69
+msgid "No existe el archivo"
+msgstr "Нет такого файла"
+
+#: MData.module:69
+msgid "La base de datos no sera creada"
+msgstr "База данных не будет создана"
+
+#: MData.module:315
+msgid "Existen"
+msgstr "Там"
+
+#: MData.module:315
+msgid "coincidencias, deberia ser una sola"
+msgstr ""
+
+#: MData.module:315
+msgid "Se utilizara el primero de la lista"
+msgstr ""
+
+#: MStarter.module:102
+msgid "Carga de parametros primera pasada"
+msgstr ""
+
+#: MStarter.module:119
+msgid "Conectando la base de datos"
+msgstr ""
+
+#: MStarter.module:181
+msgid "Cargando lista de idiomas"
+msgstr ""
+
+#: MStarter.module:214
+msgid "Abriendo formulario principal"
+msgstr ""
+
+#: MStarter.module:219
+msgid "No se pudo abrir la conexión a la base de datos"
+msgstr "Не удалось открыть соединение с базой данных"
+
+#: MStarter.module:277
+msgid "Búlgaro"
+msgstr ""
+
+#: MStarter.module:280
+msgid "Catalán"
+msgstr ""
+
+#: MStarter.module:283
+msgid "Checo"
+msgstr ""
+
+#: MStarter.module:285
+msgid "Danés"
+msgstr ""
+
+#: MStarter.module:286
+msgid "Alemán"
+msgstr ""
+
+#: MStarter.module:288
+msgid "Inglés"
+msgstr ""
+
+#: MStarter.module:289
+msgid "Esperanto"
+msgstr ""
+
+#: MStarter.module:290
+msgid "Castellano"
+msgstr ""
+
+#: MStarter.module:291
+msgid "Estonio"
+msgstr ""
+
+#: MStarter.module:295
+msgid "Francés"
+msgstr ""
+
+#: MStarter.module:297
+msgid "Gaélico"
+msgstr ""
+
+#: MStarter.module:298
+msgid "Gaélico escocés"
+msgstr ""
+
+#: MStarter.module:299
+msgid "Gallego"
+msgstr ""
+
+#: MStarter.module:308
+msgid "Húngaro"
+msgstr ""
+
+#: MStarter.module:313
+msgid "Italiano"
+msgstr ""
+
+#: MStarter.module:339
+msgid "Holandés"
+msgstr ""
+
+#: MStarter.module:340
+msgid "Noruego"
+msgstr ""
+
+#: MStarter.module:344
+msgid "Polaco"
+msgstr ""
+
+#: MStarter.module:346
+msgid "Portugués"
+msgstr ""
+
+#: MStarter.module:348
+msgid "Ruso"
+msgstr ""
+
+#: MStarter.module:361
+msgid "Sueco"
+msgstr ""
+
+#: MStarter.module:373
+msgid "Ucranio"
+msgstr ""
+
+#: MTranslate.module:173
+msgid "No se ha creado el archivo de palabras"
+msgstr ""
+
+#: MTranslate.module:214
+msgid "No están en el diccionario"
+msgstr ""
+
+#: MTranslate.module:381
 msgid "El archivo"
-msgstr "Файл"
+msgstr ""
 
-#: MTranslate.module:165
+#: MTranslate.module:381
 msgid "fue creado con exito"
-msgstr "Она была создана успешно"
+msgstr ""
 
-#: MTranslate.module:240
+#: MTranslate.module:622
 msgid "EL conversor msgfmt a dado la siguiente salida"
-msgstr "Msgfmt данный преобразователь к следующему выходу"
+msgstr ""
 
-#: MTranslate.module:245
+#: MTranslate.module:627
 msgid "Se han añadido las traducciones automáticas:"
-msgstr "Они были добавлены автоматические переводы:"
+msgstr ""
 
-#: MUtility.module:36
+#: MUtility.module:34
 msgid "Seleccionar directorio"
-msgstr "Выберите каталог"
+msgstr ""
 
-#: MUtility.module:55
+#: MUtility.module:53
 msgid "Seleccionar archivo"
-msgstr "Выбрать файл"
+msgstr ""
 
-#: MUtility.module:60
+#: MUtility.module:58
 msgid "Filtro por:"
-msgstr "Фильтр по:"
+msgstr ""
 
-#: Msys.module:284
+#: MUtility.module:393
+msgid "Falta el paquete"
+msgstr "Недостающее пакет"
+
+#: MUtility.module:978
+msgid "El archivo "
+msgstr ""
+
+#: MUtility.module:978
+msgid "Tiene caracteres no ascii"
+msgstr ""
+
+#: MUtility.module:1035
+msgid "Hola"
+msgstr "Привет"
+
+#: MValidator.module:219
+msgid "Espacios al inicio y al final"
+msgstr ""
+
+#: MValidator.module:221
+msgid "Espacio al inicio"
+msgstr ""
+
+#: MValidator.module:225
+msgid "Espacio al final"
+msgstr ""
+
+#: MValidator.module:230
+msgid "Repetidos"
+msgstr ""
+
+#: MValidator.module:257
+msgid "Excluidos"
+msgstr ""
+
+#: MValidator.module:261
+msgid "Mas de una letra mayúscula"
+msgstr ""
+
+#: Msys.module:357
 msgid "Desconocido"
 msgstr "Неизвестный"
+
+#: Msys.module:509
+msgid "Falta instalar el paquete"
+msgstr "Необходимо установить пакет"
+
+#: Msys.module:512
+msgid "Faltan instalar los siguientes paquetes"
+msgstr "Потерялись установить следующие пакеты"
+
+#: Msys.module:534
+msgid "Puede usar la siguente orden"
+msgstr ""
+
+#: Msys.module:534
+msgid "¿Quiere abrir la terminal para poceder?"
+msgstr ""
+
+#: Msys.module:534
+msgid "Sí"
+msgstr ""
+
+#: Msys.module:534
+msgid "No"
+msgstr "Не"
+
+#: Msys.module:584
+msgid "Puede usar el siguente commando"
+msgstr ""

@@ -1,6 +1,5 @@
 ' Gambas module file
 
-'
 ' Traducción de programas.
 ' Interfaz de translate-shell para traducir programas completos de gambas y otras utilidades.
 '
@@ -21,6 +20,226 @@
 ' Foundation, Inc., 51 Franklin St, Fifth Floor,
 ' Boston, MA  02110-1301  USA
 '
+
+Public Function PoReader(strPotPath As String) As String[] ''Genera una matriz con todas las frases del archivo .pot donde el elemento 0 es el idioma y a partir el 1 se encontraran las frases del programa.
+
+  Dim strPotFile As String
+  Dim strPotText As String
+  Dim stxPotText As New String[]
+  Dim intLine As Integer
+  Dim int1 As Integer
+  Dim int2 As Integer
+  Dim strOut As String
+  Dim stxOut As New String[]
+
+  Dim strProjectPath As String
+  Dim stxProject As New String[]
+  Dim intCut As Integer
+  Dim strLangIn As String
+
+  If strPotPath = "" Then
+    strPotFile = MUtility.FileChooser(User.Home, "pot")
+  Else
+    strPotFile = strPotPath
+  Endif
+
+  If strPotPath <> "" Then
+    If Exist(strPotFile) = True Then
+      If File.Ext(strPotFile) = "pot" Then
+        strPotText = File.Load(strPotFile)
+      Endif
+    Endif
+
+    If Exist(strPotPath) Then
+      strProjectPath = File.Dir(strPotPath)
+      intCut = String.RInStr(strProjectPath, "/")
+      strProjectPath = String.Mid(strProjectPath, 1, intCut) &/ ".project"
+      stxProject = Msys.ProjInfo(strProjectPath)
+      If stxProject.Count > 0 Then
+        strLangIn = stxProject[6]
+        stxOut.Add(strLangIn)
+      Endif
+    Endif
+
+    stxPotText = Split(strPotText, "\n")
+
+    For intLine = 0 To stxPotText.Max
+      If String.InStr(stxPotText[intLine], "msgid ") > 0 Then
+        int1 = 8
+        int2 = String.Len(stxPotText[intLine]) - int1
+        strOut = String.Mid(stxPotText[intLine], int1, int2)
+        stxOut.Add(strOut)
+      Endif
+    Next
+
+  Endif
+
+  Return stxOut
+
+End
+
+Public Function Spell(stxSentences As String[], stxILang As String[]) As String[] '' Esta funcion devuelve una lista de fraces depuradas, es decir que todas las palabras que compongan cada frase se encuentran en el diccionario del idioma que no tiene errores de escritura como espacios al inicio, mas de dos mayúsculas en la misma frase, espacios al final, repeticion de espacios o cualquier tipo de error similar a estos mencionados.
+
+  Dim stxNice As New String[] ' Matriz de salida /////////////////////////////
+  Dim stxUgly As New String[] ' Frases que tien alguna cosa extraña como numeros, por ejemplo.
+  Dim stxNot As New String[] ' Una sola letra ? Seguramente no necesiten traducirse
+  Dim strFileRaw As String
+  Dim strFileWords As String
+  Dim strFileSpell As String
+  Dim strFileNice As String
+  Dim strFileUgly As String
+  Dim strFileNot As String
+  Dim intFs As Integer
+  Dim strWordTmp As String
+  Dim stxWordsTmp As New String[]
+  Dim intWd As Integer
+  Dim strWord As String
+  Dim stxWords As New String[]
+  Dim strRaw As String
+  Dim strChk As String
+  Dim intChk As Integer
+  Dim stxSpellUgly As New String[]
+  Dim stxUglyTmp As New String[]
+  Dim stxWordCheckTmp As New String[]
+  Dim intUg As Integer
+  Dim strSpell As String
+
+  ' 0) ////////  Definicion de los nombres de los archivos a generar //////////////
+
+  strFileNice = User.Home &/ stxILang[0] & "-nice.tko"
+  strFileNot = User.Home &/ stxILang[0] & "-not.tko"
+  strFileRaw = User.Home &/ stxILang[0] & "-raw.tko"
+  strFileSpell = User.Home &/ stxILang[0] & "-spell.tko"
+  strFileUgly = User.Home &/ stxILang[0] & "-ugly.tko"
+  strFileWords = User.Home &/ stxILang[0] & "-words.tko"
+
+  If Exist(strFileNice) Then
+    Try Kill strFileNice
+  Endif
+  If Exist(strFileNot) Then
+    Try Kill strFileNot
+  Endif
+  If Exist(strFileRaw) Then
+    Try Kill strFileRaw
+  Endif
+  If Exist(strFileSpell) Then
+    Try Kill strFileSpell
+  Endif
+  If Exist(strFileUgly) Then
+    Try Kill strFileUgly
+  Endif
+  If Exist(strFileWords) Then
+    Try Kill strFileWords
+  Endif
+
+  ' 1) ////////  Listar y analizar todas las palabras de las horaciones //////////////
+
+  For intFs = 0 To stxSentences.Max
+    stxWordsTmp.Clear
+    stxWordsTmp = Split(stxSentences[intFs], " ")
+    For intWd = 0 To stxWordsTmp.Max
+      strWordTmp = String.LCase(stxWordsTmp[intWd])
+
+      Select stxILang[3]
+
+        Case "russian"
+          strWord = MValidator.OnlyCyrilic(strWordTmp)
+        Case Else
+          strWord = MValidator.OnlyLeters(strWordTmp)
+      End Select
+
+      If strWord = strWordTmp Then
+        If stxWords.Find(strWord) = -1 Then
+          stxWords.Add(strWord)
+        Endif
+      Endif
+    Next
+  Next
+  stxWords.Sort
+
+  ' 2) ////////  Creación del archivo con la lista de palabras del conjunto //////////////
+  File.Save(strFileWords, stxWords.Join("\n"))
+  Wait 0.2
+  If Exist(strFileWords) Then
+    Shell "iconv -f UTF-8 " & strFileWords & " -t ISO-8859-15 -o " & strFileWords
+    Wait 0.2
+    Select stxILang[3]
+      Case "british", "american", "english"
+        Shell "spell '" & strFileWords & "' > '" & strFileSpell & "'"
+      Case Else
+        Shell "spell -D " & stxILang[3] & " '" & strFileWords & "' > '" & strFileSpell & "'"
+    End Select
+  Else
+    Message.Info(("No se ha creado el archivo de palabras"))
+  End If
+  If stxSentences.Count > 0 Then
+    For intChk = 0 To stxSentences.Max
+      strRaw = stxSentences[intChk]
+      If strRaw <> "" Then
+
+        Select stxILang[3]
+
+          Case "russian"
+            strChk = MValidator.OnlyTextCyrilic(strRaw)
+          Case Else
+            strChk = MValidator.OnlyText(strRaw)
+        End Select
+
+        If String.Len(strChk) = 1 Then
+          stxNot.Add(strChk)
+        Else
+          If strChk = strRaw Then
+            If Exist(strFileSpell) Then
+              ' Quiere decir que en el conjunto de fraces a traducir hay palabras que no estan en el diccionario
+              stxSpellUgly.Clear
+              strSpell = File.Load(strFileSpell)
+              If String.Len(strSpell) > 0 Then
+                stxSpellUgly = Split(File.Load(strFileSpell), "\n")
+                stxUglyTmp.Clear
+                stxWordCheckTmp.Clear
+                If InStr(strChk, " ") Then
+                  stxWordCheckTmp = Split(strChk, " ")
+                Else
+                  stxWordCheckTmp.Add(strChk)
+                Endif
+
+                Wait 0.1
+                For intUg = 0 To stxWordCheckTmp.Max
+                  If stxSpellUgly.Find(stxWordCheckTmp[intUg]) > -1 Then
+                    stxUglyTmp.Add(stxWordCheckTmp[intUg])
+                  Endif
+                Next
+                Wait 0.1
+                If stxUglyTmp.Count > 0 Then
+                  stxUgly.Add(strChk & "\t[" & ("No están en el diccionario") & ": " & stxUglyTmp.Join(", ") & "]")
+                Else
+                  stxNice.Add(strChk)
+                Endif
+              Endif
+            Else
+              stxNice.Add(strChk)
+            Endif
+
+          Else
+            stxUgly.Add(strChk)
+            Print
+          Endif
+        Endif
+      Endif
+    Next
+  Endif
+  stxNice.Sort
+  stxUgly.Sort
+  stxNot.Sort
+  File.Save(strFileNice, stxNice.Join("\n"))
+  File.Save(strFileNot, stxNot.Join("\n"))
+  File.Save(strFileRaw, stxSentences.Join("\n"))
+
+  File.Save(strFileUgly, stxUgly.Join("\n"))
+
+  Return stxNice
+
+End
 
 Public Function Pomaker(strPotLotn As String, strLangIn As String, strLangOut As String) As Integer ''Genera un archivo .po de un idioma, como parametro de entrada requiere la ruta completa al archivo .pot del programa
 
@@ -95,10 +314,9 @@ Public Function Pomaker(strPotLotn As String, strLangIn As String, strLangOut As
     ' Generar .po del lenguaje seleccionado
     For intL = 0 To stxPotText.Max
 
-      Select stxPotText[intL]
+      Select String.Mid(stxPotText[intL], 1, 13)
         Case "#: .project:1"  ' Comienzo de los datos del archivoç
           bolData = True
-
       End Select
 
       If bolData = True Then
@@ -139,12 +357,10 @@ Public Function Pomaker(strPotLotn As String, strLangIn As String, strLangOut As
                 stxText.Add("msgid " & Chr(34) & strLine & Chr(34))
 
                 ' Bloque que traduce y manda los mensajes a la consola ------
-                'FMain.stxMessage.Add(String.UCase(strLangIn) & ": " & strLine, 0)
+
                 FMain.stxLin.Add(String.UCase(strLangIn) & ": " & strLine, 0)
 
                 strOutput = translator(strLine, strLangIn, strLangOut)
-
-                'FMain.stxMessage.Add(String.UCase(strLangOut) & ": " & strOutput, 0)
 
                 FMain.stxLout.Add(String.UCase(strLangOut) & ": " & strOutput, 0)
 
@@ -164,8 +380,6 @@ Public Function Pomaker(strPotLotn As String, strLangIn As String, strLangOut As
 
     FMain.stxLog.Add(("El archivo") & strOutDir &/ strLangOut & ".po " & ("fue creado con exito"))
 
-    'FMain.UpdateLog()
-
     Inc intCounter
 
     stxText.Clear
@@ -179,6 +393,174 @@ Public Function Pomaker(strPotLotn As String, strLangIn As String, strLangOut As
   Endif
 
   Return intCounter
+
+End
+
+Public Function PomakerTest(strPotLotn As String, strLangIn As String, strLangOut As String) As Integer[] ''Genera un archivo .po de un idioma, como parametro de entrada requiere la ruta completa al archivo .pot del programa, devuelve una matriz de nuemros enteros, 0 total de frases 1 traducidas 2 sin traducir
+
+  Dim strPotFile As String
+  Dim strPotText As String
+  Dim stxPotText As New String[]
+  Dim setGbx As New Settings(User.Home &/ ".config/gambas3/gambas3.conf")
+  Dim stxText As New String[]
+  Dim strLine As String
+  Dim strOutput As String
+  Dim strKey As String
+  Dim strLout As String
+  Dim strOutDir As String
+  Dim strTemp As String
+  Dim intL As Integer
+  Dim strKeyTmp As String
+  Dim intC As Integer
+  Dim bolData As Boolean
+  Dim strPackage As String
+  Dim strAppName As String
+  Dim strDeveloper As Variant
+  Dim strDeveloperEmail As Variant
+  Dim strTimeStampPo As String
+  Dim strTimeStampPot As String
+  Dim intCounter As Integer
+  Dim resOut As Result
+  Dim inxTrs As New Integer[]
+  Dim intYes As Integer
+  Dim intNot As Integer
+
+  If strPotLotn = "" Then
+    strPotFile = MUtility.FileChooser(User.Home, "pot")
+  Else
+    strPotFile = strPotLotn
+  Endif
+
+  intCounter = 0
+
+  If strPotLotn <> "" Then
+
+    strTimeStampPot = Format(Stat(strPotFile).Time, "yyyy-mm-dd hh:nn+t")
+
+    If Exist(strPotFile) = True Then
+      If File.Ext(strPotFile) = "pot" Then ' Leer el .pot
+
+        strPotText = File.Load(strPotFile)
+        strOutDir = File.Dir(strPotFile)
+
+      Endif
+    Endif
+
+    stxPotText = Split(strPotText, "\n")
+
+    strTimeStampPo = Format(Now(), "yyyy-mm-dd hh:nn+t")
+    strAppName = Application.Name
+    strPackage = Application.Version
+
+    strDeveloper = setGbx["Identity/Name"]
+    strDeveloperEmail = setGbx["Identity/Mail"]
+
+    stxText.Clear
+    bolData = False
+
+    stxText.Add("#, fuzzy")
+    stxText.Add("msgid " & Chr(34) & Chr(34))
+    stxText.Add("msgstr " & Chr(34) & Chr(34))
+    stxText.Add(Chr(34) & "Project-Id-Version: " & strAppName & " " & strPackage & "\\n" & Chr(34))
+    stxText.Add(Chr(34) & "POT-Creation-Date: " & strTimeStampPot & "\\n" & Chr(34))
+    stxText.Add(Chr(34) & "PO-Revision-Date: " & strTimeStampPo & "\\n" & Chr(34))
+    stxText.Add(Chr(34) & "Last-Translator: " & strDeveloper & ", Powerded by Tradukisto software. " & strDeveloperEmail & "\\n" & Chr(34))
+    stxText.Add(Chr(34) & "Language: " & strLout & "\\n" & Chr(34))
+    stxText.Add(Chr(34) & "MIME-Version: 1.0\\n" & Chr(34))
+    stxText.Add(Chr(34) & "Content-Type: text/plain; charset=UTF-8\\n" & Chr(34))
+    stxText.Add(Chr(34) & "Content-Transfer-Encoding: 8bit\\n" & Chr(34))
+
+    ' Generar .po del lenguaje seleccionado
+
+    inxTrs.Add(stxPotText.Count)
+
+    For intL = 0 To stxPotText.Max
+
+      Select String.Mid(stxPotText[intL], 1, 13)
+        Case "#: .project:1"  ' Comienzo de los datos del archivoç
+          bolData = True
+      End Select
+
+      If bolData = True Then
+
+        strLine = ""
+        strKeyTmp = ""
+
+        Select String.Mid(stxPotText[intL], 1, 2)
+          Case ""
+            stxText.Add("")
+          Case "#:"
+            stxText.Add(stxPotText[intL])
+          Case "ms"
+            strKey = Split(stxPotText[intL], " ")[0]
+            Select strKey
+              Case "msgid"
+                intC = 0
+
+                While
+                  strKeyTmp <> "msgstr"
+
+                  Select intC
+                    Case 0
+                      strTemp &= String.Mid(stxPotText[intL + intC], 7)
+                    Case Else
+                      strTemp &= stxPotText[intL + intC]
+                  End Select
+                  Inc intC
+
+                  strKeyTmp = Split(stxPotText[intl + intC], " ")[0]
+
+                Wend
+
+                strLine = Replace(strTemp, "\n", "")
+                strLine = Replace(strLine, "  ", " ")
+                strLine = Replace(strLine, "\"", "")
+
+                stxText.Add("msgid " & Chr(34) & strLine & Chr(34))
+
+                ' Bloque de traducción ---------------------------------
+                resOut = MStarter.conProgram.Find("v" & strLangIn & strLangOut, strLangIn & strLangOut & "1=&1", strLine)
+
+                If resOut.Available Then
+                  strOutput = resOut[strLangIn & strLangOut & "2"]
+                  Inc intYes
+                Else
+                  strOutput = ""
+                  Inc intNot
+                Endif
+
+                '------------------------------------------------------------
+                Wait 0.1
+                stxText.Add("msgstr " & Chr(34) & strOutput & Chr(34))
+
+                strLine = ""
+                strTemp = ""
+
+            End Select
+        End Select
+      Endif
+    Next
+
+    File.Save(strOutDir &/ strLangOut & ".po", stxText.Join(gb.newline))
+
+    FMain.stxLog.Add(("El archivo") & strOutDir &/ strLangOut & ".po " & ("fue creado con exito"))
+
+    Inc intCounter
+
+    stxText.Clear
+
+    Wait 0.3
+
+    If Exist(strOutDir &/ strLangOut & ".po") = True Then
+      Pomo(strOutDir &/ strLangOut & ".po")
+    Endif
+
+  Endif
+
+  inxTrs.Add(intYes)
+  inxTrs.Add(intNot)
+
+  Return inxTrs
 
 End
 
@@ -236,14 +618,13 @@ Public Sub Pomo(strPoPath As String) ''Convierte el archo .po en .mo, modificaco
   Shell strCommand To strErrors
 
   If strErrors <> "" Then
-    'Message.Info(("EL conversor msgfmt a dado la siguiente salida") & ":" & gb.NewLine & strErrors)
+
     FMain.stxLog.Add(("EL conversor msgfmt a dado la siguiente salida") & ":" & gb.NewLine & strErrors)
     FMain.UpdateLog()
 
   Else
-    'Message.Info(("Se han añadido las traducciones automáticas."))
+
     FMain.stxLog.Add(("Se han añadido las traducciones automáticas:") & " " & File.BaseName(strPoPath) & ".mo")
-    'FMain.UpdateLog()
 
   Endif
 

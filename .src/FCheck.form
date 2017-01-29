@@ -1,0 +1,45 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,64,64)
+  Resizable = False
+  Arrangement = Arrange.Vertical
+  Spacing = True
+  Margin = True
+  { pnlControls Panel
+    MoveScaled(1,2,61,44)
+    Expand = True
+    Arrangement = Arrange.Horizontal
+  }
+  { Panel2 Panel
+    MoveScaled(1,47,62,11)
+    Arrangement = Arrange.Fill
+    AutoResize = True
+    { lblWarning TextLabel
+      MoveScaled(14,3,19,3)
+      Expand = True
+    }
+  }
+  { HBox1 HBox
+    MoveScaled(1,59,62,4)
+    Spacing = True
+    { Panel1 Panel
+      MoveScaled(4,0,4,4)
+      Expand = True
+    }
+    { btnShowSample Button
+      MoveScaled(10,0,16,4)
+      Text = ("Ver las frases")
+      Default = True
+    }
+    { btnOK Button
+      MoveScaled(29,0,16,4)
+      Text = ("Continuar")
+    }
+    { btnCancel Button
+      MoveScaled(46,0,16,4)
+      Text = ("Cancelar")
+      Cancel = True
+    }
+  }
+}
