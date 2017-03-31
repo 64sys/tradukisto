@@ -19,12 +19,17 @@
 ' along with this program; if not, write to the Free Software
 ' Foundation, Inc., 51 Franklin St, Fifth Floor,
 ' Boston, MA  02110-1301  USA
+'
 
 Public Sub Form_Open()
 
   Dim stxInfo As New String[]
+  Dim pnl As Panel
   Dim txa As TextLabel
   Dim tob As ToolButton
+  Dim stxComp As String[]
+  Dim intComp As Integer
+  '   Dim strComp As String
 
   If Exist("logo.png") Then
     pioLogo.Picture = Picture.Load("logo.png")
@@ -36,12 +41,24 @@ Public Sub Form_Open()
 
   stxInfo = Msys.ProjInfo()
 
+  stxComp = Split(stxInfo[5], ":")
+  ' For intComp = 0 To stxComp.Max
+  '   strComp &= "<p>" & stxComp[intComp] & "</p>"
+  ' Next
+
   txa = New TextLabel(pnlAbout)
   txa.Name = "txa-" & "Title"
   txa.Text = MUtility.Capital(Application.Title)
   txa.Font.Grade = 4
   txa.Alignment = Align.Center
   txa.Height = 35
+
+  txa = New TextLabel(pnlAbout)
+  txa.Name = "txa-" & "Description"
+  txa.Text = stxInfo[1]
+  txa.Font.Grade = 0
+  txa.Alignment = Align.Center
+  txa.Height = 28
 
   txa = New TextLabel(pnlAbout)
   txa.Name = "txa-" & "Version"
@@ -51,8 +68,15 @@ Public Sub Form_Open()
   txa.Height = 28
 
   txa = New TextLabel(pnlAbout)
-  txa.Name = "txa-" & "Description"
-  txa.Text = stxInfo[1]
+  txa.Name = "txa-" & "Copy"
+  txa.Text = "Copyright (c)" & " 2016-" & Year(Now)
+  txa.Font.Grade = 0
+  txa.Alignment = Align.Center
+  txa.Height = 28
+
+  txa = New TextLabel(pnlAbout)
+  txa.Name = "txa-" & "Authors"
+  txa.Text = stxInfo[2]
   txa.Font.Grade = 0
   txa.Alignment = Align.Center
   txa.Height = 28
@@ -64,13 +88,7 @@ Public Sub Form_Open()
   tob.Font.Grade = 0
   tob.Height = 28
   tob.Border = False
-
-  txa = New TextLabel(pnlAbout)
-  txa.Name = "txa-" & "Copy"
-  txa.Text = "Copyright (c)" & " 2016-" & Year(Now)
-  txa.Font.Grade = 0
-  txa.Alignment = Align.Center
-  txa.Height = 28
+  tob.Tooltip = ("Código fuente")
 
   tob = New ToolButton(pnlAbout) As "Url"
   tob.Name = "tob-" & "Email"
@@ -79,24 +97,43 @@ Public Sub Form_Open()
   tob.Font.Grade = 0
   tob.Height = 28
   tob.Border = False
+  tob.Tooltip = ("Enviar un correo al desarrollador")
 
   txa = New TextLabel(pnlAbout)
-  txa.Name = "txa-" & "Copy"
-  txa.Text = ("Componentes usados") & ": " & Replace(stxInfo[5], ":", " ")
+  txa.Name = "txa-" & "Components"
+  txa.Text = ("Componentes utilizados en este programa") & ":"
   txa.Font.Grade = 0
   txa.Alignment = Align.Center
-  txa.Height = 56
+  txa.Height = 28
+
+  pnl = New Panel(pnlAbout)
+  pnl.Name = "pnl-" & "Components"
+  pnl.Arrangement = Arrange.Row
+  pnl.Height = 56
+
+  For intComp = 0 To stxComp.Max
+    tob = New ToolButton(pnl) As "Url"
+    tob.Name = "tob-" & stxComp[intComp]
+    tob.Text = stxComp[intComp]
+    tob.Tag = "http://gambaswiki.org/wiki/comp/" & stxComp[intComp]
+    tob.Tooltip = ("Clic para ver detalles en") & " " & "GambasForge/Wiki"
+    tob.Font.Grade = 0
+    tob.Height = 28
+    tob.Width = 7 * String.Len(stxComp[intComp])
+    tob.Border = False
+  Next
 
   txa = New TextLabel(pnlAbout)
   txa.Name = "txa-" & "Warranty"
-  txa.Text = ("Este prgrama se entrega sin ninguna tipo de garantia")
+  txa.Text = ("Este programa se entrega sin ningun tipo de garantia")
   txa.Font.Grade = 0
   txa.Alignment = Align.Center
   txa.Height = 56
 
   tob = New ToolButton(pnlAbout) As "Url"
   tob.Name = "tob-" & "License"
-  tob.Text = ("Licencia") & " GPL v3. " & ("Clic para ver en") & " gnu.org"
+  tob.Text = ("Licencia") & " GPL v3. "
+  tob.Tooltip = ("Clic para ver la licencia en") & " gnu.org"
   tob.Tag = "http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"
   tob.Font.Grade = 0
   tob.Height = 28

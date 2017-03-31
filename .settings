@@ -344,20 +344,13 @@ Geometry=[0,27,224,280]
 Path="tradukisto.gambas"
 
 [OpenFile]
-Count=12
-File[1]=".src/std/FData.form"
-Active=2
-File[2]=".src/gef/MData.module:35.68"
-File[3]=".src/MTranslate.module:0.620"
-File[4]=".src/FMain.class:34.742"
-File[5]=".src/std/FData.class:0.208"
-File[6]=".src/FCheck.class:0.135"
-File[7]=".src/FMain.form"
-File[8]=".src/FCheck.form"
-File[9]=".src/std/FAbout.form"
-File[10]=".src/std/FConfig.form"
-File[11]=".src/std/FAbout.class:0.25"
-File[12]=".src/std/FConfig.class:56.72"
+Count=5
+File[1]=".src/gef/MData.module:28.89"
+Active=5
+File[2]=".src/FMain.form"
+File[3]=".src/FMain.class:15.482"
+File[4]="new.sql:33.23"
+File[5]=".src/gef/MValidator.module:5.150"
 
 [Watches]
 Count=0

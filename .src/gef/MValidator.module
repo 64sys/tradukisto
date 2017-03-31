@@ -157,8 +157,8 @@ Public Function OnlyText(strInput As String) As String '' Validación de solo te
   stxLower.Clear
   stxUpper.Clear
 
-  stxUpper = Split("A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z:Á:À:Â:Ã:É:È:Í:Ï:Ó:Ô:Õ:Ö:Ú:Ç:Ñ", ":")
-  stxLower = Split("a:b:c:d:e:f:g:h:i:j:k:l:m:n:o:p:q:r:s:t:u:v:w:x:y:z:à:â:ã:é:è:ê:í:ï:ó:ô:õ:ö:ú:ç:ñ", ":")
+  stxUpper = Split("A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z:Á:À:Â:Ã:É:È:Ê:Í:Ï:Ó:Ô:Õ:Ö:Ú:Ü:Ç:Ñ", ":")
+  stxLower = Split("a:b:c:d:e:f:g:h:i:j:k:l:m:n:o:p:q:r:s:t:u:v:w:x:y:z:á:à:â:ã:é:è:ê:í:ï:ó:ô:õ:ö:ú:ü:ç:ñ", ":")
 
   stxLeters.Insert(stxLower)
   stxLeters.Insert(stxUpper)
@@ -174,7 +174,7 @@ Public Function OnlyText(strInput As String) As String '' Validación de solo te
     Select intKey
       Case -1
         Select strSymbol
-          Case " ", ",", ".", "¿", "?", "!", "¡"
+          Case " ", ",", ".", "¿", "?", "!", "¡", "'"
             If String.Right(strChecked) <> strSymbol Then
               strChecked &= strSymbol
             Else

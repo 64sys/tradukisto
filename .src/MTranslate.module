@@ -146,6 +146,7 @@ Public Function Spell(stxSentences As String[], stxILang As String[]) As String[
           strWord = MValidator.OnlyCyrilic(strWordTmp)
         Case Else
           strWord = MValidator.OnlyLeters(strWordTmp)
+
       End Select
 
       If strWord = strWordTmp Then
@@ -183,6 +184,11 @@ Public Function Spell(stxSentences As String[], stxILang As String[]) As String[
             strChk = MValidator.OnlyTextCyrilic(strRaw)
           Case Else
             strChk = MValidator.OnlyText(strRaw)
+
+            ' If InStr(strChk, "'") > 0 Then
+            '   strChk = Replace(strChk, "'", "`")
+            ' Endif
+
         End Select
 
         If String.Len(strChk) = 1 Then
@@ -575,6 +581,9 @@ Public Function Translator(strInput As String, strLin As String, strLout As Stri
 
   Shell "trans -b -no-auto " & strLin & ":" & strLout & " " & Chr(34) & strInput & Chr(34) & " 2>&1" To strTemp
 
+  If InStr(strTemp, "'") > 0 Then
+    strTemp = Replace(strTemp, "'", "`")
+  Endif
   stxTemp = Split(strTemp, "\n")
 
   If stxTemp.Length > 0 Then

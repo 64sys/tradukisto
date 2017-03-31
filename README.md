@@ -1,4 +1,4 @@
-# tradukisto
+# Tradukisto
 Translator for gambas projects
 
 ## Videos
@@ -16,14 +16,14 @@ stxProgram
 
 Esta Variable tiene todos los parametros del prgrama en forma de matriz de texto
 
-#0 Database Engine
-#1 Database Host
-#2 Database Name
-#3 Database Path
-#4 Current Language
+0 Database Engine
+1 Database Host
+2 Database Name
+3 Database Path
+4 Current Language
 5 Sentencia SQL
 6 Window [normal,fited]
-#7 Directory for dictionaries 
+7 Directory for dictionaries 
 8 Last directory for export
 9* IDE o Gambas
 10 Export Directory [user.home]
@@ -37,12 +37,12 @@ Esta Variable tiene todos los parametros del prgrama en forma de matriz de texto
 
 stxLanguage
 
-#0 Acronimo de dos letras "es"
-#1 Acronimo de tres letras "spa"
-#2 Nombre en inglés "Spanish"
-#3 Nombre nativo "Español"
-#4 Grupo del idioma "Indo-European"
-#5 Alfabeto "Latn" (latino)
+0 Acronimo de dos letras "es"
+1 Acronimo de tres letras "spa"
+2 Nombre en inglés "Spanish"
+3 Nombre nativo "Español"
+4 Grupo del idioma "Indo-European"
+5 Alfabeto "Latn" (latino)
 
 Ejemplo para el español es:spa:Spanish:Español:Indo-European:Latn
 =======
